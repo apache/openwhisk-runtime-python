@@ -4,7 +4,6 @@ distDocker.dependsOn 'copyFiles'
 distDocker.finalizedBy 'rmFiles'
 
 def runners = files(
-    new File(project(':core:actionProxy').projectDir, 'actionproxy.py'),
     new File(project(':core:pythonAction').projectDir, 'pythonrunner.py')
 )
 
