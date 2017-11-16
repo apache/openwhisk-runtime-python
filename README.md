@@ -7,7 +7,7 @@ To use as a docker action using python 3
 ```
 wsk action update myAction myAction.py --docker openwhisk/python3action:1.0.0
 ```
-Replace `python3ction` with `python2acton` to use python 2.
+Replace `python3action` with `python2action` to use python 2.
 
 
 ### To use on deployment that contains the rutime as a kind
