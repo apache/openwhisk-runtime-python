@@ -1,4 +1,4 @@
-# Apache OpenWhisk runtimes for swift
+# Apache OpenWhisk runtimes for Python
 [![Build Status](https://travis-ci.org/apache/incubator-openwhisk-runtime-python.svg?branch=master)](https://travis-ci.org/apache/incubator-openwhisk-runtime-python)
 
 
@@ -13,7 +13,7 @@ Replace `python3action` with `python2action` to use python 2.
 ### To use on deployment that contains the rutime as a kind
 To use as a kind action using python 3
 ```
-wsk action update myAction myAction.swift --kind python:3
+wsk action update myAction myAction.py --kind python:3
 ```
 Replace `python:3` with `python:2` to use python 2.
 
