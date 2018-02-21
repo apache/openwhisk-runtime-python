@@ -44,6 +44,7 @@ runtimes_manifest:
         name: "nodejs6action"
       deprecated: false
           python:
+    python:
     - kind: "python"
       image:
         name: "python2action"
