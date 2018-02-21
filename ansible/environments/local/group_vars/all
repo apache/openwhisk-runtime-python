@@ -1,8 +1,9 @@
 whisk_version_name: local
-config_root_dir: /tmp
+config_root_dir: /tmp/wskconf
 whisk_logs_dir: /tmp/wsklogs
 docker_registry: ""
 docker_dns: ""
+bypass_pull_for_local_images: true
 
 db_prefix: whisk_local_
 
@@ -19,10 +20,9 @@ apigw_auth_user: ""
 apigw_auth_pwd: ""
 apigw_host_v2: "http://{{ groups['apigateway']|first }}:{{apigateway.port.api}}/v2"
 
-controller_arguments: '-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.port=1098'
-invoker_arguments: "{{ controller_arguments }}"
-
 invoker_allow_multiple_instances: true
+
+env_hosts_dir: "{{ playbook_dir }}/environments/local"
 
 runtimes_manifest:
   defaultImagePrefix: "openwhisk"
