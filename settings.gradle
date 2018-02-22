@@ -1,17 +1,13 @@
-def owPath = System.getenv("OPENWHISK_HOME") ?: '../open'
-def owDirectory = new File(owPath)
-
-include 'common:scala'; project(':common:scala').projectDir = new File(owDirectory, 'common/scala')
-include 'core:controller'; project(':core:controller').projectDir = new File(owDirectory, 'core/controller')
-include 'core:invoker'; project(':core:invoker').projectDir = new File(owDirectory, 'core/invoker')
-include 'whisktests'; project(':whisktests').projectDir = new File(owDirectory, 'tests')
-
 include 'tests'
 
 include 'core:pythonAction'
 include 'core:python2Action'
 
 rootProject.name = 'runtime-python'
+
+gradle.ext.openwhisk = [
+        version: '1.0.0-SNAPSHOT'
+]
 
 gradle.ext.scala = [
     version: '2.11.8',
