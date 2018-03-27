@@ -1,2 +1,16 @@
-ext.dockerImageName = 'python3action'
-apply from: '../../gradle/docker.gradle'
+subprojects {
+
+    task dockerFiles(type: Copy) {
+        from (new File(rootDir, 'src')) {
+            include '*.py'
+        }
+        from (new File(rootDir, 'src/Dockerfile.in')) {
+            rename { 'Dockerfile' }
+            expand( pythonVersion: '3.6.4' )
+        }
+        into dockerBuildImage.inputDir
+    }
+
+    dockerBuildImage.dependsOn dockerFiles
+}
+

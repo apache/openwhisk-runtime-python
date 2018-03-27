@@ -1,5 +1,4 @@
-# Dockerfile for Python 2 actions, similar to the Python 3-based core/pythonAction
-FROM python:2.7.12-alpine
+FROM python:${pythonVersion}-alpine3.7
 
 # Upgrade and install basic Python dependencies
 RUN apk add --no-cache \
@@ -15,8 +14,7 @@ RUN apk add --no-cache \
         python-dev
 
 # Install common modules for python
-RUN pip install --no-cache-dir --upgrade pip setuptools six \
- && pip install --no-cache-dir \
+RUN pip install --no-cache-dir \
         gevent==1.1.2 \
         flask==0.11.1 \
         beautifulsoup4==4.5.1 \
@@ -33,8 +31,10 @@ RUN pip install --no-cache-dir --upgrade pip setuptools six \
 ENV FLASK_PROXY_PORT 8080
 
 # Add the action proxy
-ADD https://raw.githubusercontent.com/apache/incubator-openwhisk-runtime-docker/dockerskeleton%401.1.0/core/actionProxy/actionproxy.py /actionProxy/actionproxy.py
-
-ADD pythonrunner.py /pythonAction/
+RUN mkdir /actionProxy /pythonAction
+COPY actionproxy.py /actionProxy/
+COPY pythonrunner.py /pythonAction/
 
 CMD ["/bin/bash", "-c", "cd pythonAction && python -u pythonrunner.py"]
+
+# VIM: let b:syntastic_dockerfile_hadolint_args="--ignore DL3013 --ignore DL3018"

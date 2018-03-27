@@ -1,18 +1,16 @@
-ext.dockerImageName = 'python2action'
-apply from: '../../gradle/docker.gradle'
-distDocker.dependsOn 'copyFiles'
-distDocker.finalizedBy 'rmFiles'
+subprojects {
 
-def runners = files(
-    new File(project(':core:pythonAction').projectDir, 'pythonrunner.py')
-)
+    task dockerFiles(type: Copy) {
+        from (new File(rootDir, 'src')) {
+            include '*.py'
+        }
+        from (new File(rootDir, 'src/Dockerfile.in')) {
+            rename { 'Dockerfile' }
+            expand ( pythonVersion: '2.7.14' )
+        }
+        into dockerBuildImage.inputDir
+    }
 
-task copyFiles(type: Copy) {
-    from runners
-    into '.'
-}
-
-task rmFiles(type: Delete) {
-    delete runners.collect { it.getName() }
+    dockerBuildImage.dependsOn dockerFiles
 }
 
