@@ -92,3 +92,8 @@ notifications:
     on_pull_requests: false
     on_success: change
     on_failure: always
+    
+  webhooks:
+    urls:
+      # travis2slack webhook to enable DMs on openwhisk-team.slack.com to PR authors with TravisCI results
+      secure: "jhiMGpQ6kJFWjjsO68RmgD2Lga7jgNE+EKwND0dMOvzf5llMLFDKcY5J3tgtrqYaslQdXeuYeru/9qJrTTjFEu+vz3iCwoJ/eme+D0TtTIFGlPr7oa9tZlWrkPM/0zFLq7KjJauIIX2+6qrGVrNJJ6ENfr4U8Ir8q51oLIk44bsCeB8EmkahPOlNG6kcNqgpxHWKYUdUIg3B0GxqCKida/76dXDTRHCV2dZuT2bXz2oSJYog/lybomsjQIUZj0+HqxecgWTzag3Y6rTpK+m+vywazHP91hE+oU4e7YrxCH6v9+ukoWaljFqO5ZEKXcpx6tzx8Q0FvoTP8vGOO9b/t1loVcA8OxSJDrtOAztfoz/u0HJN6vnVt+maqnrYAD1F4pxA63JA6/+a7firmtADP7A/WQMZg6RgEkGUr+amFn303dTvgjDDkZ4oH8MAr0EPsneGUA2MZgB3i1MEcnCrYzT7KpYmDmFLoFhS9OX8f1H3zi5DLZZbZ1jbW/Ay4BgvjdoC8vmhAsDfVvyY9P240+nQ9NrnjaAUMD4XI/6JAKekfoxvsnc9W8gKBGTNfzi55AVe7HbzB/wCd58c2CV3Ev3RRwKQpH67jLBROpg2ocRQr0BUeHmfOT7NV4BCqdw1eVkZWBw4oxVaCHelDdICwgPn696W5t/1UVl4tLTt1rk="
