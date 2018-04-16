@@ -1,4 +1,3 @@
-
                                  Apache License
                            Version 2.0, January 2004
                         http://www.apache.org/licenses/
@@ -187,7 +186,7 @@
       same "printed page" as the copyright notice for easier
       identification within third-party archives.
 
-   Copyright 2016-2018 The Apache Software Foundation
+   Copyright 2015 David Arthur
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -200,138 +199,3 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-
-
-========================================================================
-Python Software Foundation License
-========================================================================
-
-This distribution has a binary dependency on the following components, which are available under a Python Software Foundation License.
-Python 2.7.12 and 3.6.1 (python - https://www.python.org/)
-  License included at licenses/LICENSE-python.txt
-
-
-========================================================================
-MIT License
-========================================================================
-
-This distribution depends on the following components, which are available under an MIT License (https://opensource.org/licenses/MIT).
-Gevent 1.1.2 (gevent - https://github.com/gevent/gevent/)
-  License included at licenses/LICENSE-gevent.txt, or https://github.com/gevent/gevent/blob/master/LICENSE
-  Copyright (c) Denis Bilenko and the contributors, http://www.gevent.org
-
-Beautifulsoup4 4.5.1 and 4.5.3 (beautifulsoup4 - https://www.crummy.com/software/BeautifulSoup/)
-  License included at licenses/LICENSE-beautifulsoup4.txt
-  Copyright (c) 2004-2011 Leonard Richardson
-
-Httplib2 0.9.2 and 0.10.3 (httplib2 - https://github.com/httplib2/httplib2/)
-  License included at licenses/LICENSE-httplib2.txt, https://github.com/httplib2/httplib2/blob/master/LICENSE
-  Copyright (c) 2006 by Joe Gregorio
-
-Simplejson 3.8.2 and 3.10.0 (simplejson - https://github.com/simplejson/simplejson/)
-  License included at licenses/LICENSE-simplejson.txt, https://github.com/simplejson/simplejson/blob/master/LICENSE.txt
-  Copyright (c) 2006 Bob Ippolito
-
-Virtualenv 15.1.0 (virtualenv - https://github.com/pypa/virtualenv/)
-  License included at licenses/LICENSE-virtualenv.txt, https://github.com/pypa/virtualenv/blob/master/LICENSE.txt
-  Copyright (c) 2007 Ian Bicking and Contributors
-  Copyright (c) 2009 Ian Bicking, The Open Planning Project
-  Copyright (c) 2011-2016 The virtualenv developers
-
-Twisted 16.4.0 and 17.1.0 (twisted - https://github.com/twisted/twisted/)
-  License included at licenses/LICENSE-twisted.txt, https://github.com/twisted/twisted/blob/trunk/LICENSE
-  Copyright (c) 2001-2018
-  Allen Short
-  Amber Hawkie Brown
-  Andrew Bennetts
-  Andy Gayton
-  Antoine Pitrou
-  Apple Computer, Inc.
-  Ashwini Oruganti
-  Benjamin Bruheim
-  Bob Ippolito
-  Canonical Limited
-  Christopher Armstrong
-  David Reid
-  Divmod Inc.
-  Donovan Preston
-  Eric Mangold
-  Eyal Lotem
-  Google Inc.
-  Hybrid Logic Ltd.
-  Hynek Schlawack
-  Itamar Turner-Trauring
-  James Knight
-  Jason A. Mobarak
-  Jean-Paul Calderone
-  Jessica McKellar
-  Jonathan D. Simms
-  Jonathan Jacobs
-  Jonathan Lange
-  Julian Berman
-  Jürgen Hermann
-  Kevin Horn
-  Kevin Turner
-  Laurens Van Houtven
-  Mary Gardiner
-  Massachusetts Institute of Technology
-  Matthew Lefkowitz
-  Moshe Zadka
-  Paul Swartz
-  Pavel Pergamenshchik
-  Rackspace, US Inc.
-  Ralph Meijer
-  Richard Wall
-  Sean Riley
-  Software Freedom Conservancy
-  Tavendo GmbH
-  Thijs Triemstra
-  Thomas Herve
-  Timothy Allen
-  Tom Prince
-  Travis B. Hartwell
-  and others that have contributed code to the public domain.
-
-
-========================================================================
-BSD 3-Clause License
-========================================================================
-
-This distribution depends on the following components, which are available under a BSD 3-clause License (https://opensource.org/licenses/BSD-3-Clause).
-Flask 0.11.1 (flask - https://github.com/pallets/flask/)
-  License included at licenses/LICENSE-flask.txt, or https://github.com/pallets/flask/blob/master/LICENSE
-  Copyright (c) 2010 by the Pallets team.
-
-Lxml 3.6.4 and 3.7.3 (lxml - https://github.com/lxml/lxml/)
-  License included at licenses/LICENSE-lxml.txt, or https://github.com/lxml/lxml/blob/master/LICENSES.txt
-  Copyright (c) 2004 Infrae. All rights reserved.
-
-Dateutil 2.5.3 and 2.6.0 (python-dateutil - https://github.com/dateutil/dateutil/)
-  License included at licenses/LICENSE-dateutil.txt, or https://github.com/dateutil/dateutil/blob/master/LICENSE
-  Copyright (c) 2003-2011 - Gustavo Niemeyer <gustavo@niemeyer.net>
-  Copyright (c) 2012-2014 - Tomi Pieviläinen <tomi.pievilainen@iki.fi>
-  Copyright (c) 2014-2016 - Yaron de Leeuw <me@jarondl.net>
-  Copyright (c) 2015-     - Paul Ganssle <paul@ganssle.io>
-  Copyright (c) 2015-     - dateutil contributors (see AUTHORS file)
-
-Scrapy 1.1.2 and 1.3.3 (scrapy - https://github.com/scrapy/scrapy/)
-  License included at licenses/LICENSE-scrapy.txt, or https://github.com/scrapy/scrapy/blob/master/LICENSE
-  Copyright (c) Scrapy developers. All rights reserved.
-
-
-========================================================================
-Apache License 2.0
-========================================================================
-
-This distribution depends on the following components, which are available under an Apache License 2.0 (https://opensource.org/licenses/Apache-2.0).
-Openwhisk Runtime Docker 1.0.0 (openwhisk-runtime-docker - https://github.com/apache/incubator-openwhisk-runtime-docker/)
-  License included at licenses/LICENSE-openwhiskruntimedocker.txt, or https://github.com/apache/incubator-openwhisk-runtime-docker/blob/master/LICENSE.txt
-  Copyright (c) 2016-present The Apache Software Foundation
-
-Kafka-python 1.3.1 and 1.3.4 (kafka-python - https://github.com/dpkp/kafka-python/)
-  License included at licenses/LICENSE-kafkapython.txt, or https://github.com/dpkp/kafka-python/blob/master/LICENSE
-  Copyright 2015 David Arthur
-
-Requests 2.11.1 and 2.13.0 (requests - https://github.com/requests/requests/)
-  License included at licenses/LICENSE-requests.txt, or https://github.com/requests/requests/blob/master/LICENSE
-  Copyright 2017 Kenneth Reitz
