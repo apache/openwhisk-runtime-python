@@ -24,9 +24,11 @@ SCRIPTDIR=$(cd $(dirname "$0") && pwd)
 ROOTDIR="$SCRIPTDIR/../.."
 HOMEDIR="$SCRIPTDIR/../../../"
 
-# OpenWhisk stuff
+# clone OpenWhisk utilities repo. in order to run scanCode
 cd $HOMEDIR
+git clone https://github.com/apache/incubator-openwhisk-utilities.git
+
+# clone main openwhisk repo. for testing purposes
 git clone --depth=1 https://github.com/apache/incubator-openwhisk.git openwhisk
 cd openwhisk
 ./tools/travis/setup.sh
-
