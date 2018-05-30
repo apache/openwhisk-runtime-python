@@ -48,6 +48,4 @@ TERM=dumb ./gradlew install
 
 # Build runtime
 cd $ROOTDIR
-TERM=dumb ./gradlew \
-:core:python2Action:distDocker :core:pythonAction:distDocker \
--PdockerImagePrefix=${IMAGE_PREFIX}
+TERM=dumb ./gradlew distDocker -PdockerImagePrefix=${IMAGE_PREFIX}
