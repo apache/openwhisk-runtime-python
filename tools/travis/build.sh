@@ -44,14 +44,8 @@ docker tag openwhisk/invoker ${IMAGE_PREFIX}/invoker
 docker pull openwhisk/nodejs6action
 docker tag openwhisk/nodejs6action ${IMAGE_PREFIX}/nodejs6action
 
-TERM=dumb ./gradlew \
-:common:scala:install \
-:core:controller:install \
-:core:invoker:install \
-:tests:install
+TERM=dumb ./gradlew install
 
 # Build runtime
 cd $ROOTDIR
-TERM=dumb ./gradlew \
-:core:python2Action:distDocker :core:pythonAction:distDocker \
--PdockerImagePrefix=${IMAGE_PREFIX}
+TERM=dumb ./gradlew distDocker -PdockerImagePrefix=${IMAGE_PREFIX}
