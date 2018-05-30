@@ -44,11 +44,7 @@ docker tag openwhisk/invoker ${IMAGE_PREFIX}/invoker
 docker pull openwhisk/nodejs6action
 docker tag openwhisk/nodejs6action ${IMAGE_PREFIX}/nodejs6action
 
-TERM=dumb ./gradlew \
-:common:scala:install \
-:core:controller:install \
-:core:invoker:install \
-:tests:install
+TERM=dumb ./gradlew install
 
 # Build runtime
 cd $ROOTDIR
