@@ -19,11 +19,12 @@ package runtime.actionContainers
 
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
-import ActionContainer.withContainer
-import ResourceHelpers.{readAsBase64, ZipBuilder}
 import spray.json.DefaultJsonProtocol._
 import spray.json._
 import common.WskActorSystem
+import actionContainers.{ActionContainer, BasicActionRunnerTests}
+import actionContainers.ActionContainer.withContainer
+import actionContainers.ResourceHelpers.{readAsBase64, ZipBuilder}
 import common.TestUtils
 import java.nio.file.Paths
 
