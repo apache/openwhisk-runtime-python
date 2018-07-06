@@ -103,6 +103,11 @@ class PythonActionContainerTests extends BasicActionRunnerTests with WskActorSys
          """.stripMargin.trim)
   })
 
+  testInitCannotBeCalledMoreThanOnce("""
+        |def main(args):
+        |    return args
+      """.stripMargin)
+
   it should "support actions using non-default entry points" in {
     withActionContainer() { c =>
       val code = """

@@ -19,10 +19,12 @@
 
 # Python 2 OpenWhisk Runtime Container
 
-
+## 1.0.1
+Changes:
+  - Update base image to openwhisk/dockerskeleton:1.3.1
 
 ## 1.0.0
-Change: Initial release
+Initial release.
 
 Python version = 2.7.12
 
