@@ -25,7 +25,7 @@
 ### Give it a try today
 To use as a docker action using python 3
 ```
-wsk action update myAction myAction.py --docker openwhisk/python3action:1.0.0
+wsk action update myAction myAction.py --docker openwhisk/python3action:1.0.1
 ```
 Replace `python3action` with `python2action` to use python 2.
 
