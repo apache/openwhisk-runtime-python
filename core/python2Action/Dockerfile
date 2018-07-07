@@ -53,5 +53,6 @@ ENV FLASK_PROXY_PORT 8080
 ADD https://raw.githubusercontent.com/apache/incubator-openwhisk-runtime-docker/dockerskeleton%401.3.2/core/actionProxy/actionproxy.py /actionProxy/actionproxy.py
 
 ADD pythonrunner.py /pythonAction/
+RUN rm -rf /action
 
 CMD ["/bin/bash", "-c", "cd pythonAction && python -u pythonrunner.py"]

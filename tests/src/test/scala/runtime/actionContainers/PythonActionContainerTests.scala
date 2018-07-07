@@ -42,86 +42,77 @@ class PythonActionContainerTests extends BasicActionRunnerTests with WskActorSys
 
   behavior of imageName
 
-  testNotReturningJson(
-    """
+  override val testNoSourceOrExec = TestConfig("")
+  override val testNoSource = TestConfig("", hasCodeStub = true)
+
+  override val testNotReturningJson =
+    TestConfig("""
+                 |def main(args):
+                 |    return "not a json object"
+               """.stripMargin)
+
+  override val testInitCannotBeCalledMoreThanOnce =
+    TestConfig("""
+                 |def main(args):
+                 |    return args
+               """.stripMargin)
+
+  override val testEntryPointOtherThanMain =
+    TestConfig(
+      """
+        |def niam(args):
+        |  return args
+      """.stripMargin,
+      main = "niam")
+
+  override val testEcho =
+    TestConfig("""
+      |from __future__ import print_function
+      |import sys
+      |def main(args):
+      |    print('hello stdout')
+      |    print('hello stderr', file=sys.stderr)
+      |    return args
+    """.stripMargin)
+
+  override val testUnicode =
+    TestConfig(if (pythonStringAsUnicode) {
+      """
         |def main(args):
-        |    return "not a json object"
-        """.stripMargin,
-    checkResultInLogs = false)
-
-  testEcho(Seq {
-    (
-      "python",
-      """
-         |from __future__ import print_function
-         |import sys
-         |def main(args):
-         |    print('hello stdout')
-         |    print('hello stderr', file=sys.stderr)
-         |    return args
-         """.stripMargin)
-  })
-
-  testUnicode(Seq {
-    if (pythonStringAsUnicode) {
-      (
-        "python",
-        """
-             |def main(args):
-             |    sep = args['delimiter']
-             |    str = sep + " ☃ " + sep
-             |    print(str)
-             |    return {"winter" : str }
-             """.stripMargin.trim)
+        |    sep = args['delimiter']
+        |    str = sep + " ☃ " + sep
+        |    print(str)
+        |    return {"winter" : str }
+      """.stripMargin.trim
     } else {
-      (
-        "python",
-        """
-             |def main(args):
-             |    sep = args['delimiter']
-             |    str = sep + " ☃ ".decode('utf-8') + sep
-             |    print(str.encode('utf-8'))
-             |    return {"winter" : str }
-             """.stripMargin.trim)
-    }
-  })
-
-  testEnv(Seq {
-    (
-      "python",
       """
-         |import os
-         |def main(dict):
-         |    return {
-         |       "api_host": os.environ['__OW_API_HOST'],
-         |       "api_key": os.environ['__OW_API_KEY'],
-         |       "namespace": os.environ['__OW_NAMESPACE'],
-         |       "action_name": os.environ['__OW_ACTION_NAME'],
-         |       "activation_id": os.environ['__OW_ACTIVATION_ID'],
-         |       "deadline": os.environ['__OW_DEADLINE']
-         |    }
-         """.stripMargin.trim)
-  })
+        |def main(args):
+        |    sep = args['delimiter']
+        |    str = sep + " ☃ ".decode('utf-8') + sep
+        |    print(str.encode('utf-8'))
+        |    return {"winter" : str }
+      """.stripMargin.trim
+    })
 
-  testInitCannotBeCalledMoreThanOnce("""
+  override val testEnv =
+    TestConfig("""
+      |import os
+      |def main(dict):
+      |    return {
+      |       "api_host": os.environ['__OW_API_HOST'],
+      |       "api_key": os.environ['__OW_API_KEY'],
+      |       "namespace": os.environ['__OW_NAMESPACE'],
+      |       "action_name": os.environ['__OW_ACTION_NAME'],
+      |       "activation_id": os.environ['__OW_ACTIVATION_ID'],
+      |       "deadline": os.environ['__OW_DEADLINE']
+      |    }
+    """.stripMargin.trim)
+
+  override val testLargeInput =
+    TestConfig("""
         |def main(args):
         |    return args
       """.stripMargin)
-
-  it should "support actions using non-default entry points" in {
-    withActionContainer() { c =>
-      val code = """
-                |def niam(dict):
-                |  return { "result": "it works" }
-                |""".stripMargin
-
-      val (initCode, initRes) = c.init(initPayload(code, main = "niam"))
-      initCode should be(200)
-
-      val (_, runRes) = c.run(runPayload(JsObject()))
-      runRes.get.fields.get("result") shouldBe Some(JsString("it works"))
-    }
-  }
 
   it should "support zip-encoded action using non-default entry points" in {
     val srcs = Seq(
