@@ -16,7 +16,7 @@
 #
 
 # Dockerfile for python actions, overrides and extends ActionRunner from actionProxy
-FROM openwhisk/dockerskeleton:1.3.1
+FROM openwhisk/dockerskeleton:1.3.2
 
 RUN apk add --no-cache \
         bzip2-dev \
@@ -45,5 +45,6 @@ ENV FLASK_PROXY_PORT 8080
 
 RUN mkdir -p /pythonAction
 ADD pythonrunner.py /pythonAction/
+RUN rm -rf /action
 
 CMD ["/bin/bash", "-c", "cd pythonAction && python -u pythonrunner.py"]
