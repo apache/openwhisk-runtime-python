@@ -16,7 +16,7 @@
 #
 
 # Dockerfile for python actions, overrides and extends ActionRunner from actionProxy
-FROM openwhisk/dockerskeleton:1.3.2
+FROM openwhisk/dockerskeleton:1.3.3
 
 RUN apk add --no-cache \
         bzip2-dev \
