@@ -21,9 +21,7 @@ import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 import common.WskActorSystem
 import spray.json._
-
-//import actionContainers.{ActionContainer}
-//import actionContainers.ActionContainer.withContainer
+import DefaultJsonProtocol._
 
 @RunWith(classOf[JUnitRunner])
 class Python3AiActionContainerTests extends PythonActionContainerTests with WskActorSystem {
@@ -32,22 +30,23 @@ class Python3AiActionContainerTests extends PythonActionContainerTests with WskA
 
   it should "run tensorflow" in {
     val (out, err) = withActionContainer() { c =>
-      val code = """
-                |import tensorflow as tf
-                |def main(args):
-                |    # Initialize two constants
-                |   x1 = tf.constant([1,2,3,4])
-                |   x2 = tf.constant([5,6,7,8])
-                |
-                |   # Multiply
-                |   result = tf.multiply(x1, x2)
-                |
-                |   # Initialize Session and run `result`
-                |   with tf.Session() as sess:
-                |       output = sess.run(result)
-                |       print(output)
-                |       return { "response": output.tolist() }
-            """.stripMargin
+      val code =
+        """
+          |import tensorflow as tf
+          |def main(args):
+          |   # Initialize two constants
+          |   x1 = tf.constant([1,2,3,4])
+          |   x2 = tf.constant([5,6,7,8])
+          |
+          |   # Multiply
+          |   result = tf.multiply(x1, x2)
+          |
+          |   # Initialize Session and run `result`
+          |   with tf.Session() as sess:
+          |       output = sess.run(result)
+          |       print(output)
+          |       return { "response": output.tolist() }
+        """.stripMargin
 
       val (initCode, res) = c.init(initPayload(code))
       initCode should be(200)
@@ -56,7 +55,7 @@ class Python3AiActionContainerTests extends PythonActionContainerTests with WskA
       runCode should be(200)
 
       runRes shouldBe defined
-      runRes should be(Some(JsObject("response" -> JsArray(Vector(JsNumber(5),JsNumber(12),JsNumber(21),JsNumber(32))))))
+      runRes should be(Some(JsObject("response" -> List(5, 12, 21, 32).toJson)))
     }
   }
 }
