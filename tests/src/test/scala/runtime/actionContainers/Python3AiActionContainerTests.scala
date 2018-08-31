@@ -15,24 +15,20 @@
  * limitations under the License.
  */
 
-include 'tests'
+package runtime.actionContainers
 
-include 'core:pythonAction'
-include 'core:python2Action'
-include 'core:python3AiAction'
+import org.junit.runner.RunWith
+import org.scalatest.junit.JUnitRunner
+import common.WskActorSystem
 
-rootProject.name = 'runtime-python'
+//import actionContainers.{ActionContainer}
+//import actionContainers.ActionContainer.withContainer
 
-gradle.ext.openwhisk = [
-        version: '1.0.0-SNAPSHOT'
-]
+@RunWith(classOf[JUnitRunner])
+class Python3AiActionContainerTests extends PythonActionContainerTests with WskActorSystem {
 
-gradle.ext.scala = [
-    version: '2.11.11',
-    compileFlags: ['-feature', '-unchecked', '-deprecation', '-Xfatal-warnings', '-Ywarn-unused-import']
-]
+  override lazy val imageName = "python3aiaction"
 
-gradle.ext.scalafmt = [
-    version: '1.5.0',
-    config: new File(rootProject.projectDir, '.scalafmt.conf')
-]
+  /** indicates if strings in python are unicode by default */
+  override lazy val pythonStringAsUnicode = true
+}

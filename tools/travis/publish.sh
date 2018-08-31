@@ -34,6 +34,8 @@ if [ ${RUNTIME_VERSION} == "2" ]; then
   RUNTIME="python2Action"
 elif [ ${RUNTIME_VERSION} == "3" ]; then
   RUNTIME="pythonAction"
+elif [ ${RUNTIME_VERSION} == "3-ai" ]; then
+  RUNTIME="python3AiAction"
 fi
 
 if [[ ! -z ${DOCKER_USER} ]] && [[ ! -z ${DOCKER_PASSWORD} ]]; then
