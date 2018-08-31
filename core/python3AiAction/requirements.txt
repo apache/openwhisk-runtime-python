@@ -20,3 +20,5 @@ keras == 2.2.2
 opencv-contrib-python == 3.4.2.17
 Cython == 0.28.5
 tools == 0.1.9
+
+nltk == 3.3

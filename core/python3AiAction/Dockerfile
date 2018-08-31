@@ -35,9 +35,6 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
 
 RUN apt-cache search linux-headers-generic
 
-COPY requirements.txt requirements.txt
-RUN pip3 install --upgrade pip six && pip3 install --no-cache-dir -r requirements.txt
-
 # PyTorch
 RUN pip3 install http://download.pytorch.org/whl/cpu/torch-0.4.1-cp35-cp35m-linux_x86_64.whl \
     && pip3 install torchvision==0.2.1
@@ -47,6 +44,9 @@ RUN pip3 install http://download.pytorch.org/whl/cpu/torch-0.4.1-cp35-cp35m-linu
 #     build-essential cmake git pkg-config \
 #     libprotobuf-dev libleveldb-dev libsnappy-dev libopencv-dev libhdf5-serial-dev protobuf-compiler \
 #     && apt-get install -y --no-install-recommends libboost-all-dev
+
+COPY requirements.txt requirements.txt
+RUN pip3 install --upgrade pip six && pip3 install --no-cache-dir -r requirements.txt
 
 RUN mkdir -p /actionProxy
 ADD https://raw.githubusercontent.com/apache/incubator-openwhisk-runtime-docker/dockerskeleton%401.3.3/core/actionProxy/actionproxy.py /actionProxy/actionproxy.py
