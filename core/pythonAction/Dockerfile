@@ -30,21 +30,22 @@ RUN apk add --no-cache \
 
 # Install common modules for python
 RUN pip install \
-    beautifulsoup4==4.5.3 \
-    httplib2==0.10.3 \
-    kafka_python==1.3.4 \
-    lxml==3.7.3 \
-    python-dateutil==2.6.0 \
-    requests==2.13.0 \
-    scrapy==1.3.3 \
-    simplejson==3.10.0 \
-    virtualenv==15.1.0 \
-    twisted==17.1.0
+    beautifulsoup4==4.6.3 \
+    httplib2==0.11.3 \
+    kafka_python==1.4.3 \
+    lxml==4.2.5 \
+    python-dateutil==2.7.3 \
+    requests==2.19.1 \
+    scrapy==1.5.1 \
+    simplejson==3.16.0 \
+    virtualenv==16.0.0 \
+    twisted==18.7.0
 
 ENV FLASK_PROXY_PORT 8080
 
 RUN mkdir -p /pythonAction
 ADD pythonrunner.py /pythonAction/
 RUN rm -rf /action
+RUN mkdir /action
 
 CMD ["/bin/bash", "-c", "cd pythonAction && python -u pythonrunner.py"]
