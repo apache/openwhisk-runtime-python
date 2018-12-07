@@ -16,7 +16,7 @@
 #
 
 # Dockerfile for python AI actions, overrides and extends ActionRunner from actionProxy
-FROM tensorflow/tensorflow:1.10.1-py3
+FROM tensorflow/tensorflow:1.11.0-py3
 
 ENV FLASK_PROXY_PORT 8080
 ENV PYTHONIOENCODING "UTF-8"
@@ -44,6 +44,10 @@ RUN pip3 install http://download.pytorch.org/whl/cpu/torch-0.4.1-cp35-cp35m-linu
 #     build-essential cmake git pkg-config \
 #     libprotobuf-dev libleveldb-dev libsnappy-dev libopencv-dev libhdf5-serial-dev protobuf-compiler \
 #     && apt-get install -y --no-install-recommends libboost-all-dev
+
+RUN curl -L https://downloads.rclone.org/rclone-current-linux-amd64.deb -o rclone.deb \
+    && dpkg -i rclone.deb \
+    && rm rclone.deb
 
 COPY requirements.txt requirements.txt
 RUN pip3 install --upgrade pip six && pip3 install --no-cache-dir -r requirements.txt
