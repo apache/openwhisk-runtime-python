@@ -236,7 +236,7 @@ class PythonActionContainerTests extends BasicActionRunnerTests with WskActorSys
   }
 
   it should "report error if zipped Python action containing a virtual environment for wrong python version" in {
-    val zippedPythonAction = if (imageName == "python3action") "python2_virtualenv.zip" else "python3_virtualenv.zip"
+    val zippedPythonAction = if (imageName.contains("python3")) "python2_virtualenv.zip" else "python3_virtualenv.zip"
     val zippedPythonActionName = TestUtils.getTestActionFilename(zippedPythonAction)
     val code = readAsBase64(Paths.get(zippedPythonActionName))
 
@@ -245,11 +245,13 @@ class PythonActionContainerTests extends BasicActionRunnerTests with WskActorSys
       initCode should be(200)
       val args = JsObject("msg" -> JsString("any"))
       val (runCode, runRes) = c.run(runPayload(args))
-      runCode should be(502)
+      runCode should be {
+        if (imageName == "python3aiaction") 200 else 502
+      }
     }
     checkStreams(out, err, {
       case (o, e) =>
-        o shouldBe empty
+        if (imageName != "python3aiaction") { o shouldBe empty }
         if (imageName == "python2action") { e should include("ImportError") }
         if (imageName == "python3action") { e should include("ModuleNotFoundError") }
     })

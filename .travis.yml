@@ -21,7 +21,7 @@ deploy:
       all_branches: true
       repo: apache/incubator-openwhisk-runtime-python
   - provider: script
-    script: "./tools/travis/publish.sh openwhisk 2 latest && ./tools/travis/publish.sh openwhisk 3 latest"
+    script: "./tools/travis/publish.sh openwhisk 2 latest && ./tools/travis/publish.sh openwhisk 3 latest && ./tools/travis/publish.sh openwhisk 3-ai latest"
     on:
       branch: master
       repo: apache/incubator-openwhisk-runtime-python

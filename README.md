@@ -38,6 +38,9 @@ wsk action update myAction myAction.py --kind python:3
 Replace `python:3` with `python:2` to use python 2.
 
 
+### Python 3 AI Action
+This action enables developers to create AI Services with OpenWhisk. It comes with preinstalled libraries useful for running machine learning and deep learning inferences. See more about [python3aiaction](./core/python3AiAction).
+
 ### Local development
 ```
 ./gradlew core:pythonAction:distDocker
