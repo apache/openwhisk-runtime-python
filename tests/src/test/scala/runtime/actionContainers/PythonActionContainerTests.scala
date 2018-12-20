@@ -246,7 +246,7 @@ class PythonActionContainerTests extends BasicActionRunnerTests with WskActorSys
       val args = JsObject("msg" -> JsString("any"))
       val (runCode, runRes) = c.run(runPayload(args))
       runCode should be {
-          if (imageName == "python3aiaction") 200 else 502
+        if (imageName == "python3aiaction") 200 else 502
       }
     }
     checkStreams(out, err, {
