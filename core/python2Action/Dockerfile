@@ -16,7 +16,7 @@
 #
 
 # Dockerfile for Python 2 actions, similar to the Python 3-based core/pythonAction
-FROM python:2.7.12-alpine
+FROM python:2.7-alpine
 
 # Upgrade and install basic Python dependencies
 RUN apk add --no-cache \
@@ -34,25 +34,25 @@ RUN apk add --no-cache \
 # Install common modules for python
 RUN pip install --no-cache-dir --upgrade pip setuptools six \
  && pip install --no-cache-dir \
-        gevent==1.1.2 \
-        flask==0.11.1 \
-        beautifulsoup4==4.5.1 \
-        httplib2==0.9.2 \
-        kafka_python==1.3.1 \
-        lxml==3.6.4 \
-        python-dateutil==2.5.3 \
-        requests==2.11.1 \
-        scrapy==1.1.2 \
-        simplejson==3.8.2 \
-        virtualenv==15.1.0 \
-        twisted==16.4.0
+        gevent==1.3.6 \
+        flask==1.0.2 \
+        beautifulsoup4==4.6.3 \
+        httplib2==0.11.3 \
+        kafka_python==1.4.3 \
+        lxml==4.2.5 \
+        python-dateutil==2.7.3 \
+        requests==2.19.1 \
+        scrapy==1.5.1 \
+        simplejson==3.16.0 \
+        virtualenv==16.0.0 \
+        twisted==18.7.0
 
 ENV FLASK_PROXY_PORT 8080
 
 # Add the action proxy
-ADD https://raw.githubusercontent.com/apache/incubator-openwhisk-runtime-docker/dockerskeleton%401.3.3/core/actionProxy/actionproxy.py /actionProxy/actionproxy.py
+ADD https://raw.githubusercontent.com/apache/incubator-openwhisk-runtime-docker/master/core/actionProxy/actionproxy.py /actionProxy/actionproxy.py
 
 ADD pythonrunner.py /pythonAction/
-RUN rm -rf /action
+RUN mkdir -p /action
 
 CMD ["/bin/bash", "-c", "cd pythonAction && python -u pythonrunner.py"]
