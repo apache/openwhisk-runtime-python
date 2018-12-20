@@ -24,7 +24,7 @@ This image contains libraries and frameworks useful for running AI Services.
 Bellow are the versions for the included libraries:
 
 | Image Version | Package | Notes |
-| ---------- | -------- | ------ |
+| ------------- | ------- | ----- |
 | 1.1.0      | Tensorflow 1.11.0, PyTorch 0.4.1 | Based on Ubuntu 16.04.5, Python 3.5.2.
 
 ### Opening Notebooks
@@ -34,6 +34,10 @@ This image has Jupyter Notebook installed. You may find useful to run quick Note
 ```bash
 $ docker run -it -p 8888:8888 --rm --entrypoint jupyter-notebook openwhisk/python3aiaction  --notebook-dir=/notebooks --ip 0.0.0.0 --no-browser --allow-root
 ```
+
+#### AI Action Sample
+
+To view an example with this AI Action check the [samples/smart-body-crop notebook](./samples/smart-body-crop/crop.ipynb) and follow the instructions.
 
 ### 1.1.0 Details
 #### Available python packages

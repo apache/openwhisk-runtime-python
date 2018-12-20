@@ -245,8 +245,9 @@ class PythonActionContainerTests extends BasicActionRunnerTests with WskActorSys
       initCode should be(200)
       val args = JsObject("msg" -> JsString("any"))
       val (runCode, runRes) = c.run(runPayload(args))
-      if (imageName == "python3aiaction") { runCode should be(200) } //review once the ai image has python>=3.6
-      else { runCode should be(502) }
+      runCode should be {
+          if (imageName == "python3aiaction") 200 else 502
+      }
     }
     checkStreams(out, err, {
       case (o, e) =>
