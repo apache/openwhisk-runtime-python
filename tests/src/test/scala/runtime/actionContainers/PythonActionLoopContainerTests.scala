@@ -15,26 +15,22 @@
  * limitations under the License.
  */
 
-include 'tests'
+package runtime.actionContainers
 
-include 'core:pythonAction'
-include 'core:python2Action'
-include 'core:python3AiAction'
-include 'core:pythonActionLoop'
+import common.WskActorSystem
+import org.junit.runner.RunWith
+import org.scalatest.junit.JUnitRunner
 
+@RunWith(classOf[JUnitRunner])
+class PythonActionLoopContainerTests extends PythonActionContainerTests with WskActorSystem {
 
-rootProject.name = 'runtime-python'
+  override lazy val imageName = "actionloop-python-v3.7"
 
-gradle.ext.openwhisk = [
-        version: '1.0.0-SNAPSHOT'
-]
+  override val testNoSource = TestConfig("", hasCodeStub = false)
 
-gradle.ext.scala = [
-    version: '2.12.7',
-    compileFlags: ['-feature', '-unchecked', '-deprecation', '-Xfatal-warnings', '-Ywarn-unused-import']
-]
+  /** indicates if strings in python are unicode by default (i.e., python3 -> true, python2.7 -> false) */
+  override lazy val pythonStringAsUnicode = true
 
-gradle.ext.scalafmt = [
-    version: '1.5.0',
-    config: new File(rootProject.projectDir, '.scalafmt.conf')
-]
+  /** actionloop based image does not log init errors - return the error in the body */
+  override lazy val initErrorsAreLogged = false
+}
