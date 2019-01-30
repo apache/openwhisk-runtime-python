@@ -19,7 +19,7 @@ from sys import stdin
 from sys import stdout
 from sys import stderr
 from os import fdopen
-import sys, os, json, traceback
+import sys, os, json, traceback, warnings
 
 try:
   # if the directory 'virtualenv' is extracted out of a zip file
@@ -39,7 +39,9 @@ except Exception:
   sys.exit(1)
 
 # now import the action as process input/output
+warnings.filterwarnings("ignore")
 from main__ import main as main
+warnings.resetwarnings()
 
 # if there are some arguments exit immediately
 if len(sys.argv) >1:
