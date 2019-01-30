@@ -42,3 +42,7 @@ dependencies {
 tasks.withType(ScalaCompile) {
     scalaCompileOptions.additionalParameters = gradle.scala.compileFlags
 }
+
+task testPython3(type: Test) {
+    exclude 'runtime/actionContainers/Python2**'
+}
