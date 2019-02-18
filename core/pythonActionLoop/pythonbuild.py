@@ -65,7 +65,7 @@ def build(source_dir, target_file, launcher):
     if os.path.isfile(main):
         cmd += """
 cd %s
-exec python %s "$@"
+exec "$(which python)" %s "$@"
 """ % (source_dir, launcher)
     else:
         cmd += """
