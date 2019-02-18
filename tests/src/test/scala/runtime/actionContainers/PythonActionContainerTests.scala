@@ -438,4 +438,23 @@ class PythonActionContainerTests extends BasicActionRunnerTests with WskActorSys
           e should include("Traceback")
       })
   }
+
+
+  it should "have a valid sys.executable" in {
+    withActionContainer() { c =>
+      val code =
+        """
+          |import sys
+          |def main(args):
+          |    return { "sys": sys.executable }
+        """.stripMargin
+
+        val (initCode, res) = c.init(initPayload(code))
+        initCode should be(200)
+
+        val (runCode, runRes) = c.run(runPayload(JsObject()))
+        runCode should be(200)
+        runRes.get.fields.get("sys").get.toString() should include("python")
+    }
+  }
 }
