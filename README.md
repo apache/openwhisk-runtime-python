@@ -23,7 +23,7 @@
 
 
 ### Give it a try today
-To use as a docker action using python 3
+To use as a docker action using Python 3
 ```
 wsk action update myAction myAction.py --docker openwhisk/python3action:1.0.2
 ```
