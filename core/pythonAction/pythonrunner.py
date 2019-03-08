@@ -55,7 +55,7 @@ class PythonRunner(ActionRunner):
 
         try:
             filename = os.path.basename(self.source)
-            self.fn = compile(code, filename=filename, mode='exec')            
+            self.fn = compile(code, filename=filename, mode='exec')
             if 'main' in message:
                 self.mainFn = message['main']
 
