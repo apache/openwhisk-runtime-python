@@ -267,7 +267,7 @@ class PythonActionContainerTests extends BasicActionRunnerTests with WskActorSys
       val (out, err) = withActionContainer() { c =>
         val (initCode, initRes) = c.init(initPayload(code, main = "main"))
         if (initErrorsAreLogged) {
-          initCode should be(200)
+          initCode should be(502)
           val args = JsObject("msg" -> JsString("any"))
           val (runCode, runRes) = c.run(runPayload(args))
           runCode should be(502)
@@ -420,7 +420,7 @@ class PythonActionContainerTests extends BasicActionRunnerTests with WskActorSys
 
       if (initErrorsAreLogged) {
         val (initCode, res) = c.init(initPayload(code))
-        initCode should be(200)
+        initCode should be(502)
 
         val (runCode, runRes) = c.run(runPayload(JsObject()))
         runCode should be(502)
