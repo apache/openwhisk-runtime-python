@@ -55,8 +55,7 @@ class PythonRunner(ActionRunner):
 
         try:
             filename = os.path.basename(self.source)
-            self.fn = compile(code, filename=filename, mode='exec')
-            exec(self.fn, self.global_context)
+            self.fn = compile(code, filename=filename, mode='exec')            
             if 'main' in message:
                 self.mainFn = message['main']
 
@@ -72,6 +71,7 @@ class PythonRunner(ActionRunner):
                 else:
                     sys.stderr.write('Invalid virtualenv. Zip file does not include /virtualenv/bin/' + os.path.basename(activate_this_file) + '\n')
                     return False
+            exec(self.fn, self.global_context)
             return True
         except Exception:
             traceback.print_exc(file=sys.stderr, limit=0)
