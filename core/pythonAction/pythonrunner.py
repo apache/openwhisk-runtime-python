@@ -56,6 +56,7 @@ class PythonRunner(ActionRunner):
         try:
             filename = os.path.basename(self.source)
             self.fn = compile(code, filename=filename, mode='exec')
+            exec(self.fn, self.global_context)
             if 'main' in message:
                 self.mainFn = message['main']
 
@@ -84,7 +85,6 @@ class PythonRunner(ActionRunner):
         try:
             os.environ = env
             self.global_context['param'] = args
-            exec(self.fn, self.global_context)
             exec('fun = %s(param)' % self.mainFn, self.global_context)
             result = self.global_context['fun']
         except Exception:
