@@ -71,8 +71,8 @@ class PythonRunner(ActionRunner):
                 else:
                     sys.stderr.write('Invalid virtualenv. Zip file does not include /virtualenv/bin/' + os.path.basename(activate_this_file) + '\n')
                     return False
-            #exec global var define when action init    
-            exec(self.fn, self.global_context)    
+            #exec global var define when action init
+            exec(self.fn, self.global_context)
             return True
         except Exception:
             traceback.print_exc(file=sys.stderr, limit=0)
