@@ -267,10 +267,7 @@ class PythonActionContainerTests extends BasicActionRunnerTests with WskActorSys
       val (out, err) = withActionContainer() { c =>
         val (initCode, initRes) = c.init(initPayload(code, main = "main"))
         if (initErrorsAreLogged) {
-          initCode should be(200)
-          val args = JsObject("msg" -> JsString("any"))
-          val (runCode, runRes) = c.run(runPayload(args))
-          runCode should be(502)
+          initCode should be(502)
         } else {
           // it actually means it is actionloop
           // it checks the error at init time
@@ -420,10 +417,7 @@ class PythonActionContainerTests extends BasicActionRunnerTests with WskActorSys
 
       if (initErrorsAreLogged) {
         val (initCode, res) = c.init(initPayload(code))
-        initCode should be(200)
-
-        val (runCode, runRes) = c.run(runPayload(JsObject()))
-        runCode should be(502)
+        initCode should be(502)
       } else {
         // action loop detects those errors at init time
         val (initCode, initRes) = c.init(initPayload(code))
