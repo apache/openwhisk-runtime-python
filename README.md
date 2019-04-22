@@ -55,7 +55,7 @@ docker login
 Replace `core:pythonAction` with `core:python2Action` to build python 2 instead.
 
 Deploy OpenWhisk using ansible environment that contains the kind `python:3` and `python:2`
-Assuming you have OpenWhisk already deploy localy and `OPENWHISK_HOME` pointing to root directory of OpenWhisk core repository.
+Assuming you have OpenWhisk already deployed locally and `OPENWHISK_HOME` pointing to root directory of OpenWhisk core repository.
 
 Set `ROOTDIR` to the root directory of this repository.
 
@@ -76,12 +76,12 @@ ln -s ${ROOTDIR}/ansible/environments/local ${OPENWHISK_HOME}/ansible/environmen
 wskdev fresh -t local-python
 ```
 
-To use as docker action push to your own dockerhub account
+To use as a docker action push to your own dockerhub account
 ```
-docker tag whisk/python3action $user_prefix/python
+docker tag whisk/python3action $user_prefix/python3action
 docker push $user_prefix/python3action
 ```
-Then create the action using your the image from dockerhub
+Then create the action using your image from dockerhub
 ```
 wsk action update myAction myAction.py --docker $user_prefix/python3action
 ```
