@@ -50,7 +50,7 @@ RUN pip install --no-cache-dir --upgrade pip setuptools six \
 ENV FLASK_PROXY_PORT 8080
 
 # Add the action proxy
-ADD https://raw.githubusercontent.com/apache/incubator-openwhisk-runtime-docker/master/core/actionProxy/actionproxy.py /actionProxy/actionproxy.py
+ADD https://raw.githubusercontent.com/apache/openwhisk-runtime-docker/master/core/actionProxy/actionproxy.py /actionProxy/actionproxy.py
 
 ADD pythonrunner.py /pythonAction/
 RUN mkdir -p /action
