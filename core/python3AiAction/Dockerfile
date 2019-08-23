@@ -53,7 +53,7 @@ COPY requirements.txt requirements.txt
 RUN pip3 install --upgrade pip six && pip3 install --no-cache-dir -r requirements.txt
 
 RUN mkdir -p /actionProxy
-ADD https://raw.githubusercontent.com/apache/incubator-openwhisk-runtime-docker/dockerskeleton%401.3.3/core/actionProxy/actionproxy.py /actionProxy/actionproxy.py
+ADD https://raw.githubusercontent.com/apache/openwhisk-runtime-docker/dockerskeleton%401.3.3/core/actionProxy/actionproxy.py /actionProxy/actionproxy.py
 
 RUN mkdir -p /pythonAction
 COPY pythonrunner.py /pythonAction/pythonrunner.py
