@@ -12,7 +12,7 @@ requests == 2.19.1
 scrapy == 1.5.1
 simplejson == 3.16.0
 virtualenv == 16.0.0
-twisted == 18.7.0
+twisted == 19.7.0
 netifaces == 0.10.7
 # package to sync from a variety of cloud blob storage
 python-rclone == 0.0.2
