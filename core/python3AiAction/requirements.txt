@@ -24,4 +24,4 @@ Cython == 0.28.5
 tools == 0.1.9
 scikit-image == 0.14.1
 
-nltk == 3.3
+nltk == 3.4.5
