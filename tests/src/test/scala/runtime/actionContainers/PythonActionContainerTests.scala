@@ -106,6 +106,7 @@ class PythonActionContainerTests extends BasicActionRunnerTests with WskActorSys
         |       "api_key": os.environ['__OW_API_KEY'],
         |       "namespace": os.environ['__OW_NAMESPACE'],
         |       "action_name": os.environ['__OW_ACTION_NAME'],
+        |       "action_version": os.environ['__OW_ACTION_VERSION'],
         |       "activation_id": os.environ['__OW_ACTIVATION_ID'],
         |       "deadline": os.environ['__OW_DEADLINE']
         |    }
