@@ -32,9 +32,6 @@ class PythonActionContainerTests extends BasicActionRunnerTests with WskActorSys
 
   lazy val imageName = "python3action"
 
-  /** indicates if strings in python are unicode by default (i.e., python3 -> true, python2.7 -> false) */
-  lazy val pythonStringAsUnicode = true
-
   /** indicates if errors are logged or returned in the answer */
   lazy val initErrorsAreLogged = true
 
@@ -82,23 +79,13 @@ class PythonActionContainerTests extends BasicActionRunnerTests with WskActorSys
       """.stripMargin)
 
   override val testUnicode =
-    TestConfig(if (pythonStringAsUnicode) {
-      """
+    TestConfig("""
         |def main(args):
         |    sep = args['delimiter']
         |    str = sep + " ☃ " + sep
         |    print(str)
         |    return {"winter" : str }
-      """.stripMargin.trim
-    } else {
-      """
-        |def main(args):
-        |    sep = args['delimiter']
-        |    str = sep + " ☃ ".decode('utf-8') + sep
-        |    print(str.encode('utf-8'))
-        |    return {"winter" : str }
-      """.stripMargin.trim
-    })
+      """.stripMargin.trim)
 
   override val testEnv =
     TestConfig("""
