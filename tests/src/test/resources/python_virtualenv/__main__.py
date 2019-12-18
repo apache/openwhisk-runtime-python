@@ -19,14 +19,10 @@
  */
 """
 
-import netifaces
+from random_useragent.random_useragent import Randomize
 
-def main(dict):
-    networkif = netifaces.interfaces()
-    print ("Networkinterfaces: \n %s" %networkif )
-    networkinfo = netifaces.ifaddresses('eth0')[netifaces.AF_INET]
-    print ("Networkinfo eth0: \n %s" %networkinfo )
-    return {"Networkinfo: ": networkinfo}
+def main(args):
+    return {"agent": Randomize().random_agent('desktop','linux')}
 
-def naim(dict):
-    return main(dict)
+def naim(args):
+    return main(args)

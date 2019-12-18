@@ -15,4 +15,4 @@
 # limitations under the License.
 #
 
-netifaces==0.10.9
+random-useragent==1.0

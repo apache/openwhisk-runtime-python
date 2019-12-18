@@ -19,14 +19,8 @@
  */
 """
 
-import netifaces
-
-def main(dict):
-    networkif = netifaces.interfaces()
-    print ("Networkinterfaces: \n %s" %networkif )
-    networkinfo = netifaces.ifaddresses('eth0')[netifaces.AF_INET]
-    print ("Networkinfo eth0: \n %s" %networkinfo )
-    return {"Networkinfo: ": networkinfo}
+def main(args):
+    return args
 
 def naim(dict):
     return main(dict)
