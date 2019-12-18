@@ -136,7 +136,6 @@ class PythonActionContainerTests extends BasicActionRunnerTests with WskActorSys
         """.stripMargin)
 
     val code = ZipBuilder.mkBase64Zip(srcs)
-    println(code)
 
     val (out, err) = withActionContainer() { c =>
       val (initCode, initRes) = c.init(initPayload(code, main = "niam"))
