@@ -55,4 +55,4 @@ tasks.withType(Test) {
     dependsOn buildArtifacts
 }
 
-buildArtifacts.mustRunAfter(testClasses)
+testClasses.dependsOn(buildArtifacts)
