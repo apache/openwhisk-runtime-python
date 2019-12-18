@@ -24,7 +24,14 @@ if [ -f ".built" ]; then
 fi
 
 # see what version of python is running
-python --version
+py=$(python --version 2>&1 | awk -F' ' '{print $2}')
+if [[ $py == 3.7.* ]]; then
+  echo "python version is $py (ok)"
+else
+  echo "python version is $py (not ok)"
+  echo "cannot generated test artifacts and tests will fail"
+  exit -1
+fi
 
 (cd python_virtualenv && ./build.sh && zip ../python_virtualenv.zip -r .)
 (cd python_virtualenv_invalid_main && ./build.sh && zip ../python_virtualenv_invalid_main.zip -r .)
