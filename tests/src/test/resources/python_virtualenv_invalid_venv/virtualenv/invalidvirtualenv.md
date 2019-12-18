@@ -20,3 +20,4 @@
 This is an empty virtualenv directory.
 
 It is used to test the behavior, when the zip file of a python action contains a directory named 'virtualenv', but not containing a virtualenv.
+
