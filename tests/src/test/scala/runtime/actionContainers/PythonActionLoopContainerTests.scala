@@ -17,6 +17,8 @@
 
 package runtime.actionContainers
 
+import java.io.File
+
 import actionContainers.ResourceHelpers.readAsBase64
 import common.WskActorSystem
 import org.junit.runner.RunWith
@@ -32,6 +34,10 @@ class PythonActionLoopContainerTests extends PythonActionContainerTests with Wsk
 
   /** actionloop based image does not log init errors - return the error in the body */
   override lazy val initErrorsAreLogged = false
+
+  def testArtifact(name: String): File = {
+    new File(this.getClass.getClassLoader.getResource(name).toURI)
+  }
 
   it should "run zipped Python action containing a virtual environment" in {
     val zippedPythonAction = testArtifact("python_virtualenv.zip")

@@ -25,7 +25,6 @@ import common.WskActorSystem
 import actionContainers.{ActionContainer, BasicActionRunnerTests}
 import actionContainers.ActionContainer.withContainer
 import actionContainers.ResourceHelpers.ZipBuilder
-import java.io.File
 
 @RunWith(classOf[JUnitRunner])
 class PythonActionContainerTests extends BasicActionRunnerTests with WskActorSystem {
@@ -43,10 +42,6 @@ class PythonActionContainerTests extends BasicActionRunnerTests with WskActorSys
 
   override val testNoSourceOrExec = TestConfig("")
   override val testNoSource = TestConfig("", hasCodeStub = true)
-
-  def testArtifact(name: String): File = {
-    new File(classOf[PythonActionContainerTests].getClassLoader.getResource(name).toURI)
-  }
 
   override val testNotReturningJson =
     TestConfig("""
