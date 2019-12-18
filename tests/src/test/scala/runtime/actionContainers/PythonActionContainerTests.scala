@@ -24,7 +24,7 @@ import spray.json._
 import common.WskActorSystem
 import actionContainers.{ActionContainer, BasicActionRunnerTests}
 import actionContainers.ActionContainer.withContainer
-import actionContainers.ResourceHelpers.{readAsBase64, ZipBuilder}
+import actionContainers.ResourceHelpers.ZipBuilder
 import java.io.File
 
 @RunWith(classOf[JUnitRunner])
@@ -207,116 +207,6 @@ class PythonActionContainerTests extends BasicActionRunnerTests with WskActorSys
         case (o, e) =>
           o shouldBe empty
           e should include("Zip file does not include")
-      })
-  }
-
-  it should "run zipped Python action containing a virtual environment" in {
-    val zippedPythonAction = testArtifact("python_virtualenv.zip")
-    val code = readAsBase64(zippedPythonAction.toPath)
-
-    val (out, err) = withActionContainer() { c =>
-      val (initCode, initRes) = c.init(initPayload(code, main = "main"))
-      initCode should be(200)
-      val args = JsObject("msg" -> JsString("any"))
-      val (runCode, runRes) = c.run(runPayload(args))
-      runCode should be(200)
-      runRes.get.toString() should include("netmask")
-    }
-
-    checkStreams(out, err, {
-      case (o, e) =>
-        o should include("netmask")
-        e shouldBe empty
-    })
-  }
-
-  it should "run zipped Python action containing a virtual environment with non-standard entry point" in {
-    val zippedPythonAction = testArtifact("python_virtualenv.zip")
-    val code = readAsBase64(zippedPythonAction.toPath)
-
-    val (out, err) = withActionContainer() { c =>
-      val (initCode, initRes) = c.init(initPayload(code, main = "naim"))
-      initCode should be(200)
-      val args = JsObject("msg" -> JsString("any"))
-      val (runCode, runRes) = c.run(runPayload(args))
-      runCode should be(200)
-      runRes.get.toString() should include("netmask")
-    }
-    checkStreams(out, err, {
-      case (o, e) =>
-        o should include("netmask")
-        e shouldBe empty
-    })
-
-  }
-
-  it should "report error if zipped Python action containing a virtual environment for wrong python version" in {
-    val zippedPythonAction = testArtifact("python_virtualenv.zip")
-    val code = readAsBase64(zippedPythonAction.toPath)
-
-    // temporary guard to comment out this test for python3aiaction
-    // until it is fixed (it does not detect the wrong virtual env)
-    if (imageName != "python3aiaction") {
-      val (out, err) = withActionContainer() { c =>
-        val (initCode, initRes) = c.init(initPayload(code, main = "main"))
-        if (initErrorsAreLogged) {
-          initCode should be(502)
-        } else {
-          // it actually means it is actionloop
-          // it checks the error at init time
-          initCode should be(502)
-          initRes.get.fields.get("error").get.toString() should include("No module")
-        }
-      }
-      if (initErrorsAreLogged)
-        checkStreams(
-          out,
-          err, {
-            case (o, e) =>
-              o shouldBe empty
-              if (imageName == "python2action") {
-                e should include("ImportError")
-              }
-              if (imageName == "python3action") {
-                e should include("ModuleNotFoundError")
-              }
-          })
-    }
-  }
-
-  it should "report error if zipped Python action has wrong main module name" in {
-    val zippedPythonAction = testArtifact("python_virtualenv_invalid_main.zip")
-    val code = readAsBase64(zippedPythonAction.toPath)
-
-    val (out, err) = withActionContainer() { c =>
-      val (initCode, initRes) = c.init(initPayload(code, main = "main"))
-      initCode should be(502)
-      if (!initErrorsAreLogged)
-        initRes.get.fields.get("error").get.toString() should include("Zip file does not include mandatory files")
-    }
-    if (initErrorsAreLogged)
-      checkStreams(out, err, {
-        case (o, e) =>
-          o shouldBe empty
-          e should include("Zip file does not include __main__.py")
-      })
-  }
-
-  it should "report error if zipped Python action has invalid virtualenv directory" in {
-    val zippedPythonAction = testArtifact("python_virtualenv_invalid_venv.zip")
-    val code = readAsBase64(zippedPythonAction.toPath)
-
-    val (out, err) = withActionContainer() { c =>
-      val (initCode, initRes) = c.init(initPayload(code, main = "main"))
-      initCode should be(502)
-      if (!initErrorsAreLogged)
-        initRes.get.fields.get("error").get.toString() should include("Invalid virtualenv. Zip file does not include")
-    }
-    if (initErrorsAreLogged)
-      checkStreams(out, err, {
-        case (o, e) =>
-          o shouldBe empty
-          e should include("Zip file does not include /virtualenv/bin/")
       })
   }
 
