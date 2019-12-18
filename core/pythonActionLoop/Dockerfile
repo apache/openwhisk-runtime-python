@@ -14,14 +14,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-FROM golang:1.11 as builder
-ENV PROXY_SOURCE=https://github.com/apache/openwhisk-runtime-go/archive/golang1.11@1.13.0-incubating.tar.gz
-RUN curl -L "$PROXY_SOURCE" | tar xzf - \
-  && mkdir -p src/github.com/apache \
-  && mv openwhisk-runtime-go-golang1.11-1.13.0-incubating \
-     src/github.com/apache/incubator-openwhisk-runtime-go \
-  && cd src/github.com/apache/incubator-openwhisk-runtime-go/main \
-  && CGO_ENABLED=0 go build -o /bin/proxy
+FROM golang:1.12 as builder
+RUN env CGO_ENABLED=0 go get github.com/apache/openwhisk-runtime-go/main && mv /go/bin/main /bin/proxy
+#ENV PROXY_SOURCE=https://github.com/apache/openwhisk-runtime-go/archive/golang1.11@1.13.0-incubating.tar.gz
+#RUN curl -L "$PROXY_SOURCE" | tar xzf - \
+#  && mkdir -p src/github.com/apache \
+#  && mv openwhisk-runtime-go-golang1.11-1.13.0-incubating \
+#     src/github.com/apache/incubator-openwhisk-runtime-go \
+#  && cd src/github.com/apache/incubator-openwhisk-runtime-go/main \
+#  && CGO_ENABLED=0 go build -o /bin/proxy
 
 FROM python:3.7-stretch
 

@@ -17,9 +17,13 @@
 
 package runtime.actionContainers
 
+import java.io.File
+
+import actionContainers.ResourceHelpers.readAsBase64
 import common.WskActorSystem
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
+import spray.json._
 
 @RunWith(classOf[JUnitRunner])
 class PythonActionLoopContainerTests extends PythonActionContainerTests with WskActorSystem {
@@ -28,9 +32,78 @@ class PythonActionLoopContainerTests extends PythonActionContainerTests with Wsk
 
   override val testNoSource = TestConfig("", hasCodeStub = false)
 
-  /** indicates if strings in python are unicode by default (i.e., python3 -> true, python2.7 -> false) */
-  override lazy val pythonStringAsUnicode = true
-
   /** actionloop based image does not log init errors - return the error in the body */
   override lazy val initErrorsAreLogged = false
+
+  def testArtifact(name: String): File = {
+    new File(this.getClass.getClassLoader.getResource(name).toURI)
+  }
+
+  it should "run zipped Python action containing a virtual environment" in {
+    val zippedPythonAction = testArtifact("python_virtualenv.zip")
+    val code = readAsBase64(zippedPythonAction.toPath)
+
+    withActionContainer() { c =>
+      val (initCode, initRes) = c.init(initPayload(code))
+      initCode should be(200)
+
+      val (runCode, runRes) = c.run(runPayload(JsObject.empty))
+      runCode should be(200)
+      runRes.get.prettyPrint should include("\"agent\"")
+    }
+  }
+
+  it should "run zipped Python action containing a virtual environment with non-standard entry point" in {
+    val zippedPythonAction = testArtifact("python_virtualenv.zip")
+    val code = readAsBase64(zippedPythonAction.toPath)
+
+    withActionContainer() { c =>
+      val (initCode, initRes) = c.init(initPayload(code, main = "naim"))
+      initCode should be(200)
+
+      val (runCode, runRes) = c.run(runPayload(JsObject.empty))
+      runCode should be(200)
+      runRes.get.prettyPrint should include("\"agent\"")
+    }
+  }
+
+  it should "report error if zipped Python action has wrong main module name" in {
+    val zippedPythonAction = testArtifact("python_virtualenv_invalid_main.zip")
+    val code = readAsBase64(zippedPythonAction.toPath)
+
+    val (out, err) = withActionContainer() { c =>
+      val (initCode, initRes) = c.init(initPayload(code, main = "main"))
+      initCode should be(502)
+
+      if (!initErrorsAreLogged)
+        initRes.get.fields.get("error").get.toString should include("Zip file does not include mandatory files")
+    }
+
+    if (initErrorsAreLogged)
+      checkStreams(out, err, {
+        case (o, e) =>
+          o shouldBe empty
+          e should include("Zip file does not include __main__.py")
+      })
+  }
+
+  it should "report error if zipped Python action has invalid virtualenv directory" in {
+    val zippedPythonAction = testArtifact("python_virtualenv_invalid_venv.zip")
+    val code = readAsBase64(zippedPythonAction.toPath)
+
+    val (out, err) = withActionContainer() { c =>
+      val (initCode, initRes) = c.init(initPayload(code, main = "main"))
+      initCode should be(502)
+
+      if (!initErrorsAreLogged)
+        initRes.get.fields.get("error").get.toString should include("Invalid virtualenv. Zip file does not include")
+    }
+
+    if (initErrorsAreLogged)
+      checkStreams(out, err, {
+        case (o, e) =>
+          o shouldBe empty
+          e should include("Zip file does not include /virtualenv/bin/")
+      })
+  }
 }

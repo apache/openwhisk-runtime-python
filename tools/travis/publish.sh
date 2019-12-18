@@ -30,9 +30,7 @@ IMAGE_PREFIX=$1
 RUNTIME_VERSION=$2
 IMAGE_TAG=$3
 
-if [ ${RUNTIME_VERSION} == "2" ]; then
-  RUNTIME="python2Action"
-elif [ ${RUNTIME_VERSION} == "3" ]; then
+if [ ${RUNTIME_VERSION} == "3" ]; then
   RUNTIME="pythonAction"
 elif [ ${RUNTIME_VERSION} == "3-ai" ]; then
   RUNTIME="python3AiAction"

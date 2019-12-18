@@ -44,5 +44,15 @@ tasks.withType(ScalaCompile) {
 }
 
 task testPython3(type: Test) {
-    exclude 'runtime/actionContainers/Python2**'
 }
+
+task buildArtifacts(type:Exec) {
+    workingDir 'src/test/resources'
+    commandLine './build.sh'
+}
+
+tasks.withType(Test) {
+    dependsOn buildArtifacts
+}
+
+testClasses.dependsOn(buildArtifacts)

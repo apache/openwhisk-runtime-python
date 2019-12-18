@@ -1,4 +1,4 @@
-#!/bin/bash
+<!--
 #
 # Licensed to the Apache Software Foundation (ASF) under one or more
 # contributor license agreements.  See the NOTICE file distributed with
@@ -15,24 +15,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+-->
 
-set -e
+This is an empty virtualenv directory.
 
-# Build script for Travis-CI.
+It is used to test the behavior, when the zip file of a python action contains a directory named 'virtualenv', but not containing a virtualenv.
 
-SCRIPTDIR=$(cd $(dirname "$0") && pwd)
-ROOTDIR="$SCRIPTDIR/../.."
-HOMEDIR="$SCRIPTDIR/../../../"
-
-# check python and pip versions
-python --version
-pip --version
-
-# clone OpenWhisk utilities repo. in order to run scanCode
-cd $HOMEDIR
-git clone https://github.com/apache/openwhisk-utilities.git
-
-# clone main openwhisk repo. for testing purposes
-git clone --depth=1 https://github.com/apache/openwhisk.git openwhisk
-cd openwhisk
-./tools/travis/setup.sh

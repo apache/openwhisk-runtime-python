@@ -16,23 +16,7 @@
 # limitations under the License.
 #
 
-set -e
-
-# Build script for Travis-CI.
-
-SCRIPTDIR=$(cd $(dirname "$0") && pwd)
-ROOTDIR="$SCRIPTDIR/../.."
-HOMEDIR="$SCRIPTDIR/../../../"
-
-# check python and pip versions
-python --version
-pip --version
-
-# clone OpenWhisk utilities repo. in order to run scanCode
-cd $HOMEDIR
-git clone https://github.com/apache/openwhisk-utilities.git
-
-# clone main openwhisk repo. for testing purposes
-git clone --depth=1 https://github.com/apache/openwhisk.git openwhisk
-cd openwhisk
-./tools/travis/setup.sh
+virtualenv virtualenv
+source virtualenv/bin/activate
+pip install -r requirements.txt
+deactivate

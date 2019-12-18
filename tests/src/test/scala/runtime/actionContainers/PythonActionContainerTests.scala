@@ -24,17 +24,12 @@ import spray.json._
 import common.WskActorSystem
 import actionContainers.{ActionContainer, BasicActionRunnerTests}
 import actionContainers.ActionContainer.withContainer
-import actionContainers.ResourceHelpers.{readAsBase64, ZipBuilder}
-import common.TestUtils
-import java.nio.file.Paths
+import actionContainers.ResourceHelpers.ZipBuilder
 
 @RunWith(classOf[JUnitRunner])
 class PythonActionContainerTests extends BasicActionRunnerTests with WskActorSystem {
 
   lazy val imageName = "python3action"
-
-  /** indicates if strings in python are unicode by default (i.e., python3 -> true, python2.7 -> false) */
-  lazy val pythonStringAsUnicode = true
 
   /** indicates if errors are logged or returned in the answer */
   lazy val initErrorsAreLogged = true
@@ -79,23 +74,13 @@ class PythonActionContainerTests extends BasicActionRunnerTests with WskActorSys
       """.stripMargin)
 
   override val testUnicode =
-    TestConfig(if (pythonStringAsUnicode) {
-      """
+    TestConfig("""
         |def main(args):
         |    sep = args['delimiter']
         |    str = sep + " ☃ " + sep
         |    print(str)
         |    return {"winter" : str }
-      """.stripMargin.trim
-    } else {
-      """
-        |def main(args):
-        |    sep = args['delimiter']
-        |    str = sep + " ☃ ".decode('utf-8') + sep
-        |    print(str.encode('utf-8'))
-        |    return {"winter" : str }
-      """.stripMargin.trim
-    })
+      """.stripMargin.trim)
 
   override val testEnv =
     TestConfig("""
@@ -133,7 +118,6 @@ class PythonActionContainerTests extends BasicActionRunnerTests with WskActorSys
         """.stripMargin)
 
     val code = ZipBuilder.mkBase64Zip(srcs)
-    println(code)
 
     val (out, err) = withActionContainer() { c =>
       val (initCode, initRes) = c.init(initPayload(code, main = "niam"))
@@ -205,127 +189,6 @@ class PythonActionContainerTests extends BasicActionRunnerTests with WskActorSys
         case (o, e) =>
           o shouldBe empty
           e should include("Zip file does not include")
-      })
-  }
-
-  it should "run zipped Python action containing a virtual environment" in {
-    val zippedPythonAction =
-      if (imageName == "python2action") "python2_virtualenv.zip"
-      else if (imageName == "actionloop-python-v3.7") "python37_virtualenv.zip"
-      else "python3_virtualenv.zip"
-    val zippedPythonActionName = TestUtils.getTestActionFilename(zippedPythonAction)
-    val code = readAsBase64(Paths.get(zippedPythonActionName))
-
-    val (out, err) = withActionContainer() { c =>
-      val (initCode, initRes) = c.init(initPayload(code, main = "main"))
-      initCode should be(200)
-      val args = JsObject("msg" -> JsString("any"))
-      val (runCode, runRes) = c.run(runPayload(args))
-      runCode should be(200)
-      runRes.get.toString() should include("netmask")
-    }
-
-    checkStreams(out, err, {
-      case (o, e) =>
-        o should include("netmask")
-        e shouldBe empty
-    })
-  }
-
-  it should "run zipped Python action containing a virtual environment with non-standard entry point" in {
-    val zippedPythonAction =
-      if (imageName == "python2action") "python2_virtualenv.zip"
-      else if (imageName == "actionloop-python-v3.7") "python37_virtualenv.zip"
-      else "python3_virtualenv.zip"
-    val zippedPythonActionName = TestUtils.getTestActionFilename(zippedPythonAction)
-
-    val code = readAsBase64(Paths.get(zippedPythonActionName))
-    val (out, err) = withActionContainer() { c =>
-      val (initCode, initRes) = c.init(initPayload(code, main = "naim"))
-      initCode should be(200)
-      val args = JsObject("msg" -> JsString("any"))
-      val (runCode, runRes) = c.run(runPayload(args))
-      runCode should be(200)
-      runRes.get.toString() should include("netmask")
-    }
-    checkStreams(out, err, {
-      case (o, e) =>
-        o should include("netmask")
-        e shouldBe empty
-    })
-
-  }
-
-  it should "report error if zipped Python action containing a virtual environment for wrong python version" in {
-    val zippedPythonAction = if (imageName == "python2action") "python3_virtualenv.zip" else "python2_virtualenv.zip"
-    val zippedPythonActionName = TestUtils.getTestActionFilename(zippedPythonAction)
-
-    val code = readAsBase64(Paths.get(zippedPythonActionName))
-
-    // temporary guard to comment out this test for python3aiaction
-    // until it is fixed (it does not detect the wrong virtual env)
-    if (imageName != "python3aiaction") {
-      val (out, err) = withActionContainer() { c =>
-        val (initCode, initRes) = c.init(initPayload(code, main = "main"))
-        if (initErrorsAreLogged) {
-          initCode should be(502)
-        } else {
-          // it actually means it is actionloop
-          // it checks the error at init time
-          initCode should be(502)
-          initRes.get.fields.get("error").get.toString() should include("No module")
-        }
-      }
-      if (initErrorsAreLogged)
-        checkStreams(
-          out,
-          err, {
-            case (o, e) =>
-              o shouldBe empty
-              if (imageName == "python2action") {
-                e should include("ImportError")
-              }
-              if (imageName == "python3action") {
-                e should include("ModuleNotFoundError")
-              }
-          })
-    }
-  }
-
-  it should "report error if zipped Python action has wrong main module name" in {
-    val zippedPythonActionWrongName = TestUtils.getTestActionFilename("python_virtualenv_name.zip")
-
-    val code = readAsBase64(Paths.get(zippedPythonActionWrongName))
-
-    val (out, err) = withActionContainer() { c =>
-      val (initCode, initRes) = c.init(initPayload(code, main = "main"))
-      initCode should be(502)
-      if (!initErrorsAreLogged)
-        initRes.get.fields.get("error").get.toString() should include("Zip file does not include mandatory files")
-    }
-    if (initErrorsAreLogged)
-      checkStreams(out, err, {
-        case (o, e) =>
-          o shouldBe empty
-          e should include("Zip file does not include __main__.py")
-      })
-  }
-
-  it should "report error if zipped Python action has invalid virtualenv directory" in {
-    val zippedPythonActionWrongDir = TestUtils.getTestActionFilename("python_virtualenv_dir.zip")
-
-    val code = readAsBase64(Paths.get(zippedPythonActionWrongDir))
-    val (out, err) = withActionContainer() { c =>
-      val (initCode, initRes) = c.init(initPayload(code, main = "main"))
-      initCode should be(502)
-      if (!initErrorsAreLogged)
-        initRes.get.fields.get("error").get.toString() should include("Invalid virtualenv. Zip file does not include")
-    }
-    if (initErrorsAreLogged)
-      checkStreams(out, err, {
-        case (o, e) =>
-          o shouldBe empty
-          e should include("Zip file does not include /virtualenv/bin/")
       })
   }
 

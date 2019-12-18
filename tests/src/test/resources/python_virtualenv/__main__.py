@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+"""Python Hello virtualenv test.
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -14,18 +17,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+"""
 
-package runtime.actionContainers
+from random_useragent.random_useragent import Randomize
 
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
-import common.WskActorSystem
+def main(args):
+    return {"agent": Randomize().random_agent('desktop','linux')}
 
-@RunWith(classOf[JUnitRunner])
-class Python2ActionContainerTests extends PythonActionContainerTests with WskActorSystem {
-
-  override lazy val imageName = "python2action"
-
-  /** indicates if strings in python are unicode by default (i.e., python3 -> true, python2.7 -> false) */
-  override lazy val pythonStringAsUnicode = false
-}
+def naim(args):
+    return main(args)

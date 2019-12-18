@@ -18,21 +18,23 @@
 
 set -e
 
-# Build script for Travis-CI.
+if [ -f ".built" ]; then
+  echo "Test zip artifacts already built, skipping"
+  exit 0
+fi
 
-SCRIPTDIR=$(cd $(dirname "$0") && pwd)
-ROOTDIR="$SCRIPTDIR/../.."
-HOMEDIR="$SCRIPTDIR/../../../"
+# see what version of python is running
+py=$(python --version 2>&1 | awk -F' ' '{print $2}')
+if [[ $py == 3.7.* ]]; then
+  echo "python version is $py (ok)"
+else
+  echo "python version is $py (not ok)"
+  echo "cannot generated test artifacts and tests will fail"
+  exit -1
+fi
 
-# check python and pip versions
-python --version
-pip --version
+(cd python_virtualenv && ./build.sh && zip ../python_virtualenv.zip -r .)
+(cd python_virtualenv_invalid_main && ./build.sh && zip ../python_virtualenv_invalid_main.zip -r .)
+(cd python_virtualenv_invalid_venv && zip ../python_virtualenv_invalid_venv.zip -r .)
 
-# clone OpenWhisk utilities repo. in order to run scanCode
-cd $HOMEDIR
-git clone https://github.com/apache/openwhisk-utilities.git
-
-# clone main openwhisk repo. for testing purposes
-git clone --depth=1 https://github.com/apache/openwhisk.git openwhisk
-cd openwhisk
-./tools/travis/setup.sh
+touch .built

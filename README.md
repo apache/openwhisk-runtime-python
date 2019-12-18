@@ -27,8 +27,6 @@ To use as a docker action using python 3
 ```
 wsk action update myAction myAction.py --docker openwhisk/python3action:1.0.2
 ```
-Replace `python3action` with `python2action` to use python 2.
-
 
 ### To use on deployment that contains the rutime as a kind
 To use as a kind action using python 3
@@ -52,7 +50,6 @@ Build and Push image
 docker login
 ./gradlew core:pythonAction:distDocker -PdockerImagePrefix=$prefix-user -PdockerRegistry=docker.io
 ```
-Replace `core:pythonAction` with `core:python2Action` to build python 2 instead.
 
 Deploy OpenWhisk using ansible environment that contains the kind `python:3` and `python:2`
 Assuming you have OpenWhisk already deploy locally and `OPENWHISK_HOME` pointing to root directory of OpenWhisk core repository.
@@ -86,7 +83,6 @@ Then create the action using your image from dockerhub
 wsk action update myAction myAction.py --docker $user_prefix/python3action
 ```
 The `$user_prefix` is usually your dockerhub user id.
-Replace `python3action` with `python2action` to use python 2
 
 ### Testing
 Install dependencies from the root directory on $OPENWHISK_HOME repository

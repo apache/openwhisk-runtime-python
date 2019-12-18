@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+"""Python Hello virtualenv test.
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -14,21 +17,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+"""
 
-ext.dockerImageName = 'python2action'
-apply from: '../../gradle/docker.gradle'
-distDocker.dependsOn 'copyFiles'
-distDocker.finalizedBy 'rmFiles'
+from random_useragent.random_useragent import Randomize
 
-def runners = files(
-    new File(project(':core:pythonAction').projectDir, 'pythonrunner.py')
-)
+def main(args):
+    return {"agent": Randomize().random_agent('desktop','linux')}
 
-task copyFiles(type: Copy) {
-    from runners
-    into '.'
-}
-
-task rmFiles(type: Delete) {
-    delete runners.collect { it.getName() }
-}
+def naim(args):
+    return main(args)
