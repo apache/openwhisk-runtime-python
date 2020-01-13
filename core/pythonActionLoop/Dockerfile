@@ -51,9 +51,8 @@ WORKDIR /
 COPY --from=builder_source /bin/proxy /bin/proxy_source
 COPY --from=builder_release /bin/proxy /bin/proxy_release
 RUN mv /bin/proxy_${GO_PROXY_BUILD_FROM} /bin/proxy
-ADD pythonbuild.py /bin/compile
-ADD pythonbuild.py.launcher.py /bin/compile.launcher.py
+ADD bin/compile /bin/compile
+ADD lib/launcher.py /lib/launcher.py
 ENV OW_COMPILER=/bin/compile
-ENTRYPOINT []
-CMD ["/bin/proxy"]
+ENTRYPOINT ["/bin/proxy"]
 
