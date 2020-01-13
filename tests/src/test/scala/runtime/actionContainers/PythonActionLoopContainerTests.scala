@@ -28,7 +28,7 @@ import spray.json._
 @RunWith(classOf[JUnitRunner])
 class PythonActionLoopContainerTests extends PythonActionContainerTests with WskActorSystem {
 
-  override lazy val imageName = "actionloop-python-v3.7"
+  override lazy val imageName = "action-python-v3.7"
 
   override val testNoSource = TestConfig("", hasCodeStub = false)
 
@@ -76,7 +76,7 @@ class PythonActionLoopContainerTests extends PythonActionContainerTests with Wsk
       initCode should be(502)
 
       if (!initErrorsAreLogged)
-        initRes.get.fields.get("error").get.toString should include("Zip file does not include mandatory files")
+        initRes.get.fields.get("error").get.toString should include("ModuleNotFoundError:")
     }
 
     if (initErrorsAreLogged)

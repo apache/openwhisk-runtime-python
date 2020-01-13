@@ -16,13 +16,6 @@
 #
 FROM golang:1.12 as builder
 RUN env CGO_ENABLED=0 go get github.com/apache/openwhisk-runtime-go/main && mv /go/bin/main /bin/proxy
-#ENV PROXY_SOURCE=https://github.com/apache/openwhisk-runtime-go/archive/golang1.11@1.13.0-incubating.tar.gz
-#RUN curl -L "$PROXY_SOURCE" | tar xzf - \
-#  && mkdir -p src/github.com/apache \
-#  && mv openwhisk-runtime-go-golang1.11-1.13.0-incubating \
-#     src/github.com/apache/incubator-openwhisk-runtime-go \
-#  && cd src/github.com/apache/incubator-openwhisk-runtime-go/main \
-#  && CGO_ENABLED=0 go build -o /bin/proxy
 
 FROM python:3.7-stretch
 
@@ -42,9 +35,8 @@ RUN pip install \
 RUN mkdir -p /action
 WORKDIR /
 COPY --from=builder /bin/proxy /bin/proxy
-ADD pythonbuild.py /bin/compile
-ADD pythonbuild.py.launcher.py /bin/compile.launcher.py
+ADD bin/compile /bin/compile
+ADD lib/launcher.py /lib/launcher.py
 ENV OW_COMPILER=/bin/compile
-ENTRYPOINT []
-CMD ["/bin/proxy"]
+ENTRYPOINT ["/bin/proxy"]
 
