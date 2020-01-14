@@ -75,9 +75,10 @@ class PythonActionContainerTests extends BasicActionRunnerTests with WskActorSys
 
   override val testUnicode =
     TestConfig("""
+        |# encoding: utf-8
         |def main(args):
         |    sep = args['delimiter']
-        |    str = sep + " ☃ " + sep
+        |    str = sep + u" ☃ " + sep
         |    print(str)
         |    return {"winter" : str }
       """.stripMargin.trim)
@@ -181,7 +182,7 @@ class PythonActionContainerTests extends BasicActionRunnerTests with WskActorSys
       val (initCode, initRes) = c.init(initPayload(code, main = "echo"))
       initCode should be(502)
       if (!initErrorsAreLogged)
-        initRes.get.fields.get("error").get.toString() should include("ModuleNotFoundError")
+        initRes.get.fields.get("error").get.toString() should include regex "(Import|ModuleNotFound)Error:"
     }
 
     if (initErrorsAreLogged)
