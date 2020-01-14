@@ -49,7 +49,6 @@ if len(sys.argv) >1:
   sys.stdout.flush()
   sys.exit(0)
 
-# { "value": { "delimiter": "à"}}
 env = os.environ
 out = fdopen(3, "wb")
 while True:
