@@ -14,50 +14,57 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# build go proxy from source
-FROM golang:1.12 AS builder_source
+#FROM golang:1.11 as builder
+#ENV PROXY_SOURCE=https://github.com/apache/incubator-openwhisk-runtime-go/archive/golang1.11@1.13.0-incubating.tar.gz
+#RUN curl -sL "$PROXY_SOURCE" | tar xzf - \
+#  && mkdir -p src/github.com/apache \
+#  && mv incubator-openwhisk-runtime-go-golang1.11-1.13.0-incubating \
+#     src/github.com/apache/incubator-openwhisk-runtime-go \
+#  && cd src/github.com/apache/incubator-openwhisk-runtime-go/main \
+#  && CGO_ENABLED=0 go build -o /bin/proxy
+FROM golang:1.12 as builder
 #RUN env CGO_ENABLED=0 go get github.com/apache/openwhisk-runtime-go/main && mv /go/bin/main /bin/proxy
 RUN  git clone https://github.com/sciabarracom/openwhisk-runtime-go \
     && cd openwhisk-runtime-go \
     && git checkout origin/propagate-ow-vars -b propagate-ow-vars \
     && env GO111MODULE=on CGO_ENABLED=0 go build main/proxy.go \
     && mv proxy /bin/proxy
+FROM python:2.7-alpine
 
-
-# or build it from a release
-FROM golang:1.12 AS builder_release
-ARG GO_PROXY_RELEASE_VERSION=1.12@1.15.0
-RUN curl -sL \
-  https://github.com/apache/openwhisk-runtime-go/archive/{$GO_PROXY_RELEASE_VERSION}.tar.gz\
-  | tar xzf -\
-  && cd openwhisk-runtime-go-*/main\
-  && GO111MODULE=on go build -o /bin/proxy
-
-FROM python:3.7-stretch
-
-# select the builder to use
-ARG GO_PROXY_BUILD_FROM=release
+# Upgrade and install basic Python dependencies
+RUN apk add --no-cache \
+        bash \
+        bzip2-dev \
+        gcc \
+        libc-dev \
+        libxslt-dev \
+        libxml2-dev \
+        libffi-dev \
+        linux-headers \
+        openssl-dev \
+        python-dev
 
 # Install common modules for python
-RUN pip install \
-    beautifulsoup4==4.6.3 \
-    httplib2==0.11.3 \
-    kafka_python==1.4.3 \
-    lxml==4.2.5 \
-    python-dateutil==2.7.3 \
-    requests==2.19.1 \
-    scrapy==1.5.1 \
-    simplejson==3.16.0 \
-    virtualenv==16.0.0 \
-    twisted==18.7.0
+RUN pip install --no-cache-dir --upgrade pip setuptools six \
+ && pip install --no-cache-dir \
+        gevent==1.3.6 \
+        flask==1.0.2 \
+        beautifulsoup4==4.6.3 \
+        httplib2==0.11.3 \
+        kafka_python==1.4.3 \
+        lxml==4.2.5 \
+        python-dateutil==2.7.3 \
+        requests==2.19.1 \
+        scrapy==1.5.1 \
+        simplejson==3.16.0 \
+        virtualenv==16.0.0 \
+        twisted==18.7.0 \
+        signalfx_lambda==0.2.1
 
 RUN mkdir -p /action
 WORKDIR /
-COPY --from=builder_source /bin/proxy /bin/proxy_source
-COPY --from=builder_release /bin/proxy /bin/proxy_release
-RUN mv /bin/proxy_${GO_PROXY_BUILD_FROM} /bin/proxy
+COPY --from=builder /bin/proxy /bin/proxy
 ADD bin/compile /bin/compile
 ADD lib/launcher.py /lib/launcher.py
 ENV OW_COMPILER=/bin/compile
 ENTRYPOINT ["/bin/proxy"]
-

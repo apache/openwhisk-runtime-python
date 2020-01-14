@@ -28,7 +28,7 @@ import spray.json._
 @RunWith(classOf[JUnitRunner])
 class PythonActionLoopContainerTests extends PythonActionContainerTests with WskActorSystem {
 
-  override lazy val imageName = "action-python-v3.7"
+  override lazy val imageName = "actionloop-python-v3.7"
 
   override val testNoSource = TestConfig("", hasCodeStub = false)
 

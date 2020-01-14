@@ -15,5 +15,22 @@
  * limitations under the License.
  */
 
-ext.dockerImageName = 'actionloop-python-v3.7'
-apply from: '../../gradle/docker.gradle'
+package runtime.actionContainers
+
+import common.WskActorSystem
+import org.junit.runner.RunWith
+import org.scalatest.junit.JUnitRunner
+
+@RunWith(classOf[JUnitRunner])
+class Python2ActionLoopContainerTests extends PythonActionContainerTests with WskActorSystem {
+
+  override lazy val imageName = "actionloop-python-v2.7"
+
+  override val testNoSource = TestConfig("", hasCodeStub = false)
+
+  /** indicates if strings in python are unicode by default (i.e., python3 -> true, python2.7 -> false) */
+  //override lazy val pythonStringAsUnicode = false
+
+  /** actionloop based image does not log init errors - return the error in the body */
+  override lazy val initErrorsAreLogged = false
+}
