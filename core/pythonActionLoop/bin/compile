@@ -65,7 +65,7 @@ def build(src_dir, tgt_dir):
     tgt_file = "%s/exec" % tgt_dir
     write_file(tgt_file, """#!/bin/bash
 cd "$(dirname $0)"
-exec "$(which python)" exec__.py "$@"
+exec /usr/local/bin/python exec__.py "$@"
 """, True)
     return tgt_file
 
