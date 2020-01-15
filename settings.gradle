@@ -20,7 +20,7 @@ include 'tests'
 include 'core:pythonAction'
 include 'core:python3AiAction'
 include 'core:pythonActionLoop'
-include 'core:python2ActionLoop'
+//include 'core:python2ActionLoop'
 
 
 rootProject.name = 'runtime-python'
