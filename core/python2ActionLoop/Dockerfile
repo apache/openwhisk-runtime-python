@@ -23,12 +23,7 @@
 #  && cd src/github.com/apache/incubator-openwhisk-runtime-go/main \
 #  && CGO_ENABLED=0 go build -o /bin/proxy
 FROM golang:1.12 as builder
-#RUN env CGO_ENABLED=0 go get github.com/apache/openwhisk-runtime-go/main && mv /go/bin/main /bin/proxy
-RUN  git clone https://github.com/sciabarracom/openwhisk-runtime-go \
-    && cd openwhisk-runtime-go \
-    && git checkout origin/propagate-ow-vars -b propagate-ow-vars \
-    && env GO111MODULE=on CGO_ENABLED=0 go build main/proxy.go \
-    && mv proxy /bin/proxy
+RUN env CGO_ENABLED=0 go get github.com/apache/openwhisk-runtime-go/main && mv /go/bin/main /bin/proxy
 FROM python:2.7-alpine
 
 # Upgrade and install basic Python dependencies
