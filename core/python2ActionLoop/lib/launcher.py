@@ -43,12 +43,6 @@ warnings.filterwarnings("ignore")
 from main__ import main as main
 warnings.resetwarnings()
 
-# if there are some arguments exit immediately
-if len(sys.argv) >1:
-  sys.stderr.flush()
-  sys.stdout.flush()
-  sys.exit(0)
-
 env = os.environ
 out = fdopen(3, "wb")
 while True:

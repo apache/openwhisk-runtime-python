@@ -28,9 +28,6 @@ class Python2ActionLoopContainerTests extends PythonActionContainerTests with Ws
 
   override val testNoSource = TestConfig("", hasCodeStub = false)
 
-  /** indicates if strings in python are unicode by default (i.e., python3 -> true, python2.7 -> false) */
-  //override lazy val pythonStringAsUnicode = false
-
   /** actionloop based image does not log init errors - return the error in the body */
   override lazy val initErrorsAreLogged = false
 }

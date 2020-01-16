@@ -76,7 +76,7 @@ class PythonActionLoopContainerTests extends PythonActionContainerTests with Wsk
       initCode should be(502)
 
       if (!initErrorsAreLogged)
-        initRes.get.fields.get("error").get.toString should include("ModuleNotFoundError:")
+        initRes.get.fields.get("error").get.toString should include("No module")
     }
 
     if (initErrorsAreLogged)

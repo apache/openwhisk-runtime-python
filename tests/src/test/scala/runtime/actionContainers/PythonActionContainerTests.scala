@@ -182,7 +182,7 @@ class PythonActionContainerTests extends BasicActionRunnerTests with WskActorSys
       val (initCode, initRes) = c.init(initPayload(code, main = "echo"))
       initCode should be(502)
       if (!initErrorsAreLogged)
-        initRes.get.fields.get("error").get.toString() should include regex "(Import|ModuleNotFound)Error:"
+        initRes.get.fields.get("error").get.toString() should include regex "(ImportError|No module)"
     }
 
     if (initErrorsAreLogged)
