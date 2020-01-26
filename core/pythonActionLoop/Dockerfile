@@ -14,17 +14,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-FROM golang:1.12 as builder
+
+# build go proxy from source
+FROM golang:1.12 AS builder_source
 RUN env CGO_ENABLED=0 go get github.com/apache/openwhisk-runtime-go/main && mv /go/bin/main /bin/proxy
-#ENV PROXY_SOURCE=https://github.com/apache/openwhisk-runtime-go/archive/golang1.11@1.13.0-incubating.tar.gz
-#RUN curl -L "$PROXY_SOURCE" | tar xzf - \
-#  && mkdir -p src/github.com/apache \
-#  && mv openwhisk-runtime-go-golang1.11-1.13.0-incubating \
-#     src/github.com/apache/incubator-openwhisk-runtime-go \
-#  && cd src/github.com/apache/incubator-openwhisk-runtime-go/main \
-#  && CGO_ENABLED=0 go build -o /bin/proxy
+
+# or build it from a release
+FROM golang:1.12 AS builder_release
+ARG GO_PROXY_RELEASE_VERSION=1.12@1.15.0
+RUN curl -sL \
+  https://github.com/apache/openwhisk-runtime-go/archive/{$GO_PROXY_RELEASE_VERSION}.tar.gz\
+  | tar xzf -\
+  && cd openwhisk-runtime-go-*/main\
+  && GO111MODULE=on go build -o /bin/proxy
 
 FROM python:3.7-stretch
+
+# select the builder to use
+ARG GO_PROXY_BUILD_FROM=release
 
 # Install common modules for python
 RUN pip install \
@@ -41,7 +48,9 @@ RUN pip install \
 
 RUN mkdir -p /action
 WORKDIR /
-COPY --from=builder /bin/proxy /bin/proxy
+COPY --from=builder_source /bin/proxy /bin/proxy_source
+COPY --from=builder_release /bin/proxy /bin/proxy_release
+RUN mv /bin/proxy_${GO_PROXY_BUILD_FROM} /bin/proxy
 ADD pythonbuild.py /bin/compile
 ADD pythonbuild.py.launcher.py /bin/compile.launcher.py
 ENV OW_COMPILER=/bin/compile

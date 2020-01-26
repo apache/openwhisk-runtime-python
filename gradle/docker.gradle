@@ -54,7 +54,7 @@ if(project.hasProperty('dockerHost')) {
 }
 
 if(project.hasProperty('dockerBuildArgs')) {
-    dockerBuildArgs.each { arg  ->
+    dockerBuildArgs.split(' ').each { arg  ->
         dockerBuildArg += ['--build-arg', arg]
     }
 }
