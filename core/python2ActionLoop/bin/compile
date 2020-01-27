@@ -40,7 +40,7 @@ def copy_replace(src, dst, match=None, replacement=""):
         write_file(dst, body)
 
 # assemble sources
-def sources(launcher, main, src_dir):  
+def sources(launcher, main, src_dir):
     # move exec in the right place if exists
     src_file = "%s/exec" % src_dir
     if exists(src_file):
@@ -62,14 +62,22 @@ def build(src_dir, tgt_dir):
     shutil.move(src_dir, tgt_dir)
     tgt_file = "%s/exec" % tgt_dir
     write_file(tgt_file, """#!/bin/bash
-cd "$(dirname $0)"
-exec /usr/local/bin/python exec__.py "$@"
+if [ "$(cat $0.env)" = "$__OW_EXECUTION_ENV" ]
+then cd "$(dirname $0)"
+     exec /usr/local/bin/python exec__.py "$@"
+else echo "Execution Environment Mismatch"
+     echo "Expected: $(cat $0.env)"
+     echo "Actual: $__OW_EXECUTION_ENV"
+     exit 1
+fi
 """, True)
+    write_file("%s.env"%tgt_file, os.environ['__OW_EXECUTION_ENV'])
     return tgt_file
 
 #check if a module exists
 def check(tgt_dir, module_name):
     try:
+
         # find module
         mod = imp.find_module(module_name, [tgt_dir])
         # parse module
@@ -80,12 +88,12 @@ def check(tgt_dir, module_name):
             activate_this_file = path_to_virtualenv + '/bin/activate_this.py'
             if not os.path.exists(activate_this_file):
                sys.stderr.write('Invalid virtualenv. Zip file does not include activate_this.py')
+    except ImportError:
+        sys.stderr.write("Zip file does not include %s" % module_name)
     except SyntaxError as er:
         sys.stderr.write(er.msg)
     except Exception as ex:
         sys.stderr.write(ex.message)
-
-
     sys.stderr.flush()
 
 if __name__ == '__main__':

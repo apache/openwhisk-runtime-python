@@ -58,6 +58,14 @@ COPY --from=builder_release /bin/proxy /bin/proxy_release
 RUN mv /bin/proxy_${GO_PROXY_BUILD_FROM} /bin/proxy
 ADD bin/compile /bin/compile
 ADD lib/launcher.py /lib/launcher.py
+# log initialization errors
+ENV OW_LOG_INIT_ERROR=1
+# the launcher must wait for an ack
+ENV OW_WAIT_FOR_ACK=1
+# using the runtime name to identify the execution environment
+ENV OW_EXECUTION_ENV=openwhisk/action-python-v3.7
+# compiler script
 ENV OW_COMPILER=/bin/compile
+
 ENTRYPOINT ["/bin/proxy"]
 
