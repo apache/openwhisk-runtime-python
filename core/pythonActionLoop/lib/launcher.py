@@ -39,12 +39,15 @@ except Exception:
   sys.exit(1)
 
 # now import the action as process input/output
-warnings.filterwarnings("ignore")
 from main__ import main as main
-warnings.resetwarnings()
+
+out = fdopen(3, "wb")
+if os.getenv("__OW_WAIT_FOR_ACK", "") != "":
+    out.write(json.dumps({"ok": True}, ensure_ascii=False).encode('utf-8'))
+    out.write(b'\n')
+    out.flush()
 
 env = os.environ
-out = fdopen(3, "wb")
 while True:
   line = stdin.readline()
   if not line: break

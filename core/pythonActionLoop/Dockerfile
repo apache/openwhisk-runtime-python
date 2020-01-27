@@ -15,7 +15,12 @@
 # limitations under the License.
 #
 FROM golang:1.12 as builder
-RUN env CGO_ENABLED=0 go get github.com/apache/openwhisk-runtime-go/main && mv /go/bin/main /bin/proxy
+#RUN env CGO_ENABLED=0 go get github.com/apache/openwhisk-runtime-go/main && mv /go/bin/main /bin/proxy
+RUN git clone --branch ack-and-versioning \
+   https://github.com/sciabarracom/openwhisk-runtime-go /src ;\
+   cd /src ; env GO111MODULE=on CGO_ENABLED=0 go build main/proxy.go && \
+   mv proxy /bin/proxy
+
 FROM python:3.7-stretch
 
 # Install common modules for python
@@ -36,6 +41,14 @@ WORKDIR /
 COPY --from=builder /bin/proxy /bin/proxy
 ADD bin/compile /bin/compile
 ADD lib/launcher.py /lib/launcher.py
+# log initialization errors
+ENV OW_LOG_INIT_ERROR=1
+# the launcher must wait for an ack
+ENV OW_WAIT_FOR_ACK=1
+# using the runtime name to identify the execution environment
+ENV OW_EXECUTION_ENV=openwhisk/action-python-v3.7
+# compiler script
 ENV OW_COMPILER=/bin/compile
+
 ENTRYPOINT ["/bin/proxy"]
 

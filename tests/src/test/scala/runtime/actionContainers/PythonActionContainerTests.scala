@@ -181,16 +181,13 @@ class PythonActionContainerTests extends BasicActionRunnerTests with WskActorSys
     val (out, err) = withActionContainer() { c =>
       val (initCode, initRes) = c.init(initPayload(code, main = "echo"))
       initCode should be(502)
-      if (!initErrorsAreLogged)
-        initRes.get.fields.get("error").get.toString() should include regex "(ImportError|No module)"
     }
 
-    if (initErrorsAreLogged)
-      checkStreams(out, err, {
+    checkStreams(out, err, {
         case (o, e) =>
           o shouldBe empty
           e should include("Zip file does not include")
-      })
+    })
   }
 
   it should "return on action error when action fails" in {
@@ -280,22 +277,15 @@ class PythonActionContainerTests extends BasicActionRunnerTests with WskActorSys
           |    return { "error": "not reaching here" }
         """.stripMargin
 
-      if (initErrorsAreLogged) {
-        val (initCode, res) = c.init(initPayload(code))
-        initCode should be(502)
-      } else {
         // action loop detects those errors at init time
-        val (initCode, initRes) = c.init(initPayload(code))
+        val (initCode, _) = c.init(initPayload(code))
         initCode should be(502)
-        initRes.get.fields.get("error").get.toString() should include("Traceback")
-      }
     }
-    if (initErrorsAreLogged)
-      checkStreams(out, err, {
+    checkStreams(out, err, {
         case (o, e) =>
           o shouldBe empty
-          e should include("Traceback")
-      })
+          e should include  regex("Traceback|cannot start")
+    })
   }
 
   it should "have a valid sys.executable" in {

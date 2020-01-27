@@ -14,16 +14,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-#FROM golang:1.11 as builder
-#ENV PROXY_SOURCE=https://github.com/apache/incubator-openwhisk-runtime-go/archive/golang1.11@1.13.0-incubating.tar.gz
-#RUN curl -sL "$PROXY_SOURCE" | tar xzf - \
-#  && mkdir -p src/github.com/apache \
-#  && mv incubator-openwhisk-runtime-go-golang1.11-1.13.0-incubating \
-#     src/github.com/apache/incubator-openwhisk-runtime-go \
-#  && cd src/github.com/apache/incubator-openwhisk-runtime-go/main \
-#  && CGO_ENABLED=0 go build -o /bin/proxy
 FROM golang:1.12 as builder
-RUN env CGO_ENABLED=0 go get github.com/apache/openwhisk-runtime-go/main && mv /go/bin/main /bin/proxy
+#RUN env CGO_ENABLED=0 go get github.com/apache/openwhisk-runtime-go/main && mv /go/bin/main /bin/proxy
+RUN git clone --branch ack-and-versioning \
+   https://github.com/sciabarracom/openwhisk-runtime-go /src ;\
+   cd /src ; env GO111MODULE=on CGO_ENABLED=0 go build main/proxy.go && \
+   mv proxy /bin/proxy
+
 FROM python:2.7-alpine
 
 # Upgrade and install basic Python dependencies
@@ -62,4 +59,10 @@ COPY --from=builder /bin/proxy /bin/proxy
 ADD bin/compile /bin/compile
 ADD lib/launcher.py /lib/launcher.py
 ENV OW_COMPILER=/bin/compile
+# log initialization errors
+ENV OW_LOG_INIT_ERROR=1
+# the launcher must wait for an ack
+ENV OW_WAIT_FOR_ACK=1
+# using the runtime name to identify the execution environment
+ENV OW_EXECUTION_ENV=openwhisk/action-python-v2.7
 ENTRYPOINT ["/bin/proxy"]
