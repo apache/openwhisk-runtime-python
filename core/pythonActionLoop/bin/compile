@@ -80,16 +80,17 @@ def check(tgt_dir, module_name):
     try:
         sys.path.append(tgt_dir)
         mod = importlib.util.find_spec(module_name)
-        with open(mod.origin, "r") as f:
-            ast.parse(f.read())
-        # check virtualenv
-        path_to_virtualenv = abspath('%s/virtualenv' % tgt_dir)
-        if os.path.isdir(path_to_virtualenv):
-            activate_this_file = path_to_virtualenv + '/bin/activate_this.py'
-            if not os.path.exists(activate_this_file):
-               sys.stderr.write('Invalid virtualenv. Zip file does not include activate_this.py')
-    except ImportError:
-        sys.stderr.write("Zip file does not include %s" % module_name)
+        if mod:
+            with open(mod.origin, "r") as f:
+                ast.parse(f.read())
+            # check virtualenv
+            path_to_virtualenv = abspath('%s/virtualenv' % tgt_dir)
+            if os.path.isdir(path_to_virtualenv):
+                activate_this_file = path_to_virtualenv + '/bin/activate_this.py'
+                if not os.path.exists(activate_this_file):
+                   sys.stderr.write('Invalid virtualenv. Zip file does not include activate_this.py')
+        else:
+            sys.stderr.write("Zip file does not include %s" % module_name)
     except SyntaxError as er:
         sys.stderr.write(er.msg)
     except Exception as ex:
