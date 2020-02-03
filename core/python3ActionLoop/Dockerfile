@@ -33,6 +33,15 @@ RUN curl -sL \
   && cd openwhisk-runtime-go-*/main\
   && GO111MODULE=on go build -o /bin/proxy
 
+# or build it from a release
+FROM golang:1.12 AS builder_release
+ARG GO_PROXY_RELEASE_VERSION=1.12@1.15.0
+RUN curl -sL \
+  https://github.com/apache/openwhisk-runtime-go/archive/{$GO_PROXY_RELEASE_VERSION}.tar.gz\
+  | tar xzf -\
+  && cd openwhisk-runtime-go-*/main\
+  && GO111MODULE=on go build -o /bin/proxy
+
 FROM python:3.7-stretch
 
 # select the builder to use

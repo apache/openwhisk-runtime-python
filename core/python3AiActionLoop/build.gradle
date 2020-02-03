@@ -15,26 +15,21 @@
  * limitations under the License.
  */
 
-include 'tests'
+ext.dockerImageName = 'actionloop-python-v3.7ai'
+apply from: '../../gradle/docker.gradle'
 
-include 'core:python2ActionLoop'
-include 'core:python3Action'
-include 'core:python3ActionLoop'
-include 'core:python3AiAction'
-include 'core:python3AiActionLoop'
+distDocker.dependsOn 'copyProxy'
+distDocker.finalizedBy('cleanup')
 
-rootProject.name = 'runtime-python'
+task copyProxy(type: Copy) {
+    from '../python3ActionLoop/bin/compile'
+    into '.'
 
-gradle.ext.openwhisk = [
-        version: '1.0.0-SNAPSHOT'
-]
+    from '../pythonActionLoop/lib/launcher.py'
+    into '.'
+}
 
-gradle.ext.scala = [
-    version: '2.12.7',
-    compileFlags: ['-feature', '-unchecked', '-deprecation', '-Xfatal-warnings', '-Ywarn-unused-import']
-]
-
-gradle.ext.scalafmt = [
-    version: '1.5.0',
-    config: new File(rootProject.projectDir, '.scalafmt.conf')
-]
+task cleanup(type: Delete) {
+    delete 'compile'
+    delete 'launcher'
+}

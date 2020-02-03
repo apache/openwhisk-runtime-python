@@ -32,53 +32,63 @@ RUN curl -sL \
   && cd openwhisk-runtime-go-*/main\
   && GO111MODULE=on go build -o /bin/proxy
 
-FROM python:2.7-alpine
+# Dockerfile for python AI actions, overrides and extends ActionRunner from actionProxy
+FROM tensorflow/tensorflow:1.11.0-py3
+
 # select the builder to use
 ARG GO_PROXY_BUILD_FROM=source
 
-# Upgrade and install basic Python dependencies
-RUN apk add --no-cache \
-        bash \
-        bzip2-dev \
+RUN apt-get update && apt-get upgrade -y && apt-get install -y \
         gcc \
         libc-dev \
         libxslt-dev \
         libxml2-dev \
         libffi-dev \
-        linux-headers \
-        openssl-dev \
-        python-dev
+        libssl-dev \
+        zip \
+        unzip \
+        vim \
+        && rm -rf /var/lib/apt/lists/*
 
-# Install common modules for python
-RUN pip install --no-cache-dir --upgrade pip setuptools six \
- && pip install --no-cache-dir \
-        gevent==1.3.6 \
-        flask==1.0.2 \
-        beautifulsoup4==4.6.3 \
-        httplib2==0.11.3 \
-        kafka_python==1.4.3 \
-        lxml==4.2.5 \
-        python-dateutil==2.7.3 \
-        requests==2.19.1 \
-        scrapy==1.5.1 \
-        simplejson==3.16.0 \
-        virtualenv==16.0.0 \
-        twisted==18.7.0 \
-        signalfx_lambda==0.2.1
+RUN apt-cache search linux-headers-generic
+
+# PyTorch
+RUN pip3 install http://download.pytorch.org/whl/cpu/torch-0.4.1-cp35-cp35m-linux_x86_64.whl \
+    && pip3 install torchvision==0.2.1
+# Caffe
+# RUN apt-get update && apt-get upgrade -y \
+#     && apt-get install -y \
+#     build-essential cmake git pkg-config \
+#     libprotobuf-dev libleveldb-dev libsnappy-dev libopencv-dev libhdf5-serial-dev protobuf-compiler \
+#     && apt-get install -y --no-install-recommends libboost-all-dev
+
+RUN curl -L https://downloads.rclone.org/rclone-current-linux-amd64.deb -o rclone.deb \
+    && dpkg -i rclone.deb \
+    && rm rclone.deb
+
+COPY requirements.txt requirements.txt
+RUN pip3 install --upgrade pip six && pip3 install --no-cache-dir -r requirements.txt
 
 RUN mkdir -p /action
 WORKDIR /
+
 COPY --from=builder_source /bin/proxy /bin/proxy_source
 COPY --from=builder_release /bin/proxy /bin/proxy_release
 RUN mv /bin/proxy_${GO_PROXY_BUILD_FROM} /bin/proxy
 
-ADD bin/compile /bin/compile
-ADD lib/launcher.py /lib/launcher.py
-ENV OW_COMPILER=/bin/compile
+ADD compile /bin/compile
+ADD launcher.py /lib/launcher.py
+
 # log initialization errors
 ENV OW_LOG_INIT_ERROR=1
 # the launcher must wait for an ack
 ENV OW_WAIT_FOR_ACK=1
 # using the runtime name to identify the execution environment
-ENV OW_EXECUTION_ENV=openwhisk/action-python-v2.7
-ENTRYPOINT ["/bin/proxy"]
+ENV OW_EXECUTION_ENV=openwhisk/action-python-v3.7
+# compiler script
+ENV OW_COMPILER=/bin/compile
+
+
+ENTRYPOINT []
+CMD ["/bin/proxy"]
+
