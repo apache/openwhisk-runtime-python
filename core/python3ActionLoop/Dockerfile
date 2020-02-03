@@ -14,12 +14,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-FROM golang:1.12 as builder
+
+# build go proxy from source
+FROM golang:1.12 AS builder_source
 #RUN env CGO_ENABLED=0 go get github.com/apache/openwhisk-runtime-go/main && mv /go/bin/main /bin/proxy
-RUN git clone --branch ack-and-versioning \
-   https://github.com/sciabarracom/openwhisk-runtime-go /src ;\
+RUN git clone --branch dev \
+   https://github.com/nimbella-corp/openwhisk-runtime-go /src ;\
    cd /src ; env GO111MODULE=on CGO_ENABLED=0 go build main/proxy.go && \
    mv proxy /bin/proxy
+
+# or build it from a release
+FROM golang:1.12 AS builder_release
+ARG GO_PROXY_RELEASE_VERSION=1.12@1.15.0
+RUN curl -sL \
+  https://github.com/apache/openwhisk-runtime-go/archive/{$GO_PROXY_RELEASE_VERSION}.tar.gz\
+  | tar xzf -\
+  && cd openwhisk-runtime-go-*/main\
+  && GO111MODULE=on go build -o /bin/proxy
 
 FROM python:3.7-stretch
 
@@ -38,7 +49,10 @@ RUN pip install \
 
 RUN mkdir -p /action
 WORKDIR /
-COPY --from=builder /bin/proxy /bin/proxy
+COPY --from=builder_source /bin/proxy /bin/proxy_source
+COPY --from=builder_release /bin/proxy /bin/proxy_release
+RUN mv /bin/proxy_${GO_PROXY_BUILD_FROM} /bin/proxy
+
 ADD bin/compile /bin/compile
 ADD lib/launcher.py /lib/launcher.py
 # log initialization errors

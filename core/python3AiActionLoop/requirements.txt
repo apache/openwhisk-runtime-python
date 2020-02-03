@@ -1,0 +1,44 @@
+# default available packages for python3action
+beautifulsoup4 == 4.6.3
+httplib2 == 0.11.3
+kafka_python == 1.4.3
+lxml == 4.2.4
+python-dateutil == 2.7.3
+requests == 2.19.1
+scrapy == 1.5.1
+simplejson == 3.16.0
+virtualenv == 16.0.0
+twisted == 18.7.0
+netifaces == 0.10.7
+
+# package to sync from a variety of cloud blob storage
+python-rclone == 0.0.2
+
+# more ML/DL packages
+keras == 2.3.1
+opencv-contrib-python == 3.4.2.17
+Cython == 0.28.5
+tools == 0.1.9
+scikit-image == 0.14.1
+
+nltk == 3.3
+
+PyJWT == 1.7.1
+
+# packages for numerics
+numpy == 1.16.4
+scikit-learn == 0.20.3
+scipy == 1.2.1
+pandas == 0.24.2
+
+# packages for image processing
+Pillow == 6.2.1
+
+# Etc
+pymongo == 3.8.0
+redis == 3.2.1
+pika == 1.0.1
+elasticsearch == 6.3.1
+cassandra-driver == 3.18.0
+etcd3 == 0.10.0
+twilio == 6.35.1
