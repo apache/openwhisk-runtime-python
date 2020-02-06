@@ -29,5 +29,5 @@ class Python2ActionLoopContainerTests extends PythonActionContainerTests with Ws
   override val testNoSource = TestConfig("", hasCodeStub = false)
 
   /** actionloop based image does not log init errors - return the error in the body */
-  override lazy val initErrorsAreLogged = false
+  override lazy val errorCodeOnRun = false
 }

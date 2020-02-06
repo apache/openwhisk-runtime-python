@@ -74,6 +74,7 @@ RUN mv /bin/proxy_${GO_PROXY_BUILD_FROM} /bin/proxy
 
 ADD bin/compile /bin/compile
 ADD lib/launcher.py /lib/launcher.py
+# the compiler script
 ENV OW_COMPILER=/bin/compile
 # log initialization errors
 ENV OW_LOG_INIT_ERROR=1

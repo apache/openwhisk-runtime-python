@@ -31,8 +31,8 @@ class PythonActionContainerTests extends BasicActionRunnerTests with WskActorSys
 
   lazy val imageName = "python3action"
 
-  /** indicates if errors are logged or returned in the answer */
-  lazy val initErrorsAreLogged = true
+  /** actionLoop does not return an error code on failed run */
+  lazy val errorCodeOnRun = true
 
   override def withActionContainer(env: Map[String, String] = Map.empty)(code: ActionContainer => Unit) = {
     withContainer(imageName, env)(code)
@@ -209,7 +209,7 @@ class PythonActionContainerTests extends BasicActionRunnerTests with WskActorSys
        * Since it only receive a string from the application
        * it should parse the entire string  in JSON just to find it is an "error"
        */
-      if (initErrorsAreLogged)
+      if (errorCodeOnRun)
         runCode should be(502)
 
       runRes shouldBe defined
@@ -235,7 +235,7 @@ class PythonActionContainerTests extends BasicActionRunnerTests with WskActorSys
       // init checks whether compilation was successful, so return 502
       initCode should be(502)
     }
-    if (initErrorsAreLogged)
+    if (errorCodeOnRun)
       checkStreams(out, err, {
         case (o, e) =>
           o shouldBe empty

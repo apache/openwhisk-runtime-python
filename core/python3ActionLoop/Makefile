@@ -1,4 +1,4 @@
-IMG=actionloop-python-v3.7:latest
+IMG=actionloop-python-v3.7ai:latest
 INVOKE=invoke
 PREFIX=docker.io/openwhisk
 

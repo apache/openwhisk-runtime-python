@@ -25,7 +25,7 @@ task copyProxy(type: Copy) {
     from '../python3ActionLoop/bin/compile'
     into '.'
 
-    from '../pythonActionLoop/lib/launcher.py'
+    from '../python3ActionLoop/lib/launcher.py'
     into '.'
 }
 

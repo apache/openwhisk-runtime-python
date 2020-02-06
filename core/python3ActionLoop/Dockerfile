@@ -43,6 +43,7 @@ RUN curl -sL \
   && GO111MODULE=on go build -o /bin/proxy
 
 FROM python:3.7-stretch
+ARG GO_PROXY_BUILD_FROM=source
 
 # select the builder to use
 ARG GO_PROXY_BUILD_FROM=release
