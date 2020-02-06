@@ -33,6 +33,7 @@ RUN curl -sL \
   && GO111MODULE=on go build -o /bin/proxy
 
 FROM python:3.7-stretch
+ARG GO_PROXY_BUILD_FROM=source
 
 # Install common modules for python
 RUN pip install \

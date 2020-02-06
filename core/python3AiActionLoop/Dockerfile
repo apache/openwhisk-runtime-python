@@ -67,7 +67,9 @@ RUN curl -L https://downloads.rclone.org/rclone-current-linux-amd64.deb -o rclon
     && rm rclone.deb
 
 COPY requirements.txt requirements.txt
-RUN pip3 install --upgrade pip six && pip3 install --no-cache-dir -r requirements.txt
+RUN pip3 install --upgrade pip six &&\
+    pip3 install --no-cache-dir -r requirements.txt &&\
+    ln -sf /usr/bin/python /usr/local/bin/python
 
 RUN mkdir -p /action
 WORKDIR /
@@ -84,11 +86,7 @@ ENV OW_LOG_INIT_ERROR=1
 # the launcher must wait for an ack
 ENV OW_WAIT_FOR_ACK=1
 # using the runtime name to identify the execution environment
-ENV OW_EXECUTION_ENV=openwhisk/action-python-v3.7
+ENV OW_EXECUTION_ENV=openwhisk/action-python-v3.7ai
 # compiler script
 ENV OW_COMPILER=/bin/compile
-
-
-ENTRYPOINT []
-CMD ["/bin/proxy"]
-
+ENTRYPOINT ["/bin/proxy"]

@@ -33,7 +33,7 @@ class PythonActionLoopContainerTests extends PythonActionContainerTests with Wsk
   override val testNoSource = TestConfig("", hasCodeStub = false)
 
   /** actionloop based image does not log init errors - return the error in the body */
-  override lazy val initErrorsAreLogged = false
+  override lazy val errorCodeOnRun = false
 
   def testArtifact(name: String): File = {
     new File(this.getClass.getClassLoader.getResource(name).toURI)
@@ -75,11 +75,11 @@ class PythonActionLoopContainerTests extends PythonActionContainerTests with Wsk
       val (initCode, initRes) = c.init(initPayload(code, main = "main"))
       initCode should be(502)
 
-      if (!initErrorsAreLogged)
+      if (!errorCodeOnRun)
         initRes.get.fields.get("error").get.toString should include("No module")
     }
 
-    if (initErrorsAreLogged)
+    if (errorCodeOnRun)
       checkStreams(out, err, {
         case (o, e) =>
           o shouldBe empty
@@ -95,11 +95,11 @@ class PythonActionLoopContainerTests extends PythonActionContainerTests with Wsk
       val (initCode, initRes) = c.init(initPayload(code, main = "main"))
       initCode should be(502)
 
-      if (!initErrorsAreLogged)
+      if (!errorCodeOnRun)
         initRes.get.fields.get("error").get.toString should include("Invalid virtualenv. Zip file does not include")
     }
 
-    if (initErrorsAreLogged)
+    if (errorCodeOnRun)
       checkStreams(out, err, {
         case (o, e) =>
           o shouldBe empty
