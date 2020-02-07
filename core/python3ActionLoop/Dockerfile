@@ -17,12 +17,10 @@
 # build go proxy from source
 FROM golang:1.12 AS builder_source
 #RUN env CGO_ENABLED=0 go get github.com/apache/openwhisk-runtime-go/main && mv /go/bin/main /bin/proxy
-RUN  git clone https://github.com/sciabarracom/openwhisk-runtime-go \
-    && cd openwhisk-runtime-go \
-    && git checkout origin/propagate-ow-vars -b propagate-ow-vars \
-    && env GO111MODULE=on CGO_ENABLED=0 go build main/proxy.go \
-    && mv proxy /bin/proxy
-
+RUN git clone --branch dev \
+   https://github.com/nimbella-corp/openwhisk-runtime-go /src ;\
+   cd /src ; env GO111MODULE=on CGO_ENABLED=0 go build main/proxy.go && \
+   mv proxy /bin/proxy
 
 # or build it from a release
 FROM golang:1.12 AS builder_release
@@ -35,9 +33,6 @@ RUN curl -sL \
 
 FROM python:3.7-stretch
 ARG GO_PROXY_BUILD_FROM=source
-
-# select the builder to use
-ARG GO_PROXY_BUILD_FROM=release
 
 # Install common modules for python
 RUN pip install \
