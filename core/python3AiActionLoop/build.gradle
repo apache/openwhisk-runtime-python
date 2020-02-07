@@ -15,21 +15,5 @@
  * limitations under the License.
  */
 
-ext.dockerImageName = 'actionloop-python-v3.7ai'
+ext.dockerImageName = 'actionloop-python-v3.6-ai'
 apply from: '../../gradle/docker.gradle'
-
-distDocker.dependsOn 'copyProxy'
-distDocker.finalizedBy('cleanup')
-
-task copyProxy(type: Copy) {
-    from '../python3ActionLoop/bin/compile'
-    into '.'
-
-    from '../python3ActionLoop/lib/launcher.py'
-    into '.'
-}
-
-task cleanup(type: Delete) {
-    delete 'compile'
-    delete 'launcher'
-}

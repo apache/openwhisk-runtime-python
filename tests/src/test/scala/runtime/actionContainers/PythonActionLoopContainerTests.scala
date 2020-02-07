@@ -76,7 +76,7 @@ class PythonActionLoopContainerTests extends PythonActionContainerTests with Wsk
       initCode should be(502)
 
       if (!errorCodeOnRun)
-        initRes.get.fields.get("error").get.toString should include("No module")
+        initRes.get.fields.get("error").get.toString should include regex("No module|action failed")
     }
 
     if (errorCodeOnRun)
@@ -96,7 +96,7 @@ class PythonActionLoopContainerTests extends PythonActionContainerTests with Wsk
       initCode should be(502)
 
       if (!errorCodeOnRun)
-        initRes.get.fields.get("error").get.toString should include("Invalid virtualenv. Zip file does not include")
+        initRes.get.fields.get("error").get.toString should include regex("Invalid virtualenv|action failed")
     }
 
     if (errorCodeOnRun)

@@ -305,4 +305,24 @@ class PythonActionContainerTests extends BasicActionRunnerTests with WskActorSys
       runRes.get.fields.get("sys").get.toString() should include("python")
     }
   }
+
+  it should "error when importing a not-supported package" in {
+    val (out, err) = withActionContainer() { c =>
+      val code =
+        """
+          |import iamnotsupported
+          |def main(args):
+          |    return { "error": "not reaching here" }
+        """.stripMargin
+
+      // action loop detects those errors at init time
+      val (initCode, _) = c.init(initPayload(code))
+      initCode should be(502)
+    }
+    checkStreams(out, err, {
+      case (o, e) =>
+        o shouldBe empty
+        e should include  regex("Traceback|cannot start")
+    })
+  }
 }
