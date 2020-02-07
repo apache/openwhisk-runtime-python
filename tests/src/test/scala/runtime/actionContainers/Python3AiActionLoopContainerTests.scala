@@ -26,11 +26,12 @@ import DefaultJsonProtocol._
 @RunWith(classOf[JUnitRunner])
 class Python3AiActionLoopContainerTests extends PythonActionContainerTests with WskActorSystem {
 
-  override lazy val imageName = "actionloop-python-v3.7ai"
+  override lazy val imageName = "actionloop-python-v3.6-ai"
 
   override lazy val errorCodeOnRun = false
 
   override val testNoSource = TestConfig("", hasCodeStub = false)
+
 
   it should "run tensorflow" in {
     val (out, err) = withActionContainer() { c =>

@@ -1,6 +1,4 @@
-IMG=actionloop-python-v3.7ai:latest
-INVOKE=invoke
-PREFIX=docker.io/openwhisk
+IMG=whisk/actionloop-python-v3.7:latest
 
 build:
 	docker build -t $(IMG) .

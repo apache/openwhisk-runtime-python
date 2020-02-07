@@ -1,4 +1,4 @@
-IMG=whisk/actionloop-python-v2.7:latest
+IMG=whisk/actionloop-python-v3.6-ai:latest
 
 build:
 	docker build -t $(IMG) -f Dockerfile .
@@ -13,3 +13,4 @@ debug:
 	$(IMG)
 
 .PHONY: build clean  debug
+
