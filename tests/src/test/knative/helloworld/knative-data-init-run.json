@@ -1,0 +1,20 @@
+{
+  "init": {
+    "name": "python-helloworld",
+    "main": "main",
+    "binary": false,
+    "code": "def main(params):\n\treturn {'payload': 'Hello World!'}"
+  },
+  "activation": {
+    "namespace": "default",
+    "action_name": "python-helloworld",
+    "api_host": "",
+    "api_key": "",
+    "activation_id": "",
+    "deadline": "4102498800000"
+  },
+  "value": {
+    "name": "Joe",
+    "place": "TX"
+  }
+}
