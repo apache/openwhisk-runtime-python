@@ -24,7 +24,7 @@ import spray.json._
 import DefaultJsonProtocol._
 
 @RunWith(classOf[JUnitRunner])
-class Python3AiActionLoopContainerTests extends PythonActionContainerTests with WskActorSystem {
+class Python3AiActionLoopContainerTests extends PythonActionContainerTests with PythonActionLoopExtraTests with WskActorSystem {
 
   override lazy val imageName = "actionloop-python-v3.6-ai"
 
@@ -96,4 +96,58 @@ class Python3AiActionLoopContainerTests extends PythonActionContainerTests with 
     }
   }
 
+  it should "support numpy" in {
+    val (out, err) = withActionContainer() { c =>
+      val code =
+        """
+          |import numpy as np
+          |def main(args):
+          |   a = np.arange(15).reshape(3, 5).tolist()
+          |   return { "array": a }
+        """.stripMargin
+
+      // action loop detects those errors at init time
+      val (initCode, initRes) = c.init(initPayload(code))
+      initCode should be(200)
+      println(initCode, initRes)
+
+      val (runCode, runRes) = c.run(runPayload(JsObject()))
+      runCode should be(200)
+      runRes.get.fields.get("array") should not be empty
+    }
+    println(out)
+    println(err)
+    checkStreams(out, err, {
+      case (o, e) =>
+        o shouldBe empty
+        e shouldBe empty
+    })
+  }
+
+  it should "detect numpy failures" in {
+    val (out, err) = withActionContainer() { c =>
+      val code =
+        """
+          |import numpy as np
+          |def main(args):
+          |   a = np.arange(15).reshape(3, 5)
+          |   return { "array": a }
+        """.stripMargin
+
+      // action loop detects those errors at init time
+      val (initCode, initRes) = c.init(initPayload(code))
+      initCode should be(200)
+      println(initCode, initRes)
+
+      val (runCode, _) = c.run(runPayload(JsObject()))
+      runCode should be(400)
+    }
+    println(out)
+    println(err)
+    checkStreams(out, err, {
+      case (o, e) =>
+        o shouldBe empty
+        e should include("Object of type 'ndarray' is not JSON serializable")
+    })
+  }
 }

@@ -26,7 +26,7 @@ import org.scalatest.junit.JUnitRunner
 import spray.json._
 
 @RunWith(classOf[JUnitRunner])
-class PythonActionLoopContainerTests extends PythonActionContainerTests with WskActorSystem {
+class PythonActionLoopContainerTests extends PythonActionContainerTests with PythonActionLoopExtraTests with WskActorSystem {
 
   override lazy val imageName = "actionloop-python-v3.7"
 
