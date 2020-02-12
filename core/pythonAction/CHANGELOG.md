@@ -19,6 +19,10 @@
 
 # Python 3 OpenWhisk Runtime Container
 
+## 1.14.0
+  - Update base image to openwhisk/dockerskeleton:1.14.0
+  - Support for __OW_ACTION_VERSION (openwhisk/4761)
+
 ## 1.0.3
 Changes:
   - Update base image to openwhisk/dockerskeleton:1.3.3
