@@ -184,9 +184,9 @@ class PythonActionContainerTests extends BasicActionRunnerTests with WskActorSys
     }
 
     checkStreams(out, err, {
-        case (o, e) =>
-          o shouldBe empty
-          e should include("Zip file does not include")
+      case (o, e) =>
+        o shouldBe empty
+        e should include("Zip file does not include")
     })
   }
 
@@ -277,14 +277,14 @@ class PythonActionContainerTests extends BasicActionRunnerTests with WskActorSys
           |    return { "error": "not reaching here" }
         """.stripMargin
 
-        // action loop detects those errors at init time
-        val (initCode, _) = c.init(initPayload(code))
-        initCode should be(502)
+      // action loop detects those errors at init time
+      val (initCode, _) = c.init(initPayload(code))
+      initCode should be(502)
     }
     checkStreams(out, err, {
-        case (o, e) =>
-          o shouldBe empty
-          e should include  regex("Traceback|cannot start")
+      case (o, e) =>
+        o shouldBe empty
+        e should include regex ("Traceback|cannot start")
     })
   }
 

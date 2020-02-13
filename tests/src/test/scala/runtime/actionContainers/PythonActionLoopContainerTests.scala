@@ -26,7 +26,10 @@ import org.scalatest.junit.JUnitRunner
 import spray.json._
 
 @RunWith(classOf[JUnitRunner])
-class PythonActionLoopContainerTests extends PythonActionContainerTests with PythonActionLoopExtraTests with WskActorSystem {
+class PythonActionLoopContainerTests
+    extends PythonActionContainerTests
+    with PythonActionLoopExtraTests
+    with WskActorSystem {
 
   override lazy val imageName = "actionloop-python-v3.7"
 
@@ -76,7 +79,7 @@ class PythonActionLoopContainerTests extends PythonActionContainerTests with Pyt
       initCode should be(502)
 
       if (!errorCodeOnRun)
-        initRes.get.fields.get("error").get.toString should include regex("No module|action failed")
+        initRes.get.fields.get("error").get.toString should include regex ("No module|action failed")
     }
 
     if (errorCodeOnRun)
@@ -96,7 +99,7 @@ class PythonActionLoopContainerTests extends PythonActionContainerTests with Pyt
       initCode should be(502)
 
       if (!errorCodeOnRun)
-        initRes.get.fields.get("error").get.toString should include regex("Invalid virtualenv|action failed")
+        initRes.get.fields.get("error").get.toString should include regex ("Invalid virtualenv|action failed")
     }
 
     if (errorCodeOnRun)

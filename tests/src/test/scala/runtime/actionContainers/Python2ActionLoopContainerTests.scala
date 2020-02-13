@@ -22,7 +22,10 @@ import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 
 @RunWith(classOf[JUnitRunner])
-class Python2ActionLoopContainerTests extends PythonActionContainerTests with PythonActionLoopExtraTests with WskActorSystem {
+class Python2ActionLoopContainerTests
+    extends PythonActionContainerTests
+    with PythonActionLoopExtraTests
+    with WskActorSystem {
 
   override lazy val imageName = "actionloop-python-v2.7"
 

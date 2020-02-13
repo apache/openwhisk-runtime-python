@@ -28,7 +28,6 @@ class Python3AiActionContainerTests extends PythonActionContainerTests with WskA
 
   override lazy val imageName = "python3aiaction"
 
-
   it should "run tensorflow" in {
     val (out, err) = withActionContainer() { c =>
       val code =

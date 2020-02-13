@@ -19,7 +19,7 @@ package runtime.actionContainers
 import spray.json.JsObject
 
 trait PythonActionLoopExtraTests {
-  this : PythonActionContainerTests =>
+  this: PythonActionContainerTests =>
 
   it should "detect termination at run" in {
     val (out, err) = withActionContainer() { c =>
@@ -69,7 +69,7 @@ trait PythonActionLoopExtraTests {
   }
 
   it should "read an environment variable" in {
-    val (out, err) = withActionContainer(Map("X"->"xyz")) { c =>
+    val (out, err) = withActionContainer(Map("X" -> "xyz")) { c =>
       val code = """
                    |import os
                    |X = os.getenv('X')
