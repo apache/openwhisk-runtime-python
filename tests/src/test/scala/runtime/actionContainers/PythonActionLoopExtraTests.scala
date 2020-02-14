@@ -79,7 +79,7 @@ trait PythonActionLoopExtraTests {
                  """.stripMargin
 
       // action loop detects those errors at init time
-      val (initCode, _) = c.init(initPayload(code, "main", Some(Map("X" ->JsString("xyz")))))
+      val (initCode, _) = c.init(initPayload(code, "main", Some(Map("X" -> JsString("xyz")))))
       initCode should be(200)
 
       val (runCode, runRes) = c.run(runPayload(JsObject()))
