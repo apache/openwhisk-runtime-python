@@ -16,7 +16,7 @@
  */
 package runtime.actionContainers
 
-import spray.json.JsObject
+import spray.json.{JsObject, JsString}
 
 trait PythonActionLoopExtraTests {
   this: PythonActionContainerTests =>
@@ -69,7 +69,7 @@ trait PythonActionLoopExtraTests {
   }
 
   it should "read an environment variable" in {
-    val (out, err) = withActionContainer(Map("X" -> "xyz")) { c =>
+    val (out, err) = withActionContainer() { c =>
       val code = """
                    |import os
                    |X = os.getenv('X')
@@ -79,11 +79,12 @@ trait PythonActionLoopExtraTests {
                  """.stripMargin
 
       // action loop detects those errors at init time
-      val (initCode, initRes) = c.init(initPayload(code))
+      val (initCode, _) = c.init(initPayload(code, "main", Some(Map("X" ->JsString("xyz")))))
       initCode should be(200)
 
       val (runCode, runRes) = c.run(runPayload(JsObject()))
       runCode should be(200)
+      runRes.get.fields.get("body").get.toString() shouldBe "ok"
     }
     checkStreams(out, err, {
       case (o, e) =>
