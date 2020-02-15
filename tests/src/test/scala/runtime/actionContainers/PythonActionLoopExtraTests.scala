@@ -84,11 +84,11 @@ trait PythonActionLoopExtraTests {
 
       val (runCode, runRes) = c.run(runPayload(JsObject()))
       runCode should be(200)
-      runRes.get.fields.get("body").get.toString() shouldBe "ok"
+      runRes.get.fields.get("body").get shouldBe JsString("ok")
     }
     checkStreams(out, err, {
       case (o, e) =>
-        o shouldBe include("xyz")
+        o should include("xyz")
         e shouldBe empty
     })
   }
