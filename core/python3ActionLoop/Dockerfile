@@ -14,10 +14,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 # build go proxy from source
 FROM golang:1.12 AS builder_source
-RUN env CGO_ENABLED=0 go get github.com/apache/openwhisk-runtime-go/main && mv /go/bin/main /bin/proxy
+#RUN env CGO_ENABLED=0 go get github.com/apache/openwhisk-runtime-go/main && mv /go/bin/main /bin/proxy
+RUN git clone --branch dev \
+   https://github.com/nimbella-corp/openwhisk-runtime-go /src ;\
+   cd /src ; env GO111MODULE=on CGO_ENABLED=0 go build main/proxy.go && \
+   mv proxy /bin/proxy
 
 # or build it from a release
 FROM golang:1.12 AS builder_release
@@ -29,9 +32,7 @@ RUN curl -sL \
   && GO111MODULE=on go build -o /bin/proxy
 
 FROM python:3.7-stretch
-
-# select the builder to use
-ARG GO_PROXY_BUILD_FROM=release
+ARG GO_PROXY_BUILD_FROM=source
 
 # Install common modules for python
 RUN pip install \
@@ -51,9 +52,17 @@ WORKDIR /
 COPY --from=builder_source /bin/proxy /bin/proxy_source
 COPY --from=builder_release /bin/proxy /bin/proxy_release
 RUN mv /bin/proxy_${GO_PROXY_BUILD_FROM} /bin/proxy
-ADD pythonbuild.py /bin/compile
-ADD pythonbuild.py.launcher.py /bin/compile.launcher.py
+ADD bin/compile /bin/compile
+ADD lib/launcher.py /lib/launcher.py
+
+# log initialization errors
+ENV OW_LOG_INIT_ERROR=1
+# the launcher must wait for an ack
+ENV OW_WAIT_FOR_ACK=1
+# using the runtime name to identify the execution environment
+ENV OW_EXECUTION_ENV=openwhisk/action-python-v3.7
+# compiler script
 ENV OW_COMPILER=/bin/compile
-ENTRYPOINT []
-CMD ["/bin/proxy"]
+
+ENTRYPOINT ["/bin/proxy"]
 

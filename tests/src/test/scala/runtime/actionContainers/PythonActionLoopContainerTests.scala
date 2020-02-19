@@ -26,14 +26,17 @@ import org.scalatest.junit.JUnitRunner
 import spray.json._
 
 @RunWith(classOf[JUnitRunner])
-class PythonActionLoopContainerTests extends PythonActionContainerTests with WskActorSystem {
+class PythonActionLoopContainerTests
+    extends PythonActionContainerTests
+    with PythonActionLoopExtraTests
+    with WskActorSystem {
 
   override lazy val imageName = "actionloop-python-v3.7"
 
   override val testNoSource = TestConfig("", hasCodeStub = false)
 
   /** actionloop based image does not log init errors - return the error in the body */
-  override lazy val initErrorsAreLogged = false
+  override lazy val errorCodeOnRun = false
 
   def testArtifact(name: String): File = {
     new File(this.getClass.getClassLoader.getResource(name).toURI)
@@ -75,11 +78,11 @@ class PythonActionLoopContainerTests extends PythonActionContainerTests with Wsk
       val (initCode, initRes) = c.init(initPayload(code, main = "main"))
       initCode should be(502)
 
-      if (!initErrorsAreLogged)
-        initRes.get.fields.get("error").get.toString should include("Zip file does not include mandatory files")
+      if (!errorCodeOnRun)
+        initRes.get.fields.get("error").get.toString should include regex ("No module|action failed")
     }
 
-    if (initErrorsAreLogged)
+    if (errorCodeOnRun)
       checkStreams(out, err, {
         case (o, e) =>
           o shouldBe empty
@@ -95,11 +98,11 @@ class PythonActionLoopContainerTests extends PythonActionContainerTests with Wsk
       val (initCode, initRes) = c.init(initPayload(code, main = "main"))
       initCode should be(502)
 
-      if (!initErrorsAreLogged)
-        initRes.get.fields.get("error").get.toString should include("Invalid virtualenv. Zip file does not include")
+      if (!errorCodeOnRun)
+        initRes.get.fields.get("error").get.toString should include regex ("Invalid virtualenv|action failed")
     }
 
-    if (initErrorsAreLogged)
+    if (errorCodeOnRun)
       checkStreams(out, err, {
         case (o, e) =>
           o shouldBe empty

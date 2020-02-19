@@ -15,11 +15,11 @@
 # limitations under the License.
 #
 from __future__ import print_function
-from sys import stdin
-from sys import stdout
-from sys import stderr
 from os import fdopen
-import sys, os, json, traceback, warnings
+import sys, os, codecs, json, traceback, warnings
+
+sys.stdout = codecs.getwriter('utf8')(sys.stdout)
+sys.stderr = codecs.getwriter('utf8')(sys.stderr)
 
 try:
   # if the directory 'virtualenv' is extracted out of a zip file
@@ -39,36 +39,33 @@ except Exception:
   sys.exit(1)
 
 # now import the action as process input/output
-warnings.filterwarnings("ignore")
 from main__ import main as main
-warnings.resetwarnings()
-
-# if there are some arguments exit immediately
-if len(sys.argv) >1:
-  sys.stderr.flush()
-  sys.stdout.flush()
-  sys.exit(0)
 
 env = os.environ
 out = fdopen(3, "wb")
+if os.getenv("__OW_WAIT_FOR_ACK", "") != "":
+  out.write(json.dumps({"ok": True}, ensure_ascii=False).encode('utf-8'))
+  out.write(b'\n')
+  out.flush()
 while True:
-  line = stdin.readline()
+  line = sys.stdin.readline().decode('utf-8')
   if not line: break
   args = json.loads(line)
   payload = {}
   for key in args:
-    if key == "value":
+    akey = key.encode("ascii", "ignore")
+    if akey == "value":
       payload = args["value"]
     else:
-      env["__OW_%s" % key.upper()]= args[key]
+      env["__OW_%s" % akey.upper()] = args[key].encode("ascii", "ignore")
   res = {}
   try:
     res = main(payload)
   except Exception as ex:
-    print(traceback.format_exc(), file=stderr)
+    print(traceback.format_exc(), file=sys.stderr)
     res = {"error": str(ex)}
   out.write(json.dumps(res, ensure_ascii=False).encode('utf-8'))
   out.write(b'\n')
-  stdout.flush()
-  stderr.flush()
+  sys.stdout.flush()
+  sys.stderr.flush()
   out.flush()

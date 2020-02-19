@@ -31,8 +31,8 @@ class PythonActionContainerTests extends BasicActionRunnerTests with WskActorSys
 
   lazy val imageName = "python3action"
 
-  /** indicates if errors are logged or returned in the answer */
-  lazy val initErrorsAreLogged = true
+  /** actionLoop does not return an error code on failed run */
+  lazy val errorCodeOnRun = true
 
   override def withActionContainer(env: Map[String, String] = Map.empty)(code: ActionContainer => Unit) = {
     withContainer(imageName, env)(code)
@@ -75,9 +75,10 @@ class PythonActionContainerTests extends BasicActionRunnerTests with WskActorSys
 
   override val testUnicode =
     TestConfig("""
+        |# encoding: utf-8
         |def main(args):
         |    sep = args['delimiter']
-        |    str = sep + " ☃ " + sep
+        |    str = sep + u" ☃ " + sep
         |    print(str)
         |    return {"winter" : str }
       """.stripMargin.trim)
@@ -180,16 +181,13 @@ class PythonActionContainerTests extends BasicActionRunnerTests with WskActorSys
     val (out, err) = withActionContainer() { c =>
       val (initCode, initRes) = c.init(initPayload(code, main = "echo"))
       initCode should be(502)
-      if (!initErrorsAreLogged)
-        initRes.get.fields.get("error").get.toString() should include("Zip file does not include")
     }
 
-    if (initErrorsAreLogged)
-      checkStreams(out, err, {
-        case (o, e) =>
-          o shouldBe empty
-          e should include("Zip file does not include")
-      })
+    checkStreams(out, err, {
+      case (o, e) =>
+        o shouldBe empty
+        e should include("Zip file does not include")
+    })
   }
 
   it should "return on action error when action fails" in {
@@ -211,7 +209,7 @@ class PythonActionContainerTests extends BasicActionRunnerTests with WskActorSys
        * Since it only receive a string from the application
        * it should parse the entire string  in JSON just to find it is an "error"
        */
-      if (initErrorsAreLogged)
+      if (errorCodeOnRun)
         runCode should be(502)
 
       runRes shouldBe defined
@@ -237,7 +235,7 @@ class PythonActionContainerTests extends BasicActionRunnerTests with WskActorSys
       // init checks whether compilation was successful, so return 502
       initCode should be(502)
     }
-    if (initErrorsAreLogged)
+    if (errorCodeOnRun)
       checkStreams(out, err, {
         case (o, e) =>
           o shouldBe empty
@@ -279,22 +277,15 @@ class PythonActionContainerTests extends BasicActionRunnerTests with WskActorSys
           |    return { "error": "not reaching here" }
         """.stripMargin
 
-      if (initErrorsAreLogged) {
-        val (initCode, res) = c.init(initPayload(code))
-        initCode should be(502)
-      } else {
-        // action loop detects those errors at init time
-        val (initCode, initRes) = c.init(initPayload(code))
-        initCode should be(502)
-        initRes.get.fields.get("error").get.toString() should include("Traceback")
-      }
+      // action loop detects those errors at init time
+      val (initCode, _) = c.init(initPayload(code))
+      initCode should be(502)
     }
-    if (initErrorsAreLogged)
-      checkStreams(out, err, {
-        case (o, e) =>
-          o shouldBe empty
-          e should include("Traceback")
-      })
+    checkStreams(out, err, {
+      case (o, e) =>
+        o shouldBe empty
+        e should include regex ("Traceback|cannot start")
+    })
   }
 
   it should "have a valid sys.executable" in {

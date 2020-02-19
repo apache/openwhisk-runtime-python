@@ -18,7 +18,7 @@ results
 !/ansible/environments/mac
 
 # Eclipse
-bin/
+#bin/
 **/.project
 .settings/
 .classpath
