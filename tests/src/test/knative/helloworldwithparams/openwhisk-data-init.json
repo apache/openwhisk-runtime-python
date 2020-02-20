@@ -1,0 +1,8 @@
+{
+  "value": {
+    "name" : "python-helloworld-with-params",
+    "main" : "main",
+    "binary": false,
+    "code" : "def main(params):\n return { \"greetings\": f\"Hello {params.get('name', 'stranger')} from {params.get('place', 'parts unkown')}!\" }"
+  }
+}

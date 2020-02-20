@@ -1,0 +1,17 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: python-hello-world-with-params
+  namespace: default
+spec:
+  template:
+    spec:
+      containers:
+        - image: DOCKER_USERNAME/action-python
+          env:
+            - name: __OW_RUNTIME_PLATFORM
+              value: knative
+            - name: __OW_ACTION_CODE
+              value: |
+                def main(params):
+                  return { "greetings": f"Hello {params.get('name', 'stranger')} from {params.get('place', 'parts unkown')}!" }

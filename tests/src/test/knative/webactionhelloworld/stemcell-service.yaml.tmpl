@@ -1,0 +1,13 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: python-web-action-helloworld
+  namespace: default
+spec:
+  template:
+    spec:
+      containers:
+        - image: DOCKER_USERNAME/action-python
+          env:
+            - name: __OW_RUNTIME_PLATFORM
+              value: knative
