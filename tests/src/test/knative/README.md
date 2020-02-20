@@ -158,7 +158,7 @@ in conjunction with prepared data:
 
 #### Using the 'curl' command
 
-Simply send the *"init-run"* data to the base *'/'* route on the runtime (service) endpoint. 
+Simply send the *"init-run"* data to the base *'/'* route on the runtime (service) endpoint.
 
 If your function requires no input data on the request:
 
