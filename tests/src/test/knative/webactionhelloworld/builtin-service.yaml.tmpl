@@ -1,0 +1,22 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: python-web-action-helloworld
+  namespace: default
+spec:
+  template:
+    spec:
+      containers:
+        - image: DOCKER_USERNAME/action-python
+          env:
+            - name: __OW_RUNTIME_PLATFORM
+              value: knative
+            - name: __OW_ACTION_NAME
+              value: greetings-builtin-code
+            - name: __OW_ACTION_CODE
+              value: |
+                def main(parms):
+                	msg = 'you did not tell me who you are.'
+                	if (params['name']):
+                  		msg = f'hello {name}'
+                	return {'body': f'<html><body><h3>{msg}</h3></body></html>'}

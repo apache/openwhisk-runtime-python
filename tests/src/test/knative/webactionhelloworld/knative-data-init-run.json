@@ -1,0 +1,19 @@
+{
+  "init": {
+    "name" : "python-web-action-helloworld",
+    "main" : "main",
+    "binary": false,
+    "code" : "def main(parms):\n\tmsg = 'you did not tell me who you are.'\n\tif (params['name']):\n\t\tmsg = f'hello {name}'\n\treturn {'body': f'<html><body><h3>{msg}</h3></body></html>'}"
+  },
+  "activation": {
+    "namespace": "default",
+    "action_name": "python-web-action-helloworld",
+    "api_host": "",
+    "api_key": "",
+    "activation_id": "",
+    "deadline": "4102498800000"
+  },
+  "value": {
+    "name": "Joe"
+  }
+}
