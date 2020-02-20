@@ -28,7 +28,7 @@ Depending on the value you set in *-service.yaml for the ```__OW_RUNTIME_PLATFOR
 #### Invoke / endpoint on the Service
 
 ```
-curl -H "Host: nodejs-web-action-helloworld.default.example.com" -X POST http://localhost/
+curl -H "Host: python-web-action-helloworld.default.example.com" -X POST http://localhost/
 <html><body><h3>hello Joe</h3></body></html>
 ```
 
