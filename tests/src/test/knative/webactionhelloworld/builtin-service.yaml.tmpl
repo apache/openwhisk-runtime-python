@@ -32,8 +32,8 @@ spec:
               value: greetings-builtin-code
             - name: __OW_ACTION_CODE
               value: |
-                def main(parms):
+                def main(params):
                 	msg = 'you did not tell me who you are.'
-                	if (params['name']):
-                  		msg = f'hello {name}'
+                	if 'name' in params:
+                  		msg = f'hello {params["name"]}'
                 	return {'body': f'<html><body><h3>{msg}</h3></body></html>'}
