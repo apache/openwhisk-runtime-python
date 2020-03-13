@@ -23,11 +23,6 @@ RUN git clone --branch ${GO_PROXY_GITHUB_BRANCH} \
    cd /src ; env GO111MODULE=on CGO_ENABLED=0 go build main/proxy.go && \
    mv proxy /bin/proxy
 
-RUN git clone --branch dev \
-   https://github.com/nimbella-corp/openwhisk-runtime-go /src ;\
-   cd /src ; env GO111MODULE=on CGO_ENABLED=0 go build main/proxy.go && \
-   mv proxy /bin/proxy
-
 # or build it from a release
 FROM golang:1.12 AS builder_release
 ARG GO_PROXY_RELEASE_VERSION=1.12@1.15.0
