@@ -18,8 +18,8 @@
 FROM golang:1.12 AS builder_source
 ARG GO_PROXY_GITHUB_USER=apache
 ARG GO_PROXY_GITHUB_BRANCH=master
-RUN git clone --branch ${GO_PROXY_GITHUB_USER} \
-   https://github.com/${GO_PROXY_GITHUB_BRANCH}/openwhisk-runtime-go /src ;\
+RUN git clone --branch ${GO_PROXY_GITHUB_BRANCH} \
+   https://github.com/${GO_PROXY_GITHUB_USER}/openwhisk-runtime-go /src ;\
    cd /src ; env GO111MODULE=on CGO_ENABLED=0 go build main/proxy.go && \
    mv proxy /bin/proxy
 
