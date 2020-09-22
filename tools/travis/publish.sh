@@ -35,7 +35,7 @@ if [ ${RUNTIME_VERSION} == "3" ]; then
 elif [ ${RUNTIME_VERSION} == "3-ai" ]; then
   RUNTIME="python3AiAction"
 elif [ ${RUNTIME_VERSION} == "3-loop" ]; then
-  RUNTIME="pythonActionLoop"
+  RUNTIME="python3ActionLoop"
 elif [ ${RUNTIME_VERSION} == "3-loopai" ]; then
   RUNTIME="python3AiActionLoop"
 fi
