@@ -15,7 +15,7 @@
 # limitations under the License.
 #
 # build go proxy from source
-FROM golang:1.12 AS builder_source
+FROM golang:1.15 AS builder_source
 ARG GO_PROXY_GITHUB_USER=apache
 ARG GO_PROXY_GITHUB_BRANCH=master
 RUN git clone --branch ${GO_PROXY_GITHUB_BRANCH} \
@@ -24,7 +24,7 @@ RUN git clone --branch ${GO_PROXY_GITHUB_BRANCH} \
    mv proxy /bin/proxy
 
 # or build it from a release
-FROM golang:1.12 AS builder_release
+FROM golang:1.15 AS builder_release
 ARG GO_PROXY_RELEASE_VERSION=1.12@1.15.0
 RUN curl -sL \
   https://github.com/apache/openwhisk-runtime-go/archive/{$GO_PROXY_RELEASE_VERSION}.tar.gz\
@@ -32,7 +32,7 @@ RUN curl -sL \
   && cd openwhisk-runtime-go-*/main\
   && GO111MODULE=on go build -o /bin/proxy
 
-FROM python:3.7-stretch
+FROM python:3.7-buster
 ARG GO_PROXY_BUILD_FROM=source
 
 # Install common modules for python
