@@ -64,7 +64,7 @@ trait PythonActionLoopExtraTests {
     checkStreams(out, err, {
       case (o, e) =>
         o shouldBe empty
-        e should include("command exited before ack")
+        e should include("Command exited abruptly during initialization.")
     })
   }
 
