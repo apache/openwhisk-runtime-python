@@ -26,7 +26,7 @@ RUN git clone --branch ${GO_PROXY_GITHUB_BRANCH} \
 
 # or build it from a release
 FROM golang:1.15 AS builder_release
-ARG GO_PROXY_RELEASE_VERSION=1.12@1.15.0
+ARG GO_PROXY_RELEASE_VERSION=1.15@1.16.0
 RUN curl -sL \
   https://github.com/apache/openwhisk-runtime-go/archive/{$GO_PROXY_RELEASE_VERSION}.tar.gz\
   | tar xzf -\
@@ -35,7 +35,7 @@ RUN curl -sL \
 
 FROM python:2.7-alpine
 # select the builder to use
-ARG GO_PROXY_BUILD_FROM=source
+ARG GO_PROXY_BUILD_FROM=release
 
 # Upgrade and install basic Python dependencies
 RUN apk add --no-cache \
