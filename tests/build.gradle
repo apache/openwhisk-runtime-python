@@ -44,8 +44,6 @@ tasks.withType(ScalaCompile) {
 }
 
 task testPython3(type: Test) {
-    // python2 is end-of-life and the runtime not built by default
-    exclude 'scala/runtime/actionContainers/Python2ActionLoopContainerTests'
 }
 
 task buildArtifacts(type:Exec) {
