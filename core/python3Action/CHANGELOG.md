@@ -20,7 +20,7 @@
 # Python 3 OpenWhisk Runtime Container
 
 ## 1.15.0
-  - build proxy from 1.16.0 release of openwhisk-runtime-go
+  - Build proxy from 1.16.0 release of openwhisk-runtime-go
   - Update to golang:1.15 and buster. (#90)
   - Ambiguous name changed to python3ActionLoop (#89)
   - Updated Python runtimes to use "Action Loop" Proxy with new async handshake (#82)
