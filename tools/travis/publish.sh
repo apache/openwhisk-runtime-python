@@ -31,12 +31,8 @@ RUNTIME_VERSION=$2
 IMAGE_TAG=$3
 
 if [ ${RUNTIME_VERSION} == "3" ]; then
-  RUNTIME="pythonAction"
-elif [ ${RUNTIME_VERSION} == "3-ai" ]; then
-  RUNTIME="python3AiAction"
-elif [ ${RUNTIME_VERSION} == "3-loop" ]; then
   RUNTIME="python3ActionLoop"
-elif [ ${RUNTIME_VERSION} == "3-loopai" ]; then
+elif [ ${RUNTIME_VERSION} == "3-ai" ]; then
   RUNTIME="python3AiActionLoop"
 fi
 

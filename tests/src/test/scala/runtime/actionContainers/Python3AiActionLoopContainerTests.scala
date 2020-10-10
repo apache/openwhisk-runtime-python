@@ -111,14 +111,12 @@ class Python3AiActionLoopContainerTests
       // action loop detects those errors at init time
       val (initCode, initRes) = c.init(initPayload(code))
       initCode should be(200)
-      println(initCode, initRes)
 
       val (runCode, runRes) = c.run(runPayload(JsObject()))
       runCode should be(200)
       runRes.get.fields.get("array") should not be empty
     }
-    println(out)
-    println(err)
+
     checkStreams(out, err, {
       case (o, e) =>
         o shouldBe empty
@@ -139,13 +137,11 @@ class Python3AiActionLoopContainerTests
       // action loop detects those errors at init time
       val (initCode, initRes) = c.init(initPayload(code))
       initCode should be(200)
-      println(initCode, initRes)
 
       val (runCode, _) = c.run(runPayload(JsObject()))
       runCode should be(400)
     }
-    println(out)
-    println(err)
+
     checkStreams(out, err, {
       case (o, e) =>
         o shouldBe empty

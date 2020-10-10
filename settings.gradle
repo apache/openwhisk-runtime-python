@@ -18,9 +18,7 @@
 include 'tests'
 
 include 'core:python2ActionLoop'
-include 'core:python3Action'
 include 'core:python3ActionLoop'
-include 'core:python3AiAction'
 include 'core:python3AiActionLoop'
 
 rootProject.name = 'runtime-python'
