@@ -32,7 +32,7 @@ Bellow are the versions for the included libraries:
 This image has Jupyter Notebook installed. You may find useful to run quick Notebooks directly on the image which may run the actual code. To start Jupyter Notebook execute:
 
 ```bash
-$ docker run -it -p 8888:8888 --rm --entrypoint jupyter-notebook openwhisk/actionloop-python-v3.7ai  --notebook-dir=/notebooks --ip 0.0.0.0 --no-browser --allow-root
+$ docker run -it -p 8888:8888 --rm --entrypoint jupyter-notebook openwhisk/actionloop-python-v3.6ai  --notebook-dir=/notebooks --ip 0.0.0.0 --no-browser --allow-root
 ```
 
 #### AI Action Sample
@@ -73,7 +73,7 @@ To view an example with this AI Action check the [samples/smart-body-crop notebo
 For a complete list execute:
 
 ```bash
-$ docker run --rm --entrypoint pip openwhisk/python3aiaction list
+docker run --rm --entrypoint pip actionloop-python-v3.6-ai list
 ```
 
 #### Available Ubuntu packages
@@ -81,5 +81,5 @@ $ docker run --rm --entrypoint pip openwhisk/python3aiaction list
 For a complete list execute:
 
 ```bash
-$ docker run --rm --entrypoint apt openwhisk/python3aiaction list --installed
+docker run --rm --entrypoint apt actionloop-python-v3.6-ai list --installed
 ```

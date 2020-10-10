@@ -21,96 +21,82 @@
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 [![Build Status](https://travis-ci.org/apache/openwhisk-runtime-python.svg?branch=master)](https://travis-ci.org/apache/openwhisk-runtime-python)
 
+## Build Runtimes
 
-### Give it a try today
-To use as a docker action using python 3
-```
-wsk action update myAction myAction.py --docker openwhisk/python3action:1.0.2
-```
+The runtimes are built using Gradle.
+The file [settings.gradle](settings.gradle) lists the images that are build by default.
+To build all those images, run the following command.
 
-### To use on deployment that contains the rutime as a kind
-To use as a kind action using python 3
 ```
-wsk action update myAction myAction.py --kind python:3
-```
-Replace `python:3` with `python:2` to use python 2.
-
-
-### Python 3 AI Action
-This action enables developers to create AI Services with OpenWhisk. It comes with preinstalled libraries useful for running machine learning and deep learning inferences. See more about [python3aiaction](./core/python3AiAction).
-
-### Local development
-```
-./gradlew core:pythonAction:distDocker
-```
-This will produce the image `whisk/python3action`
-
-Build and Push image
-```
-docker login
-./gradlew core:pythonAction:distDocker -PdockerImagePrefix=$prefix-user -PdockerRegistry=docker.io
+./gradlew distDocker
 ```
 
-Deploy OpenWhisk using ansible environment that contains the kind `python:3` and `python:2`
-Assuming you have OpenWhisk already deploy locally and `OPENWHISK_HOME` pointing to root directory of OpenWhisk core repository.
-
-Set `ROOTDIR` to the root directory of this repository.
-
-Redeploy OpenWhisk
+You can optionally build a specific image by modifying the Gradle command. For example:
 ```
-cd $OPENWHISK_HOME/ansible
-ANSIBLE_CMD="ansible-playbook -i ${ROOTDIR}/ansible/environments/local"
-$ANSIBLE_CMD setup.yml
-$ANSIBLE_CMD couchdb.yml
-$ANSIBLE_CMD initdb.yml
-$ANSIBLE_CMD wipe.yml
-$ANSIBLE_CMD openwhisk.yml
+./gradlew core:python3ActionLoop:distDocker
 ```
 
-Or you can use `wskdev` and create a soft link to the target ansible environment, for example:
+The build will produce Docker images such as `actionloop-python-v3.7`
+and will also tag the same image with the `whisk/` prefix. The latter
+is a convenience, which if you're testing with a local OpenWhisk
+stack, allows you to skip pushing the image to Docker Hub.
+
+The image will need to be pushed to Docker Hub if you want to test it
+with a hosted OpenWhisk installation.
+
+### Using Gradle to push to a Docker Registry
+
+The Gradle build parameters `dockerImagePrefix` and `dockerRegistry`
+can be configured for your Docker Registery. Make usre you are logged
+in first with the `docker` CLI.
+
+- Use the `docker` CLI to login. The following assume you will substitute `$DOCKER_USER` with an appropriate value.
+  ```
+  docker login --username $DOCKER_USER
+  ```
+
+- Now build, tag and push the image accordingly.
+  ```
+  ./gradlew distDocker -PdockerImagePrefix=$DOCKER_USER -PdockerRegistry=docker.io
+  ```
+
+### Using Your Image as an OpenWhisk Action
+
+You can now use this image as an OpenWhisk action. For example, to use
+the image `actionloop-python-v3.7` as an action runtime, you would run
+the following command.
+
 ```
-ln -s ${ROOTDIR}/ansible/environments/local ${OPENWHISK_HOME}/ansible/environments/local-python
-wskdev fresh -t local-python
+wsk action update myAction myAction.py --docker $DOCKER_USER/actionloop-python-v3.7
 ```
 
-Use the `docker` commands to tag the image and push it into your own Docker Hub account
-```
-docker tag whisk/python3action $user_prefix/python3action
-docker push $user_prefix/python3action
-```
-Then create the action using your image from dockerhub
-```
-wsk action update myAction myAction.py --docker $user_prefix/python3action
-```
-The `$user_prefix` is usually your dockerhub user id.
+## Test Runtimes
 
-### Testing
-Install dependencies from the root directory on $OPENWHISK_HOME repository
+There are suites of tests that are generic for all runtimes, and some that are specific to a runtime version.
+To run all tests, there are two steps.
+
+First, you need to create an OpenWhisk snapshot release. Do this from your OpenWhisk home directory.
 ```
 ./gradlew install
 ```
 
-Using gradle for the ActionContainer tests you need to use a proxy if running on Mac, if Linux then don't use proxy options
-You can pass the flags `-Dhttp.proxyHost=localhost -Dhttp.proxyPort=3128` directly in gradle command.
-Or save in your `$HOME/.gradle/gradle.properties`
+Now you can build and run the tests in this repository.
 ```
-systemProp.http.proxyHost=localhost
-systemProp.http.proxyPort=3128
-```
-Using gradle to run all tests
-```
-./gradlew :tests:test
-```
-Using gradle to run some tests
-```
-./gradlew :tests:test --tests *ActionContainerTests*
-```
-Using IntelliJ:
-- Import project as gradle project.
-- Make sure working directory is root of the project/repo
-- Add the following Java VM properties in ScalaTests Run Configuration, easiest is to change the Defaults for all ScalaTests to use this VM properties
-```
--Dhttp.proxyHost=localhost
--Dhttp.proxyPort=3128
+./gradlew tests:test
 ```
 
+Gradle allows you to selectively run tests. For example, the following
+command runs tests which match the given pattern and excludes all
+others.
+```
+./gradlew :tests:test --tests *ActionLoopContainerTests*
+```
+
+## Python 3 AI Runtime
+This action runtime enables developers to create AI Services with OpenWhisk. It comes with preinstalled libraries useful for running machine learning and deep learning inferences. [Read more about this runtime here](./core/python3AiActionLoop).
+
+## Import Project into IntelliJ
+
+Follow these steps to import the project into your IntelliJ IDE.
+- Import project as gradle project.
+- Make sure working directory is root of the project/repo.
