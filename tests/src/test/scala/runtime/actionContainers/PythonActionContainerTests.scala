@@ -17,8 +17,6 @@
 
 package runtime.actionContainers
 
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
 import spray.json.DefaultJsonProtocol._
 import spray.json._
 import common.WskActorSystem
@@ -26,10 +24,9 @@ import actionContainers.{ActionContainer, BasicActionRunnerTests}
 import actionContainers.ActionContainer.withContainer
 import actionContainers.ResourceHelpers.ZipBuilder
 
-@RunWith(classOf[JUnitRunner])
-class PythonActionContainerTests extends BasicActionRunnerTests with WskActorSystem {
+abstract class PythonActionContainerTests extends BasicActionRunnerTests with WskActorSystem {
 
-  lazy val imageName = "python3action"
+  val imageName: String
 
   /** actionLoop does not return an error code on failed run */
   lazy val errorCodeOnRun = true
@@ -97,6 +94,21 @@ class PythonActionContainerTests extends BasicActionRunnerTests with WskActorSys
         |       "deadline": os.environ['__OW_DEADLINE']
         |    }
       """.stripMargin.trim)
+
+  override val testEnvParameters =
+    TestConfig("""
+        |import os
+        |somevar = os.environ['SOME_VAR']
+        |another = os.environ['ANOTHER_VAR']
+        |
+        |def main(dict):
+        |    global somevar
+        |    global another
+        |    return {
+        |       "SOME_VAR": somevar,
+        |       "ANOTHER_VAR": another
+        |    }
+      """.stripMargin)
 
   override val testLargeInput =
     TestConfig("""

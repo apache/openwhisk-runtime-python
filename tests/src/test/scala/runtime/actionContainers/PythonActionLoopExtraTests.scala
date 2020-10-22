@@ -36,7 +36,6 @@ trait PythonActionLoopExtraTests {
 
       val (runCode, runRes) = c.run(runPayload(JsObject()))
       runCode should be(400)
-      println(runCode, runRes)
       runRes.get.fields.get("error").get.toString() should include("command exited")
     }
     checkStreams(out, err, {
