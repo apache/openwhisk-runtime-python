@@ -40,6 +40,7 @@ ARG GO_PROXY_BUILD_FROM=release
 # Upgrade and install basic Python dependencies
 RUN apk add --no-cache \
         bash \
+        build-base \
         bzip2-dev \
         gcc \
         libc-dev \
