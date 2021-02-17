@@ -208,3 +208,11 @@ Apache License 2.0
 This product bundles the files gradlew and gradlew.bat from Gradle v5.5
 which are distributed under the Apache License, Version 2.0.
 For details see ./gradlew and ./gradlew.bat.
+
+========================================================================
+Prexels License
+========================================================================
+
+The image core/python3AiActionLoop/samples/smart-body-crop/fashion-men-1.jpg
+originates from https://www.pexels.com/photo/full-length-portrait-of-man-standing-in-corridor-325685
+and is licensed under the Prexels License (https://www.pexels.com/license/).
