@@ -16,6 +16,7 @@
 #
 # build go proxy from source
 FROM golang:1.15 AS builder_source
+
 ARG GO_PROXY_GITHUB_USER=apache
 ARG GO_PROXY_GITHUB_BRANCH=master
 RUN git clone --branch ${GO_PROXY_GITHUB_BRANCH} \
@@ -33,6 +34,8 @@ RUN curl -sL \
   && GO111MODULE=on go build -o /bin/proxy
 
 FROM python:3.7-buster
+
+# select the builder to use
 ARG GO_PROXY_BUILD_FROM=release
 
 # Install common modules for python
@@ -66,4 +69,3 @@ ENV OW_EXECUTION_ENV=openwhisk/action-python-v3.7
 ENV OW_COMPILER=/bin/compile
 
 ENTRYPOINT ["/bin/proxy"]
-
