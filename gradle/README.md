@@ -41,14 +41,14 @@ Project level options that can be used on `distDocker`:
 
 ### Test
 
-To run tests one uses the `test` task. OpenWhisk consolidates tests into a single `tests` project. Hence the command to run all tests is `gradle :tests:test`.
+To run tests one uses the `test` task. OpenWhisk consolidates tests into a single `tests` project. Hence, the command to run all tests is `gradle :tests:test`.
 
 It is possible to run specific tests using [Gradle testfilters](https://docs.gradle.org/current/userguide/java_plugin.html#test_filtering). For example `gradle :tests:test --tests "your.package.name.TestClass.evenMethodName"`. Wildcard `*` may be used anywhere.
 
 ## Build your own `build.gradle`
 In Gradle, most of the tasks we use are default tasks provided by plugins in Gradle. The [`scala` Plugin](https://docs.gradle.org/current/userguide/scala_plugin.html) for example includes tasks, that are needed to build Scala projects. Moreover, Gradle is aware of *Applications*. The [`application` Plugin](https://docs.gradle.org/current/userguide/application_plugin.html) provides tasks that are required to distribute a self-contained application. When `application` and `scala` are used in conjunction, they hook into each other and provide the tasks needed to distribute a Scala application. `distTar` for example compiles the Scala code, creates a jar containing the compiled classes and resources and creates a Tarball including that jar and all of its dependencies (defined in the dependencies section of `build.gradle`). It also creates a start-script which correctly sets the classpath for all those dependencies and starts the app.
 
-In OpenWhisk, we want to distribute our application via Docker images. Hence we wrote a "plugin" that creates the task `distDocker`. That task will build an image from the `Dockerfile` that is located next to the `build.gradle` it is called from, for example Controller's `Dockerfile` and `build.gradle` are both located at `core/controller`.
+In OpenWhisk, we want to distribute our application via Docker images. Hence, we wrote a "plugin" that creates the task `distDocker`. That task will build an image from the `Dockerfile` that is located next to the `build.gradle` it is called from, for example Controller's `Dockerfile` and `build.gradle` are both located at `core/controller`.
 
 If you want to create a new `build.gradle` for your component, simply put the `Dockerfile` right next to it and include `docker.gradle` by using
 
