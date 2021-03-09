@@ -123,7 +123,7 @@ Client expected response:
 ```
 Server will remain silent in this case
 
-Now we can invoke/run our function agains the `run` API with:
+Now we can invoke/run our function against the `run` API with:
 Using curl `POST` request
 ```
 curl -d "@python-data-init-run.json" -H "Content-Type: application/json" http://localhost/run
@@ -144,7 +144,7 @@ wget -O- --body-file=python-data-init-run.json --method=GET --header="Content-Ty
 
 The above can also be achieved with [Postman](https://www.postman.com/) by setting the headers and body accordingly.
 
-You noticed that we’re passing the same file `python-data-init-run.json` from function initialization request to trigger the function. That’s not necessary and not recommended since to trigger a function all we need is to pass the parameters of the function. So in the above example, it's prefered if we create a file called `python-data-params.json` that looks like the following:
+You noticed that we’re passing the same file `python-data-init-run.json` from function initialization request to trigger the function. That’s not necessary and not recommended since to trigger a function all we need is to pass the parameters of the function. So in the above example, it's preferred if we create a file called `python-data-params.json` that looks like the following:
 ```json
 {
    "value": {}
@@ -168,7 +168,7 @@ XXX_THE_END_OF_A_WHISK_ACTIVATION_XXX
 ```
 
 ## Creating functions with arguments
-If your container still running from the previuous example you must stop it and re-run it before proceding. Remember that each python runtime can only hold one function (which cannot be overrided due to security reasons)
+If your container still running from the previous example you must stop it and re-run it before proceeding. Remember that each python runtime can only hold one function (which cannot be overrided due to security reasons)
 Create a json file called `python-data-init-params.json` which will contain the function to be initialized that looks like the following:
 ```json
 {
@@ -180,7 +180,7 @@ Create a json file called `python-data-init-params.json` which will contain the 
    }
 }
 ```
-Also create a json file `python-data-run-params.json` which will contain the parameters to the function used to trigger it. Notice here we're creating 2 separate file from the beginning since this is good practice to make the disticntion between what needs to be send via the `init` API and what needs to be sent via the `run` API:
+Also create a json file `python-data-run-params.json` which will contain the parameters to the function used to trigger it. Notice here we're creating 2 separate file from the beginning since this is good practice to make the distinction between what needs to be send via the `init` API and what needs to be sent via the `run` API:
 ```json
 {
    "value": {
@@ -358,7 +358,7 @@ with a hosted OpenWhisk installation.
 ### Using Gradle to push to a Docker Registry
 
 The Gradle build parameters `dockerImagePrefix` and `dockerRegistry`
-can be configured for your Docker Registery. Make usre you are logged
+can be configured for your Docker Registry. Make sure you are logged
 in first with the `docker` CLI.
 
 - Use the `docker` CLI to login. The following assume you will substitute `$DOCKER_USER` with an appropriate value.
