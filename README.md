@@ -180,7 +180,7 @@ Create a json file called `python-data-init-params.json` which will contain the 
    }
 }
 ```
-Also create a json file `python-data-run-params.json` which will contain the parameters to the function used to trigger it. Notice here we're creating 2 separate file from the beginning since this is good practice to make the distinction between what needs to be send via the `init` API and what needs to be sent via the `run` API:
+Also create a json file `python-data-run-params.json` which will contain the parameters to the function used to trigger it. Notice here we're creating 2 separate file from the beginning since this is good practice to make the distinction between what needs to be sent via the `init` API and what needs to be sent via the `run` API:
 ```json
 {
    "value": {
@@ -322,7 +322,7 @@ XXX_THE_END_OF_A_WHISK_ACTIVATION_XXX
 XXX_THE_END_OF_A_WHISK_ACTIVATION_XXX
 ```
 
-#### At this point you can edit python-fib-run.json an try other `fib_n` values. All you have to do is save `python-fib-run.json` and trigger the function again. Notice that here we're just modifying the parameters of our function; therefore, there's no need to re-run/re-initialize our container that contains our Python runtime.
+#### At this point you can edit python-fib-run.json and try other `fib_n` values. All you have to do is save `python-fib-run.json` and trigger the function again. Notice that here we're just modifying the parameters of our function; therefore, there's no need to re-run/re-initialize our container that contains our Python runtime.
 
 #### You can also automate most of this process through [docker actions](https://github.com/apache/openwhisk/tree/master/tools/actionProxy) by using `invoke.py`
 
@@ -410,4 +410,4 @@ This action runtime enables developers to create AI Services with OpenWhisk. It 
 
 Follow these steps to import the project into your IntelliJ IDE.
 - Import project as gradle project.
-- Make sure working directory is root of the project/repo.
+- Make sure the working directory is root of the project/repo.
