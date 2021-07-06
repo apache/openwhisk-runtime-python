@@ -17,8 +17,8 @@
 
 # build go proxy from source
 FROM golang:1.15 AS builder_source
-ARG GO_PROXY_GITHUB_USER=apache
-ARG GO_PROXY_GITHUB_BRANCH=master
+ARG GO_PROXY_GITHUB_USER=nimbella-corp
+ARG GO_PROXY_GITHUB_BRANCH=dev
 RUN git clone --branch ${GO_PROXY_GITHUB_BRANCH} \
    https://github.com/${GO_PROXY_GITHUB_USER}/openwhisk-runtime-go /src ;\
    cd /src ; env GO111MODULE=on CGO_ENABLED=0 go build main/proxy.go && \
@@ -33,7 +33,7 @@ RUN curl -sL \
   && cd openwhisk-runtime-go-*/main\
   && GO111MODULE=on go build -o /bin/proxy
 
-FROM python:3.7-buster
+FROM python:3.9-buster
 
 # select the builder to use
 ARG GO_PROXY_BUILD_FROM=source
@@ -41,6 +41,9 @@ ARG GO_PROXY_BUILD_FROM=source
 # Install common modules for python
 COPY requirements.txt requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
+
+# install nim
+RUN curl https://apigcp.nimbella.io/downloads/nim/nim-install-linux.sh | bash
 
 RUN mkdir -p /action
 WORKDIR /
@@ -54,8 +57,8 @@ ADD lib/launcher.py /lib/launcher.py
 ENV OW_LOG_INIT_ERROR=1
 # the launcher must wait for an ack
 ENV OW_WAIT_FOR_ACK=1
-# execution environment
-ENV OW_EXECUTION_ENV=openwhisk/action-python-v3.7
+# using the runtime name to identify the execution environment
+ENV OW_EXECUTION_ENV=openwhisk/action-python-v3.9
 # compiler script
 ENV OW_COMPILER=/bin/compile
 

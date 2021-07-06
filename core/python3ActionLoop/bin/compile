@@ -64,7 +64,7 @@ def build(src_dir, tgt_dir):
     tgt_file = "%s/exec" % tgt_dir
     write_file(tgt_file, """#!/bin/bash
 export PYTHONIOENCODING=UTF-8
-if [ "$(cat $0.env)" = "$__OW_EXECUTION_ENV" ]
+if [[ "$__OW_EXECUTION_ENV" == "" || "$(cat $0.env)" == "$__OW_EXECUTION_ENV" ]]
 then cd "$(dirname $0)"
      exec /usr/local/bin/python exec__.py "$@"
 else echo "Execution Environment Mismatch"
@@ -73,7 +73,8 @@ else echo "Execution Environment Mismatch"
      exit 1
 fi
 """, True)
-    write_file("%s.env"%tgt_file, os.environ['__OW_EXECUTION_ENV'])
+    if os.environ.get("__OW_EXECUTION_ENV"):
+      write_file("%s.env"%tgt_file, os.environ['__OW_EXECUTION_ENV'])
     return tgt_file
 
 #check if a module exists
@@ -89,9 +90,12 @@ def check(tgt_dir, module_name):
             if os.path.isdir(path_to_virtualenv):
                 activate_this_file = path_to_virtualenv + '/bin/activate_this.py'
                 if not os.path.exists(activate_this_file):
-                   sys.stderr.write('Invalid virtualenv. Zip file does not include activate_this.py')
+                    # check if this was packaged for windows
+                    activate_this_file = path_to_virtualenv + '/Scripts/activate_this.py'
+                if not os.path.exists(activate_this_file):
+                    sys.stderr.write("Invalid virtualenv. Zip file does not include 'activate_this.py'.\n")
         else:
-            sys.stderr.write("Zip file does not include %s" % module_name)
+            sys.stderr.write("Zip file does not include %s\n" % module_name)
     except SyntaxError as er:
         sys.stderr.write(er.msg)
     except Exception as ex:

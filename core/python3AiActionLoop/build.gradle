@@ -15,5 +15,24 @@
  * limitations under the License.
  */
 
-ext.dockerImageName = 'actionloop-python-v3.6-ai'
+ext.dockerImageName = 'action-python-v3.6-ai'
 apply from: '../../gradle/docker.gradle'
+
+distDocker.dependsOn 'copyLib'
+distDocker.dependsOn 'copyBin'
+distDocker.finalizedBy('cleanup')
+
+task copyLib(type: Copy) {
+    from '../python3ActionLoop/lib'
+    into './lib'
+}
+
+task copyBin(type: Copy) {
+    from '../python3ActionLoop/bin'
+    into './bin'
+}
+
+task cleanup(type: Delete) {
+    delete 'bin'
+    delete 'lib'
+}
