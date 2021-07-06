@@ -34,6 +34,8 @@ if [ ${RUNTIME_VERSION} == "3" ]; then
   RUNTIME="python3ActionLoop"
 elif [ ${RUNTIME_VERSION} == "3-ai" ]; then
   RUNTIME="python3AiActionLoop"
+elif [ ${RUNTIME_VERSION} == "39" ]; then
+  RUNTIME="python39ActionLoop"
 fi
 
 if [[ ! -z ${DOCKER_USER} ]] && [[ ! -z ${DOCKER_PASSWORD} ]]; then
