@@ -1,25 +1,11 @@
 # default available packages for python3action
-beautifulsoup4 == 4.8.2
-httplib2 == 0.17.0
-kafka_python == 1.4.7
-lxml == 4.5.0
-python-dateutil == 2.8.1
-requests == 2.22.0
-scrapy == 1.8.0
-simplejson == 3.17.0
-virtualenv == 16.7.9
-twisted == 19.10.0
-netifaces == 0.10.9
-
-# package to sync from a variety of cloud blob storage
-python-rclone == 0.0.2
-google-cloud-storage == 1.28.1
-
-# Etc
-pymongo == 3.10.1
-redis == 3.4.1
-pika == 1.1.0
-elasticsearch == 7.5.1
-cassandra-driver == 3.21.0
-etcd3 == 0.11.1
-twilio == 6.35.4
+beautifulsoup4 == 4.6.3
+httplib2 == 0.11.3
+kafka_python == 1.4.3
+lxml == 4.2.5
+python-dateutil == 2.7.3
+requests == 2.19.1
+scrapy == 1.5.1
+simplejson == 3.16.0
+virtualenv == 16.0.0
+twisted == 18.7.0
