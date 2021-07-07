@@ -42,9 +42,6 @@ ARG GO_PROXY_BUILD_FROM=source
 COPY requirements.txt requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
-# install nim
-RUN curl https://apigcp.nimbella.io/downloads/nim/nim-install-linux.sh | bash
-
 RUN mkdir -p /action
 WORKDIR /
 COPY --from=builder_source /bin/proxy /bin/proxy_source

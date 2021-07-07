@@ -17,7 +17,6 @@
 
 include 'tests'
 
-include 'core:python2ActionLoop'
 include 'core:python3AiActionLoop'
 include 'core:python39ActionLoop'
 include 'core:python3ActionLoop'

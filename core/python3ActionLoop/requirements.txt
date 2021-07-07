@@ -15,9 +15,6 @@ netifaces == 0.10.9
 python-rclone == 0.0.2
 google-cloud-storage == 1.28.1
 
-# Nimbella package
-nimbella == 1.0.0
-
 # Etc
 pymongo == 3.10.1
 redis == 3.4.1
