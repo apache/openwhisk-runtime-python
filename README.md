@@ -411,7 +411,7 @@ Follow these steps to import the project into your IntelliJ IDE.
 - Import project as gradle project.
 - Make sure the working directory is root of the project/repo.
 
-# Using extra libraries 
+# Using extra libraries
 
 If you need more libraries for your python action,  you can include a virtualenv in the zip file of the action.
 
