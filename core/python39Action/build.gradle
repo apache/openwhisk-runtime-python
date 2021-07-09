@@ -23,12 +23,12 @@ distDocker.dependsOn 'copyBin'
 distDocker.finalizedBy('cleanup')
 
 task copyLib(type: Copy) {
-    from '../python3ActionLoop/lib'
+    from '../python3Action/lib'
     into './lib'
 }
 
 task copyBin(type: Copy) {
-    from '../python3ActionLoop/bin'
+    from '../python3Action/bin'
     into './bin'
 }
 

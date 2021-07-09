@@ -30,7 +30,7 @@ class Python37Tests extends PythonBasicTests with PythonAdvancedTests with WskAc
 
   override lazy val imageName = "action-python-v3.7"
 
-  lazy val zipPrefix = "python"
+  lazy val zipPrefix = "python-v3.7"
 
   override val testNoSource = TestConfig("", hasCodeStub = false)
 
@@ -78,14 +78,17 @@ class Python37Tests extends PythonBasicTests with PythonAdvancedTests with WskAc
       initCode should be(502)
 
       if (!errorCodeOnRun)
-        initRes.get.fields.get("error").get.toString should include regex ("No module|action failed")
+        initRes.get.fields
+          .get("error")
+          .get
+          .toString should include regex ("Cannot start action. Check logs for details.")
     }
 
     if (errorCodeOnRun)
       checkStreams(out, err, {
         case (o, e) =>
           o shouldBe empty
-          e should include("Zip file does not include __main__.py")
+          e should include("Zip file does not include")
       })
   }
 

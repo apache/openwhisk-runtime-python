@@ -26,8 +26,7 @@ do echo "*** $i ***"
    zip -r -j - python_virtualenv | docker run -i action-python-$i -compile main >python-${i}_virtualenv.zip
    cp python-${i}_virtualenv.zip python-${i}_virtualenv_invalid_main.zip
    zip -d python-${i}_virtualenv_invalid_main.zip main__.py
-   #cd python_virtualenv_invalid_venv/ ; zip ../python-${i}_virtualenv_invalid_venv.zip * ; cd ..
-   cd python_virtualenv_invalid_main/ ; zip ../python-${i}_virtualenv_invalid_main.zip * ; cd ..
+   cd python_virtualenv_invalid_venv/ ; zip ../python-${i}_virtualenv_invalid_vend.zip * ; cd ..
 done
 
 touch .built
