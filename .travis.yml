@@ -45,7 +45,7 @@ deploy:
       all_branches: true
       repo: apache/openwhisk-runtime-python
   - provider: script
-    script: "./tools/travis/publish.sh openwhisk 3 nightly && ./tools/travis/publish.sh openwhisk 3-ai nightly" && ./tools/travis/publish.sh nimbella 39 ${TRAVIS_TAG}"
+    script: "./tools/travis/publish.sh openwhisk 3 nightly && ./tools/travis/publish.sh openwhisk 3-ai nightly" && ./tools/travis/publish.sh openwhisk 39 ${TRAVIS_TAG}"
     on:
       branch: master
       repo: apache/openwhisk-runtime-python
