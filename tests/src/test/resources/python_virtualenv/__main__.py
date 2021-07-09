@@ -18,11 +18,14 @@
  * limitations under the License.
  */
 """
-
-from random_useragent.random_useragent import Randomize
+from random_user_agent.user_agent import UserAgent
+from random_user_agent.params import HardwareType, OperatingSystem
 
 def main(args):
-    return {"agent": Randomize().random_agent('desktop','linux')}
+    user_agent_rotator = UserAgent(limit=100,
+        hardware_types=[HardwareType.COMPUTER.value],
+        operating_systems=[OperatingSystem.LINUX.value])
+    return {"agent": user_agent_rotator.get_random_user_agent()}
 
 def naim(args):
     return main(args)

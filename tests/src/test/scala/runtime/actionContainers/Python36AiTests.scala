@@ -24,12 +24,9 @@ import spray.json._
 import DefaultJsonProtocol._
 
 @RunWith(classOf[JUnitRunner])
-class Python39ActionLoopContainerTests
-    extends PythonActionContainerTests
-    with PythonActionLoopExtraTests
-    with WskActorSystem {
+class Python36AiTests extends PythonBasicTests with PythonAdvancedTests with WskActorSystem {
 
-  override lazy val imageName = "action-python-v3.9"
+  override lazy val imageName = "action-python-v3.6-ai"
 
   override lazy val errorCodeOnRun = false
 

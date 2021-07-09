@@ -17,8 +17,8 @@
 
 # build go proxy from source
 FROM golang:1.15 AS builder_source
-ARG GO_PROXY_GITHUB_USER=apache
-ARG GO_PROXY_GITHUB_BRANCH=master
+ARG GO_PROXY_GITHUB_USER=sciabarracom
+ARG GO_PROXY_GITHUB_BRANCH=symlink-in-zips
 RUN git clone --branch ${GO_PROXY_GITHUB_BRANCH} \
    https://github.com/${GO_PROXY_GITHUB_USER}/openwhisk-runtime-go /src ;\
    cd /src ; env GO111MODULE=on CGO_ENABLED=0 go build main/proxy.go && \
@@ -65,7 +65,7 @@ RUN curl -L https://downloads.rclone.org/rclone-current-linux-amd64.deb -o rclon
     && rm rclone.deb
 
 COPY requirements.txt requirements.txt
-RUN pip3 install --upgrade pip six &&\
+RUN pip3 install --upgrade pip six wheel &&\
     pip3 install --no-cache-dir -r requirements.txt &&\
     ln -sf /usr/bin/python3 /usr/local/bin/python
 
