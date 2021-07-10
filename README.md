@@ -413,43 +413,39 @@ Follow these steps to import the project into your IntelliJ IDE.
 
 # Using extra libraries
 
-If you need more libraries for your python action,  you can include a virtualenv in the zip file of the action.
+If you need more libraries for your Python action,  you can include a virtualenv in the zip file of the action.
 
-The requirement is that the zip file must have a subfolder named `virtualenv` with a script `virtualenv\bin\activate_this.py` working in an Linux Amd64 environment. It will be executed at start time to use your extra libraries.
+The requirement is that the zip file must have a subfolder named `virtualenv` with a script `virtualenv\bin\activate_this.py` working in an Linux AMD64 environment. It will be executed at start time to use your extra libraries.
 
 ## Using requirements.txt
 
-Virtuale envs are usually built listing your dependencies in a `requirements.txt`
+Virtual envs are usually built listing your dependencies in a `requirements.txt`.
 
-If you have an action that requires addition libraries, you can just include  `requirements.txt`
+If you have an action that requires addition libraries, you can just include `requirements.txt`.
 
-You have to create a folder `myaction`  with at least two files:
+You have to create a folder `myaction` with at least two files:
 
 ```
 __main__.py
 requirements.txt
 ```
 
-Then  zip your action and send to OpenWhisk, the requirements will be solved for you at init time, creating a suitable virtualenv
+Then zip your action and deploy to OpenWhisk, the requirements will be installed for you at init time, creating a suitable virtualenv.
 
-However, since resolving requirements involves downloading software from Internet, it can be pretty slow.
+Keep in mind that resolving requirements involves downloading and install software, so your action timeout limit may need to be adjusted accordingly. Instead, you should consider using precompilation to resolve the requirements at build time.
 
-Very likely your action using a `requirements.txt` will timeout at init time.
-
-So there is a way to precompile the action and resolve requirements at build time.
 
 ## Precompilation of a virtualenv
 
 The action containers can actually generate a virtualenv for you, provided you have a requirements.txt.
 
 
-If you have an action in the format described before (with a  `requirements.txt`) you can build the zip file with the included files with:
+If you have an action in the format described before (with a `requirements.txt`) you can build the zip file with the included files with:
 
 ```
 zip -j -r myaction | docker run -i action-python-v3.7 -compile main >myaction.zip
 ```
 
-(you can use also `v3.9` and `v3.6-ai`)
+You may use `v3.9` or `v3.6-ai` as well according to your Python version needs.
 
-The resulting action includes a virtualenv already built for you and that is fast to deploy and start as all the dependencies are already solved.
-
+The resulting action includes a virtualenv already built for you and that is fast to deploy and start as all the dependencies are already resolved. Note that there is a limit on the size of the zip file and this approach will not work for installing large libraries like Pandas or Numpy, instead use the provide "v.3.6-ai"  runtime instead which provides these libraries already for you.
