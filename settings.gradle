@@ -18,7 +18,7 @@
 include 'tests'
 
 include 'core:python3Action'
-include 'core:python3AiAction'
+include 'core:python36AiAction'
 include 'core:python39Action'
 
 rootProject.name = 'runtime-python'
