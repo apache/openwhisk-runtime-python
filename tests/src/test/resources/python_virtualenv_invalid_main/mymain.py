@@ -19,10 +19,10 @@
  */
 """
 
-from random_useragent.random_useragent import Randomize
+from random_user_agent.user_agent import UserAgent
 
 def main(args):
-    return {"agent": Randomize().random_agent('desktop','linux')}
+    return {"agent": UserAgent(limit=100).get_random_user_agent()}
 
 def naim(args):
     return main(args)
