@@ -33,7 +33,7 @@ IMAGE_TAG=$3
 if [ ${RUNTIME_VERSION} == "3" ]; then
   RUNTIME="python3Action"
 elif [ ${RUNTIME_VERSION} == "3-ai" ]; then
-  RUNTIME="python3AiAction"
+  RUNTIME="python36AiAction"
 elif [ ${RUNTIME_VERSION} == "39" ]; then
   RUNTIME="python39Action"
 fi
