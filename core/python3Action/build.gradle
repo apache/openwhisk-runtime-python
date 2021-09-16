@@ -17,3 +17,15 @@
 
 ext.dockerImageName = 'action-python-v3.7'
 apply from: '../../gradle/docker.gradle'
+
+distDocker.dependsOn 'copyReqrCommon'
+distDocker.finalizedBy('cleanup')
+
+task copyReqrCommon(type: Copy) {
+    from '../requirements_common.txt'
+    into './'
+}
+
+task cleanup(type: Delete) {
+    delete 'requirements_common.txt'
+}

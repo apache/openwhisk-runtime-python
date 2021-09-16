@@ -1,0 +1,12 @@
+# default packages available across all runtimes
+beautifulsoup4==4.10.0
+httplib2==0.19.1
+kafka_python==2.0.2
+lxml==4.6.3
+python-dateutil==2.8.2
+requests==2.26.0
+scrapy==2.5.0
+simplejson==3.17.5
+virtualenv==20.8.0
+twisted==21.7.0
+netifaces==0.11.0

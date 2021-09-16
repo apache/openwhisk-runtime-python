@@ -64,6 +64,7 @@ RUN curl -L https://downloads.rclone.org/rclone-current-linux-amd64.deb -o rclon
     && dpkg -i rclone.deb \
     && rm rclone.deb
 
+COPY requirements_common.txt requirements_common.txt
 COPY requirements.txt requirements.txt
 RUN pip3 install --upgrade pip six wheel &&\
     pip3 install --no-cache-dir -r requirements.txt &&\
@@ -89,4 +90,5 @@ ENV OW_EXECUTION_ENV=openwhisk/action-python-v3.6-ai
 ENV OW_COMPILER=/bin/compile
 # use utf-8
 ENV PYTHONIOENCODING=UTF-8
+
 ENTRYPOINT ["/bin/proxy"]

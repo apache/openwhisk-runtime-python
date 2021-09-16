@@ -20,6 +20,7 @@ apply from: '../../gradle/docker.gradle'
 
 distDocker.dependsOn 'copyLib'
 distDocker.dependsOn 'copyBin'
+distDocker.dependsOn 'copyReqrCommon'
 distDocker.finalizedBy('cleanup')
 
 task copyLib(type: Copy) {
@@ -32,7 +33,13 @@ task copyBin(type: Copy) {
     into './bin'
 }
 
+task copyReqrCommon(type: Copy) {
+    from '../requirements_common.txt'
+    into './'
+}
+
 task cleanup(type: Delete) {
     delete 'bin'
     delete 'lib'
+    delete 'requirements_common.txt'
 }
