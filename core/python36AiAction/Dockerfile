@@ -55,7 +55,7 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
 # PyTorch
 # persistent as it fails often
 RUN while ! pip list | grep torch ;\
-    do pip install torch ; done ;\
+    do pip --no-cache-dir install torch ; done ;\
     while ! pip list | grep torchvision ;\
     do pip install torchvision ; done
 
