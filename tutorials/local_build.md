@@ -13,36 +13,33 @@ cd openwhisk-runtime-python
 
 2. Build docker
 
-Build using Python 3.7 (recommended)
+Build using Python 3.7 (recommended). This tutorial assumes you're building with python 3.7.
+
 ```
-docker build -t actionloop-python-v3.7:1.0-SNAPSHOT $(pwd)/core/python3ActionLoop
-```
-This tutorial assumes you're building with python 3.7. But if you want to use python 2.7 you can use:
-```
-docker build -t actionloop-python-v2.7:1.0-SNAPSHOT $(pwd)/core/python2ActionLoop
+docker build -t action-python-v3.7:1.0-SNAPSHOT $(pwd)/core/python3Action
 ```
 
-2.1. Check docker `IMAGE ID` (3rd column) for repository `actionloop-python-v3.7`
+2.1. Check docker `IMAGE ID` (3rd column) for repository `action-python-v3.7`
 ```
 docker images
 ```
 You should see an image that looks something like:
 ```
-actionloop-python-v3.7         1.0-SNAPSHOT ...
+action-python-v3.7         1.0-SNAPSHOT ...
 ```
 
 2.2. Tag image (Optional step). Required if you’re pushing your docker image to a registry e.g. dockerHub
 ```
-docker tag <docker_image_ID> <dockerHub_username>/actionloop-python-v3.7:1.0-SNAPSHOT
+docker tag <docker_image_ID> <dockerHub_username>/action-python-v3.7:1.0-SNAPSHOT
 ```
 
 3. Run docker on localhost with either the following commands:
 ```
-docker run -p 127.0.0.1:80:8080/tcp --name=bloom_whisker --rm -it actionloop-python-v3.7:1.0-SNAPSHOT
+docker run -p 127.0.0.1:80:8080/tcp --name=bloom_whisker --rm -it action-python-v3.7:1.0-SNAPSHOT
 ```
 Or run the container in the background (Add -d (detached) to the command above)
 ```
-docker run -d -p 127.0.0.1:80:8080/tcp --name=bloom_whisker --rm -it actionloop-python-v3.7:1.0-SNAPSHOT
+docker run -d -p 127.0.0.1:80:8080/tcp --name=bloom_whisker --rm -it action-python-v3.7:1.0-SNAPSHOT
 ```
 Note: If you run your docker container in the background you'll want to stop it with:
 ```
@@ -58,7 +55,7 @@ or
 ```
 docker ps -a
 ```
-You shoulkd see a container named `bloom_whisker` being run
+You should see a container named `bloom_whisker` being run.
 
 4. Create your function (note that each container can only hold one function)
 In this first example we'll be creating a very simple function
@@ -294,6 +291,8 @@ XXX_THE_END_OF_A_WHISK_ACTIVATION_XXX
 XXX_THE_END_OF_A_WHISK_ACTIVATION_XXX
 ```
 
-#### At this point you can edit python-fib-run.json an try other `fib_n` values. All you have to do is save `python-fib-run.json` and trigger the function again. Notice that here we're just modifying the parameters of our function; therefore, there's no need to re-run/re-initialize our container that contains our Python runtime.
+### Notes
 
-#### You can also automate most of this process through [docker actions](https://github.com/apache/openwhisk/tree/master/tools/actionProxy) by using `invoke.py`
+- At this point you can edit `python-fib-run.json` and try other `fib_n` values. All you have to do is save `python-fib-run.json` and trigger the function again. Notice that here we're just modifying the parameters of our function; therefore, there's no need to re-run/re-initialize our container that contains our Python runtime.
+
+- You can also automate most of this process through [docker actions](https://github.com/apache/openwhisk/tree/master/tools/actionProxy) by using `invoke.py`
