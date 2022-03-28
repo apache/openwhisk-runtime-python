@@ -38,6 +38,10 @@ FROM python:3.9-buster
 # select the builder to use
 ARG GO_PROXY_BUILD_FROM=release
 
+# install zip
+RUN apt-get update && apt-get install -y zip \
+    && rm -rf /var/lib/apt/lists/*
+
 # Install common modules for python
 COPY requirements_common.txt requirements_common.txt
 COPY requirements.txt requirements.txt
