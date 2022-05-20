@@ -31,7 +31,7 @@ RUN curl -sL \
   https://github.com/apache/openwhisk-runtime-go/archive/${GO_PROXY_RELEASE_VERSION}.tar.gz\
   | tar xzf -\
   && cd openwhisk-runtime-go-*/main\
-  && GO111MODULE=on go build -o /bin/proxy
+  && GO111MODULE=on CGO_ENABLED=0 go build -o /bin/proxy
 
 # Dockerfile for python AI actions, overrides and extends ActionRunner from actionProxy
 FROM tensorflow/tensorflow:1.15.2-py3-jupyter
