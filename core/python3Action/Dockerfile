@@ -26,7 +26,7 @@ RUN git clone --branch ${GO_PROXY_GITHUB_BRANCH} \
 
 # or build it from a release
 FROM golang:1.16 AS builder_release
-ARG GO_PROXY_RELEASE_VERSION=1.16@1.18.0
+ARG GO_PROXY_RELEASE_VERSION=1.16@1.19.0
 RUN curl -sL \
   https://github.com/apache/openwhisk-runtime-go/archive/{$GO_PROXY_RELEASE_VERSION}.tar.gz\
   | tar xzf -\
