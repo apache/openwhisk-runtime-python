@@ -18,6 +18,8 @@
 -->
 
 # Python 3 OpenWhisk Runtime Container
+## Next Release
+  - Golang Action loop updatetd to golang 1.18
 
 ## 1.17.0
  - Build actionloop from 1.16@1.18.0 (#113)
