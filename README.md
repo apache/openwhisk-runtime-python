@@ -27,6 +27,7 @@ The following Python runtime versions (with kind & image labels) are generated b
 
 - Python 3.7 (python:3.7 & openwhisk/action-python-v3.7)
 - Python 3.9 (python:3.9 & openwhisk/action-python-v3.9)
+- Python 3.10 (python:3.10 & openwhisk/action-python-v3.10)
 - Python 3.6 AI (python:3.6 & openwhisk/action-python-v3.6-ai)
 
 This README documents the build, customization and testing of these runtime images.
