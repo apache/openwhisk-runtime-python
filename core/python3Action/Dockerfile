@@ -16,9 +16,9 @@
 #
 
 # build go proxy from source
-FROM golang:1.16 AS builder_source
-ARG GO_PROXY_GITHUB_USER=apache
-ARG GO_PROXY_GITHUB_BRANCH=master
+FROM golang:1.18 AS builder_source
+ARG GO_PROXY_GITHUB_USER=ningyougang
+ARG GO_PROXY_GITHUB_BRANCH=support-array-result-include-sequence-action
 RUN git clone --branch ${GO_PROXY_GITHUB_BRANCH} \
    https://github.com/${GO_PROXY_GITHUB_USER}/openwhisk-runtime-go /src ;\
    cd /src ; env GO111MODULE=on CGO_ENABLED=0 go build main/proxy.go && \
@@ -31,12 +31,12 @@ RUN curl -sL \
   https://github.com/apache/openwhisk-runtime-go/archive/{$GO_PROXY_RELEASE_VERSION}.tar.gz\
   | tar xzf -\
   && cd openwhisk-runtime-go-*/main\
-  && GO111MODULE=on go build -o /bin/proxy
+  && GO111MODULE=on CGO_ENABLED=0 go build -o /bin/proxy
 
 FROM python:3.7-buster
 
 # select the builder to use
-ARG GO_PROXY_BUILD_FROM=release
+ARG GO_PROXY_BUILD_FROM=source
 
 # Install common modules for python
 COPY requirements_common.txt requirements_common.txt
