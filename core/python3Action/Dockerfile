@@ -17,8 +17,8 @@
 
 # build go proxy from source
 FROM golang:1.18 AS builder_source
-ARG GO_PROXY_GITHUB_USER=ningyougang
-ARG GO_PROXY_GITHUB_BRANCH=support-array-result-include-sequence-action
+ARG GO_PROXY_GITHUB_USER=apache
+ARG GO_PROXY_GITHUB_BRANCH=master
 RUN git clone --branch ${GO_PROXY_GITHUB_BRANCH} \
    https://github.com/${GO_PROXY_GITHUB_USER}/openwhisk-runtime-go /src ;\
    cd /src ; env GO111MODULE=on CGO_ENABLED=0 go build main/proxy.go && \
