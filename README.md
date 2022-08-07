@@ -27,6 +27,7 @@ The following Python runtime versions (with kind & image labels) are generated b
 
 - Python 3.7 (python:3.7 & openwhisk/action-python-v3.7)
 - Python 3.9 (python:3.9 & openwhisk/action-python-v3.9)
+- Python 3.10 (python:3.10 & openwhisk/action-python-v3.10)
 - Python 3.6 AI (python:3.6 & openwhisk/action-python-v3.6-ai)
 
 This README documents the build, customization and testing of these runtime images.
@@ -152,6 +153,6 @@ If you have an action in the format described before (with a `requirements.txt`)
 zip -j -r myaction | docker run -i action-python-v3.7 -compile main > myaction.zip
 ```
 
-You may use `v3.9` or `v3.6-ai` as well according to your Python version needs.
+You may use `v3.10`, `v3.9` or `v3.6-ai` as well according to your Python version needs.
 
 The resulting action includes a virtualenv already built for you and that is fast to deploy and start as all the dependencies are already resolved. Note that there is a limit on the size of the zip file and this approach will not work for installing large libraries like Pandas or Numpy, instead use the provide "v.3.6-ai"  runtime instead which provides these libraries already for you.
