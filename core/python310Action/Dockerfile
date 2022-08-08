@@ -31,12 +31,12 @@ RUN curl -sL \
   https://github.com/apache/openwhisk-runtime-go/archive/{$GO_PROXY_RELEASE_VERSION}.tar.gz\
   | tar xzf -\
   && cd openwhisk-runtime-go-*/main\
-  && GO111MODULE=on go build -o /bin/proxy
+  && GO111MODULE=on CGO_ENABLED=0 go build -o /bin/proxy
 
 FROM python:3.10-buster
 
 # select the builder to use
-ARG GO_PROXY_BUILD_FROM=release
+ARG GO_PROXY_BUILD_FROM=source
 
 # install zip
 RUN apt-get update && apt-get install -y zip \
