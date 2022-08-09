@@ -1,2 +1,5 @@
 # default packages available for action-python-v3.10
 -r requirements_common.txt
+
+# fix issue: SetuptoolsDeprecationWarning: setup.py install is deprecated. Use build and pip and other standards-based tools
+setuptools == 58.2.0
