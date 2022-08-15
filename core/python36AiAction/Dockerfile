@@ -25,8 +25,8 @@ RUN git clone --branch ${GO_PROXY_GITHUB_BRANCH} \
    mv proxy /bin/proxy
 
 # or build it from a release
-FROM golang:1.16 AS builder_release
-ARG GO_PROXY_RELEASE_VERSION=1.16@1.19.0
+FROM golang:1.18 AS builder_release
+ARG GO_PROXY_RELEASE_VERSION=1.18@1.20.0
 RUN curl -sL \
   https://github.com/apache/openwhisk-runtime-go/archive/${GO_PROXY_RELEASE_VERSION}.tar.gz\
   | tar xzf -\
@@ -37,7 +37,7 @@ RUN curl -sL \
 FROM tensorflow/tensorflow:1.15.2-py3-jupyter
 
 # select the builder to use
-ARG GO_PROXY_BUILD_FROM=source
+ARG GO_PROXY_BUILD_FROM=release
 
 RUN apt-get update && apt-get upgrade -y && apt-get install -y \
             curl \

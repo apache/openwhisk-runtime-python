@@ -26,7 +26,7 @@ RUN git clone --branch ${GO_PROXY_GITHUB_BRANCH} \
 
 # or build it from a release
 FROM golang:1.18 AS builder_release
-ARG GO_PROXY_RELEASE_VERSION=1.18@1.19.0
+ARG GO_PROXY_RELEASE_VERSION=1.18@1.20.0
 RUN curl -sL \
   https://github.com/apache/openwhisk-runtime-go/archive/{$GO_PROXY_RELEASE_VERSION}.tar.gz\
   | tar xzf -\
@@ -36,7 +36,7 @@ RUN curl -sL \
 FROM python:3.10-buster
 
 # select the builder to use
-ARG GO_PROXY_BUILD_FROM=source
+ARG GO_PROXY_BUILD_FROM=release
 
 # install zip
 RUN apt-get update && apt-get install -y zip \
