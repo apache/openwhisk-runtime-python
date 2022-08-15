@@ -32,6 +32,34 @@ The following Python runtime versions (with kind & image labels) are generated b
 
 This README documents the build, customization and testing of these runtime images.
 
+So a very simple `hello world` function would be:
+
+```python
+def main(args):
+    name = args.get("name", "stranger")
+    greeting = "Hello " + name + "!"
+    print(greeting)
+    return {"greeting": greeting}
+```
+
+For the return result, not only support `dictionary` but also support `array`
+
+So a very simple `hello array` function would be:
+
+```python
+def main(args):
+    return ["a", "b"]
+```
+
+And support array result for sequence action as well, the first action's array result can be used as next action's input parameter.
+
+So the function can be:
+
+```python
+def main(args):
+    return args
+```
+
 To learn more about using Python actions to build serverless applications, check out the main project documentation [here](https://github.com/apache/openwhisk/blob/master/docs/actions-python.md).
 
 ## Build Runtimes

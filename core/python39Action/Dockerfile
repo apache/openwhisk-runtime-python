@@ -26,12 +26,12 @@ RUN git clone --branch ${GO_PROXY_GITHUB_BRANCH} \
 
 # or build it from a release
 FROM golang:1.18 AS builder_release
-ARG GO_PROXY_RELEASE_VERSION=1.18@1.19.0
+ARG GO_PROXY_RELEASE_VERSION=1.18@1.20.0
 RUN curl -sL \
   https://github.com/apache/openwhisk-runtime-go/archive/{$GO_PROXY_RELEASE_VERSION}.tar.gz\
   | tar xzf -\
   && cd openwhisk-runtime-go-*/main\
-  && GO111MODULE=on go build -o /bin/proxy
+  && GO111MODULE=on CGO_ENABLED=0 go build -o /bin/proxy
 
 FROM python:3.9-buster
 

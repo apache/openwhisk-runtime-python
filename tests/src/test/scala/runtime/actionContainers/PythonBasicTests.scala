@@ -317,4 +317,38 @@ abstract class PythonBasicTests extends BasicActionRunnerTests with WskActorSyst
       runRes.get.fields.get("sys").get.toString() should include("python")
     }
   }
+
+  it should "support return array result" in {
+    withActionContainer() { c =>
+      val code =
+        """
+          |def main(args):
+          |    return  ["a", "b"]
+        """.stripMargin
+
+      val (initCode, res) = c.init(initPayload(code))
+      initCode should be(200)
+
+      val (runCode, runRes) = c.runForJsArray(runPayload(JsObject()))
+      runCode should be(200)
+      runRes shouldBe Some(JsArray(JsString("a"), JsString("b")))
+    }
+  }
+
+  it should "support array as input param" in {
+    withActionContainer() { c =>
+      val code =
+        """
+          |def main(args):
+          |    return  args
+        """.stripMargin
+
+      val (initCode, res) = c.init(initPayload(code))
+      initCode should be(200)
+
+      val (runCode, runRes) = c.runForJsArray(runPayload(JsArray(JsString("a"), JsString("b"))))
+      runCode should be(200)
+      runRes shouldBe Some(JsArray(JsString("a"), JsString("b")))
+    }
+  }
 }
