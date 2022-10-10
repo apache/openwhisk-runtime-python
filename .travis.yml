@@ -28,9 +28,9 @@ services:
   - docker
 # required to support multi-stage build
 addons:
-   apt:
-     packages:
-       - docker-ce
+  apt:
+    packages:
+     - docker-ce
 
 before_install:
   - "./tools/travis/setup.sh"
