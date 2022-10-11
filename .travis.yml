@@ -29,6 +29,8 @@ services:
 # required to support multi-stage build
 addons:
   apt:
+    sources:
+     - sourcelist: 'deb https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable'
     packages:
      - docker-ce
 
