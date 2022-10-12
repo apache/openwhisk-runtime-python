@@ -16,8 +16,8 @@
 #
 
 sudo: required
-dist: xenial
-jdk: openjdk8
+dist: focal
+jdk: openjdk11
 language:
   - python
 
@@ -28,9 +28,11 @@ services:
   - docker
 # required to support multi-stage build
 addons:
-   apt:
-     packages:
-       - docker-ce
+  apt:
+    sources:
+     - sourcelist: 'deb https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable'
+    packages:
+     - docker-ce
 
 before_install:
   - "./tools/travis/setup.sh"
