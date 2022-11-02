@@ -33,9 +33,12 @@ cd openwhisk-runtime-python
 2. Build docker
 
 Build using Python 3.7 (recommended). This tutorial assumes you're building with python 3.7.
-
+Run local_build.sh with the correct parameters to build docker
 ```
-docker build -t action-python-v3.7:1.0-SNAPSHOT $(pwd)/core/python3Action
+cd /tutorials
+chmod 755 local_build.sh
+cd ..
+./tutorials/local_build.sh -r python3Action -t action-python-v3.7:1.0-SNAPSHOT
 ```
 
 2.1. Check docker `IMAGE ID` (3rd column) for repository `action-python-v3.7`
