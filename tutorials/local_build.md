@@ -23,39 +23,48 @@
 - [Docker](https://www.docker.com/)
 - [curl](https://curl.se/), [wget](https://www.gnu.org/software/wget/), or [Postman](https://www.postman.com/)
 
-0. Choose/create a folder of your liking
-1. Clone this repo:
+
+## Clone repo
 ```
 git clone https://github.com/apache/openwhisk-runtime-python
 cd openwhisk-runtime-python
 ```
 
-2. Build docker
+## Build the docker image
 
-Build using Python 3.7 (recommended). This tutorial assumes you're building with python 3.7.
-Run local_build.sh with the correct parameters to build docker
+Build docker image using Python 3.7 (recommended). This tutorial assumes you're building with python 3.7.
+Run `local_build.sh` to build docker. This script takes two parameters as input
+- `-r` Specific runtime image folder name to be built, it can be one of `python3Action`, `python36AiAction`, `python39Action` or `python310Action`
+- `-t` The name for docker image and tag used for building the docker image. Example: `action-python-v3.7:1.0-SNAPSHOT`
+
 ```
-cd /tutorials
+cd tutorials
 chmod 755 local_build.sh
 cd ..
 ./tutorials/local_build.sh -r python3Action -t action-python-v3.7:1.0-SNAPSHOT
 ```
 
-2.1. Check docker `IMAGE ID` (3rd column) for repository `action-python-v3.7`
+### Verify docker image
+
+Check docker `IMAGE ID` (3rd column) for repository `action-python-v3.7`
 ```
 docker images
 ```
-You should see an image that looks something like:
+If the `local_build.sh` script is sucessful, you should see an image that looks something like:
 ```
 action-python-v3.7         1.0-SNAPSHOT ...
 ```
 
-2.2. Tag image (Optional step). Required if you’re pushing your docker image to a registry e.g. dockerHub
+### (Optional) Tag docker image
+
+This is required if you’re pushing your docker image to a registry e.g. dockerHub
 ```
 docker tag <docker_image_ID> <dockerHub_username>/action-python-v3.7:1.0-SNAPSHOT
 ```
 
-3. Run docker on localhost with either the following commands:
+## Run docker image
+
+Run docker on localhost with either the following commands:
 ```
 docker run -p 127.0.0.1:80:8080/tcp --name=bloom_whisker --rm -it action-python-v3.7:1.0-SNAPSHOT
 ```
@@ -63,13 +72,13 @@ Or run the container in the background (Add -d (detached) to the command above)
 ```
 docker run -d -p 127.0.0.1:80:8080/tcp --name=bloom_whisker --rm -it action-python-v3.7:1.0-SNAPSHOT
 ```
-Note: If you run your docker container in the background you'll want to stop it with:
+**Note:** If you run your docker container in the background you'll want to stop it with:
 ```
 docker stop <container_id>
 ```
 Where `<container_id>` is obtained from `docker ps` command bellow
 
-Lists all running containers
+List all running containers
 ```
 docker ps
 ```
@@ -77,12 +86,20 @@ or
 ```
 docker ps -a
 ```
-You should see a container named `bloom_whisker` being run.
+You should see a container named `bloom_whisker` being run and a <container_id> associated with it in the first column.
 
-4. Create your function (note that each container can only hold one function)
-In this first example we'll be creating a very simple function
-Create a json file called `python-data-init-run.json` which will contain the function that looks something like the following:
-NOTE: value of code is the actual payload and must match the syntax of the target runtime language, in this case `python`
+## Test docker image
+Docker image can be tested by creating functions. This documents lists creating three types of functions
+
+- [Functions without arguments](#Functions-without-arguments)
+- [Functions with arguments](#Functions-with-arguments)
+- [Advanced functions](#Advanced-functions)
+
+## Functions without arguments
+### Create function
+Create a function (Each container can only hold one function). In this first example we'll be creating a very simple Helloworld function. Create a json file called `python-data-init-run.json` which will contain the function that looks something like the following:
+
+**NOTE:** value of code is the actual payload and must match the syntax of the target runtime language, in this case `python`
 ```json
 {
    "value": {
@@ -93,58 +110,76 @@ NOTE: value of code is the actual payload and must match the syntax of the targe
    }
 }
 ```
-
+### Test function
+#### Initialize function
 To issue the action against the running runtime, we must first make a request against the `init` API
 We need to issue `POST` requests to init our function
-Using curl (the option `-d` signifies we're issuing a POST request)
-```
-curl -d "@python-data-init-run.json" -H "Content-Type: application/json" http://localhost/init
-```
-Using wget (the option `--post-file` signifies we're issuing a POST request)
-```
-wget --post-file=python-data-init-run.json --header="Content-Type: application/json" http://localhost/init
-```
-The above can also be achieved with [Postman](https://www.postman.com/) by setting the headers and body accordingly
+This step can be run using either [curl](https://curl.se/), [wget](https://www.gnu.org/software/wget/), or [Postman](https://www.postman.com/)
 
-Client expected response:
+- Using curl
+
+  The option `-d` signifies we're issuing a POST request in curl
+
+      curl -d "@python-data-init-run.json" -H "Content-Type: application/json" http://localhost/init
+
+- Using wget
+
+  The option `--post-file` signifies we're issuing a POST request in wget
+      
+      wget --post-file=python-data-init-run.json --header="Content-Type: application/json" http://localhost/init
+
+- Using postman
+
+  The above can also be achieved with [Postman](https://www.postman.com/) by setting the headers and body accordingly
+
+##### Expected response of Initialize function step
+Clientresponse should be as below
 ```
 {"ok":true}
 ```
 Server will remain silent in this case
 
+#### Run function
 Now we can invoke/run our function agains the `run` API with:
-Using curl `POST` request
-```
-curl -d "@python-data-init-run.json" -H "Content-Type: application/json" http://localhost/run
-```
-Or using `GET` request
-```
-curl --data-binary "@python-data-init-run.json" -H "Content-Type: application/json" http://localhost/run
-```
-Or
-Using wget `POST` request. The `-O-` is to redirect `wget` response to `stdout`.
-```
-wget -O- --post-file=python-data-init-run.json --header="Content-Type: application/json" http://localhost/run
-```
-Or using `GET` request
-```
-wget -O- --body-file=python-data-init-run.json --method=GET --header="Content-Type: application/json" http://localhost/run
-```
+- Using curl 
+   - `POST` request
+        
+         curl -d "@python-data-init-run.json" -H "Content-Type: application/json" http://localhost/run
+   
+   - `GET` request
+         
+         curl --data-binary "@python-data-init-run.json" -H "Content-Type: application/json" http://localhost/run
+      
+- Using wget
+   - `POST` request
+   
+      The `-O-` is to redirect `wget` response to `stdout`.
+   
+         wget -O- --post-file=python-data-init-run.json --header="Content-Type: application/json" http://localhost/run
 
-The above can also be achieved with [Postman](https://www.postman.com/) by setting the headers and body accordingly.
+   - `GET` request   
+   
+         wget -O- --body-file=python-data-init-run.json --method=GET --header="Content-Type: application/json" http://localhost/run
 
-You noticed that we’re passing the same file `python-data-init-run.json` from function initialization request to trigger the function. That’s not necessary and not recommended since to trigger a function all we need is to pass the parameters of the function. So in the above example, it's prefered if we create a file called `python-data-params.json` that looks like the following:
+- Using postman
+   
+   The above can also be achieved with [Postman](https://www.postman.com/) by setting the headers and body accordingly.
+
+#### (Recommended) Run function 
+The same file `python-data-init-run.json` from function initialization request is used to trigger(run) the function. It is not necessary nor recommended. To trigger a function we only need to pass the parameters of the function. Hence, instead in the above example, it is prefered to create a file called `python-data-params.json` that looks like the following:
+
 ```json
 {
    "value": {}
 }
 ```
-And trigger the function with the following (it also works with wget and postman equivalents):
+And trigger/run the function with the following:
 ```
 curl --data-binary "@python-data-params.json" -H "Content-Type: application/json" http://localhost/run
 ```
+This also works with wget and postman equivalents. Make sure you have the correct request type set and the respective body. Also set the correct headers key value pairs, which for us is "Content-Type: application/json"
 
-You can perform the same steps as above using [Postman](https://www.postman.com/) application. Make sure you have the correct request type set and the respective body. Also set the correct headers key value pairs, which for us is "Content-Type: application/json"
+##### Expected response of Run function step
 
 After you trigger the function with one of the above commands you should expect the following client response:
 ```
@@ -156,9 +191,12 @@ XXX_THE_END_OF_A_WHISK_ACTIVATION_XXX
 XXX_THE_END_OF_A_WHISK_ACTIVATION_XXX
 ```
 
-## Creating functions with arguments
+## Functions with arguments
 
-If your container still running from the previuous example you must stop it and re-run it before proceding. Remember that each python runtime can only hold one function (which cannot be overrided due to security reasons)
+### Create function
+
+**Note:** If your container still running from the previuous example you must stop it and re-run it before proceding. Remember that each python runtime can only hold one function (which cannot be overrided due to security reasons).
+
 Create a json file called `python-data-init-params.json` which will contain the function to be initialized that looks like the following:
 ```json
 {
@@ -179,43 +217,58 @@ Also create a json file `python-data-run-params.json` which will contain the par
    }
 }
 ```
-
-Now, all we have to do is initialize and trigger our function.
-First, to initialize our function make sure your python runtime container is running if not, spin the container by following step 3.
+### Test function
+#### Initialize function
+To initialize the function make sure the python runtime container is running. If not, spin the container by following [Run docker image](#Run-docker-image) step.
 Issue a `POST` request against the `init` API with the following command:
-Using curl:
-```
-curl -d "@python-data-init-params.json" -H "Content-Type: application/json" http://localhost/init
-```
-Using wget:
-```
-wget --post-file=python-data-init-params.json --header="Content-Type: application/json" http://localhost/init
-```
-Client expected response:
+- Using curl
+
+   curl -d "@python-data-init-params.json" -H "Content-Type: application/json" http://localhost/init
+   
+- Using wget
+
+   wget --post-file=python-data-init-params.json --header="Content-Type: application/json" http://localhost/init
+
+- Using postman
+
+  The above can also be achieved with [Postman](https://www.postman.com/) by setting the headers and body accordingly
+
+
+#### Expected response of Initialize function
+Client response should be as below
 ```
 {"ok":true}
 ```
 Server will remain silent in this case
 
-Second, to run/trigger the function issue requests against the `run` API with the following command:
-Using curl with `POST`:
-```
-curl -d "@python-data-run-params.json" -H "Content-Type: application/json" http://localhost/run
-```
-Or using curl with  `GET`:
-```
-curl --data-binary "@python-data-run-params.json" -H "Content-Type: application/json" http://localhost/run
-```
-Or
-Using wget with `POST`:
-```
-wget -O- --post-file=python-data-run-params.json --header="Content-Type: application/json" http://localhost/run
-```
-Or using  wget with `GET`:
-```
-wget -O- --body-file=python-data-run-params.json --method=GET --header="Content-Type: application/json" http://localhost/run
-```
+#### Run function
+To run/trigger the function issue requests against the `run` API with the following command:
 
+- Using curl 
+   - `POST` request
+        
+         curl -d "@python-data-run-params.json" -H "Content-Type: application/json" http://localhost/run
+   
+   - `GET` request
+         
+         curl --data-binary "@python-data-run-params.json" -H "Content-Type: application/json" http://localhost/run
+      
+- Using wget
+   - `POST` request
+   
+      The `-O-` is to redirect `wget` response to `stdout`.
+   
+         wget -O- --post-file=python-data-run-params.json --header="Content-Type: application/json" http://localhost/run
+
+   - `GET` request   
+   
+         wget -O- --body-file=python-data-run-params.json --method=GET --header="Content-Type: application/json" http://localhost/run
+
+- Using postman
+   
+   The above can also be achieved with [Postman](https://www.postman.com/) by setting the headers and body accordingly.
+
+#### Expected response of Run function step
 After you trigger the function with one of the above commands you should expect the following client response:
 ```
 {"payload": "Hello UFO from Mars!!!"}
@@ -227,8 +280,8 @@ XXX_THE_END_OF_A_WHISK_ACTIVATION_XXX
 XXX_THE_END_OF_A_WHISK_ACTIVATION_XXX
 ```
 
-### Advanced function
-
+## Advanced functions
+### Create function
 This function will calculate the nth Fibonacci number. It calculates the nth number of the Fibonacci sequence recursively in `O(n)` time.
 
 ```python
@@ -266,42 +319,58 @@ Create a json file called `python-fib-run.json` which will be used to run/trigge
    }
 }
 ```
-
-Now we’re all set.
-Make sure your python runtime container is running if not, spin the container by following step 3.
+### Test function
+#### Initialize function
+To initialize the function make sure the python runtime container is running. If not, spin the container by following [Run docker image](#Run-docker-image) step.
 Initialize our fibonacci function by issuing a `POST` request against the `init` API with the following command:
-Using curl:
-```
-curl -d "@python-fib-init.json" -H "Content-Type: application/json" http://localhost/init
-```
-Using wget:
-```
-wget --post-file=python-fib-init.json --header="Content-Type: application/json" http://localhost/init
-```
-Client expected response:
+
+- Using curl
+
+   curl -d "@python-fib-init.json" -H "Content-Type: application/json" http://localhost/init
+
+- Using wget
+
+   wget --post-file=python-fib-init.json --header="Content-Type: application/json" http://localhost/init
+   
+- Using postman
+
+  The above can also be achieved with [Postman](https://www.postman.com/) by setting the headers and body accordingly
+
+#### Expected response of Initialize function
+Client response should be as below
 ```
 {"ok":true}
 ```
 You've noticed by now that `init` API always returns `{"ok":true}` for a successful initialized function. And the server, again, will remain silent
 
-Trigger the function by running/triggering the function with a request against the `run` API with the following command:
-Using curl with `POST`:
-```
-curl -d "@python-fib-run.json" -H "Content-Type: application/json" http://localhost/run
-```
-Using curl with `GET`:
-```
-curl --data-binary "@python-fib-run.json" -H "Content-Type: application/json" http://localhost/run
-```
-Using wget with `POST`:
-```
-wget -O- --post-file=python-fib-run.json --header="Content-Type: application/json" http://localhost/run
-```
-Using wget with `GET`:
-```
-wget -O- --body-file=python-fib-run.json --method=GET --header="Content-Type: application/json" http://localhost/run
-```
+#### Run function
+Trigger/run the function with a request against the `run` API with the following command:
 
+- Using curl 
+   - `POST` request
+        
+         curl -d "@python-fib-run.json" -H "Content-Type: application/json" http://localhost/run
+   
+   - `GET` request
+         
+         curl --data-binary "@python-fib-run.json" -H "Content-Type: application/json" http://localhost/run
+      
+- Using wget
+   - `POST` request
+   
+      The `-O-` is to redirect `wget` response to `stdout`.
+   
+         wget -O- --post-file=python-fib-run.json --header="Content-Type: application/json" http://localhost/run
+
+   - `GET` request   
+   
+         wget -O- --body-file=python-fib-run.json --method=GET --header="Content-Type: application/json" http://localhost/run
+
+- Using postman
+   
+   The above can also be achieved with [Postman](https://www.postman.com/) by setting the headers and body accordingly.
+
+#### Expected response of Run function step
 After you trigger the function with one of the above commands you should expect the following client response:
 ```
 {"Fibonacci of n == 40": 165580141}
@@ -313,8 +382,8 @@ XXX_THE_END_OF_A_WHISK_ACTIVATION_XXX
 XXX_THE_END_OF_A_WHISK_ACTIVATION_XXX
 ```
 
-### Notes
+#### Additonal testing
 
-- At this point you can edit `python-fib-run.json` and try other `fib_n` values. All you have to do is save `python-fib-run.json` and trigger the function again. Notice that here we're just modifying the parameters of our function; therefore, there's no need to re-run/re-initialize our container that contains our Python runtime.
+- Yyou can edit `python-fib-run.json` and try other `fib_n` values. Save `python-fib-run.json` and trigger the function again. Notice that here we're just modifying the parameters of our function; therefore, there's no need to re-run/re-initialize our container that contains our Python runtime.
 
 - You can also automate most of this process through [docker actions](https://github.com/apache/openwhisk/tree/master/tools/actionProxy) by using `invoke.py`
