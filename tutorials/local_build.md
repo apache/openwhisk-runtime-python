@@ -125,7 +125,7 @@ This step can be run using either [curl](https://curl.se/), [wget](https://www.g
 - Using wget
 
   The option `--post-file` signifies we're issuing a POST request in wget
-      
+
       wget --post-file=python-data-init-run.json --header="Content-Type: application/json" http://localhost/init
 
 - Using postman
@@ -141,31 +141,31 @@ Server will remain silent in this case
 
 #### Run function
 Now we can invoke/run our function agains the `run` API with:
-- Using curl 
+- Using curl
    - `POST` request
-        
+
          curl -d "@python-data-init-run.json" -H "Content-Type: application/json" http://localhost/run
-   
+
    - `GET` request
-         
+
          curl --data-binary "@python-data-init-run.json" -H "Content-Type: application/json" http://localhost/run
-      
+   
 - Using wget
    - `POST` request
-   
+
       The `-O-` is to redirect `wget` response to `stdout`.
-   
+
          wget -O- --post-file=python-data-init-run.json --header="Content-Type: application/json" http://localhost/run
 
-   - `GET` request   
-   
+   - `GET` request
+
          wget -O- --body-file=python-data-init-run.json --method=GET --header="Content-Type: application/json" http://localhost/run
 
 - Using postman
-   
+
    The above can also be achieved with [Postman](https://www.postman.com/) by setting the headers and body accordingly.
 
-#### (Recommended) Run function 
+#### (Recommended) Run function
 The same file `python-data-init-run.json` from function initialization request is used to trigger(run) the function. It is not necessary nor recommended. To trigger a function we only need to pass the parameters of the function. Hence, instead in the above example, it is prefered to create a file called `python-data-params.json` that looks like the following:
 
 ```json
@@ -224,7 +224,7 @@ Issue a `POST` request against the `init` API with the following command:
 - Using curl
 
    curl -d "@python-data-init-params.json" -H "Content-Type: application/json" http://localhost/init
-   
+
 - Using wget
 
    wget --post-file=python-data-init-params.json --header="Content-Type: application/json" http://localhost/init
@@ -244,28 +244,28 @@ Server will remain silent in this case
 #### Run function
 To run/trigger the function issue requests against the `run` API with the following command:
 
-- Using curl 
+- Using curl
    - `POST` request
-        
+
          curl -d "@python-data-run-params.json" -H "Content-Type: application/json" http://localhost/run
-   
+
    - `GET` request
-         
+
          curl --data-binary "@python-data-run-params.json" -H "Content-Type: application/json" http://localhost/run
-      
+
 - Using wget
    - `POST` request
-   
+
       The `-O-` is to redirect `wget` response to `stdout`.
-   
+
          wget -O- --post-file=python-data-run-params.json --header="Content-Type: application/json" http://localhost/run
 
-   - `GET` request   
-   
+   - `GET` request
+
          wget -O- --body-file=python-data-run-params.json --method=GET --header="Content-Type: application/json" http://localhost/run
 
 - Using postman
-   
+
    The above can also be achieved with [Postman](https://www.postman.com/) by setting the headers and body accordingly.
 
 #### Expected response of Run function step
@@ -331,7 +331,7 @@ Initialize our fibonacci function by issuing a `POST` request against the `init`
 - Using wget
 
    wget --post-file=python-fib-init.json --header="Content-Type: application/json" http://localhost/init
-   
+
 - Using postman
 
   The above can also be achieved with [Postman](https://www.postman.com/) by setting the headers and body accordingly
@@ -346,28 +346,28 @@ You've noticed by now that `init` API always returns `{"ok":true}` for a success
 #### Run function
 Trigger/run the function with a request against the `run` API with the following command:
 
-- Using curl 
+- Using curl
    - `POST` request
-        
+
          curl -d "@python-fib-run.json" -H "Content-Type: application/json" http://localhost/run
-   
+
    - `GET` request
-         
+
          curl --data-binary "@python-fib-run.json" -H "Content-Type: application/json" http://localhost/run
-      
+
 - Using wget
    - `POST` request
-   
+
       The `-O-` is to redirect `wget` response to `stdout`.
-   
+
          wget -O- --post-file=python-fib-run.json --header="Content-Type: application/json" http://localhost/run
 
-   - `GET` request   
-   
+   - `GET` request
+
          wget -O- --body-file=python-fib-run.json --method=GET --header="Content-Type: application/json" http://localhost/run
 
 - Using postman
-   
+
    The above can also be achieved with [Postman](https://www.postman.com/) by setting the headers and body accordingly.
 
 #### Expected response of Run function step
