@@ -149,7 +149,7 @@ Now we can invoke/run our function agains the `run` API with:
    - `GET` request
 
          curl --data-binary "@python-data-init-run.json" -H "Content-Type: application/json" http://localhost/run
-   
+
 - Using wget
    - `POST` request
 
