@@ -62,14 +62,17 @@ def main(args):
 
 To learn more about using Python actions to build serverless applications, check out the main project documentation [here](https://github.com/apache/openwhisk/blob/master/docs/actions-python.md).
 
-## Build Runtimes
+## Build Python Runtime
 
 There are two options to build the Python runtime:
 
-- Building locally: [tutorial](tutorials/local_build.md)
-- Using OpenWhisk Actions.
+- Build using Docker
+- Build using Gradle
 
-### Building Python Runtime using OpenWhisk Actions
+### Build Python Runtime using Docker
+The runtimes can be built using Docker locally. Please follow the detailed [tutorial](tutorials/local_build.md) to build and test the runtime locally.
+
+### Building Python Runtime using Gradle
 
 Pre-requisites
 
