@@ -19,7 +19,7 @@
 
 # Apache OpenWhisk Runtimes for Python
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0)
-[![Build Status](https://travis-ci.com/apache/openwhisk-runtime-python.svg?branch=master)](https://travis-ci.com/github/apache/openwhisk-runtime-python)
+[![Continuous Integration](https://github.com/apache/openwhisk-runtime-python/actions/workflows/ci.yaml/badge.svg)](https://github.com/apache/openwhisk-runtime-python/actions/workflows/ci.yaml)
 
 This repository contains sources files needed to build the Python runtimes for Apache OpenWhisk. The build system will produce a series of docker images for each runtime version. These images are used in the platform to execute Python actions.
 
