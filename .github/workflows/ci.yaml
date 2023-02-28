@@ -96,6 +96,8 @@ jobs:
           ./gradlew :core:python39Action:distDocker -PdockerRegistry=docker.io -PdockerImagePrefix=openwhisk -PdockerImageTag=$SHORT_COMMIT
           ./gradlew :core:python310Action:distDocker -PdockerRegistry=docker.io -PdockerImagePrefix=openwhisk -PdockerImageTag=nightly
           ./gradlew :core:python310Action:distDocker -PdockerRegistry=docker.io -PdockerImagePrefix=openwhisk -PdockerImageTag=$SHORT_COMMIT
+          ./gradlew :core:python311Action:distDocker -PdockerRegistry=docker.io -PdockerImagePrefix=openwhisk -PdockerImageTag=nightly
+          ./gradlew :core:python311Action:distDocker -PdockerRegistry=docker.io -PdockerImagePrefix=openwhisk -PdockerImageTag=$SHORT_COMMIT
       - name: Push Release Images
         if: ${{ env.PUSH_RELEASE == 'true' }}
         working-directory: runtime
@@ -110,5 +112,7 @@ jobs:
             RUNTIME="python39Action"
           elif [ ${RUNTIME_VERSION} == "310" ]; then
             RUNTIME="python310Action"
+          elif [ ${RUNTIME_VERSION} == "311" ]; then
+            RUNTIME="python311Action"
           fi
           ./gradlew :core:$RUNTIME:distDocker -PdockerRegistry=docker.io -PdockerImagePrefix=openwhisk -PdockerImageTag=$IMAGE_TAG
