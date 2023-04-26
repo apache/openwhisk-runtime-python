@@ -34,7 +34,7 @@ cd openwhisk-runtime-python
 
 Build docker image using Python 3.7 (recommended). This tutorial assumes you're building with python 3.7.
 Run `local_build.sh` to build docker. This script takes two parameters as input
-- `-r` Specific runtime image folder name to be built, it can be one of `python3Action`, `python36AiAction`, `python39Action` or `python310Action`
+- `-r` Specific runtime image folder name to be built, it can be one of `python3Action`, `python39Action`, `python310Action`, or `python311Action`
 - `-t` The name for docker image and tag used for building the docker image. Example: `action-python-v3.7:1.0-SNAPSHOT`
 
 ```
