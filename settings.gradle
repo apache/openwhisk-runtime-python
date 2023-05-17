@@ -18,7 +18,6 @@
 include 'tests'
 
 include 'core:python3Action'
-include 'core:python36AiAction'
 include 'core:python39Action'
 include 'core:python310Action'
 include 'core:python311Action'

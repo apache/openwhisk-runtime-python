@@ -20,7 +20,7 @@ helperInstructions()
 {
    echo ""
    echo "Usage: $0 -r runtimeParameter -t dockerImageTag"
-   echo -e "\t-r Specific runtime image folder name to be built, it can be one of python3Action, python36AiAction, python39Action or python310Action"
+   echo -e "\t-r Specific runtime image folder name to be built, it can be one of python3Action, python39Action, python310Action, or python311Action"
    echo -e "\t-t The name for docker image and tag used for building the docker image. Example: action-python-v3.7:1.0-SNAPSHOT"
    exit 1 #Exit script
 }
@@ -35,7 +35,7 @@ do
 done
 
 # Print helperInstructions in case parameters are empty
-if [ -z "$runtimeParameter" ] || [ -z "$dockerImageTag" ] || ( [[ "$runtimeParameter" != "python3Action" ]] && [[ "$runtimeParameter" != "python36AiAction" ]] && [[ "$runtimeParameter" != "python39Action" ]] && [[ "$runtimeParameter" != "python310Action" ]] )
+if [ -z "$runtimeParameter" ] || [ -z "$dockerImageTag" ] || ( [[ "$runtimeParameter" != "python3Action" ]] && [[ "$runtimeParameter" != "python39Action" ]] && [[ "$runtimeParameter" != "python310Action" ]] && [[ "$runtimeParameter" != "python311Action" ]] )
  then
    echo "Runtime parameter is empty or not supported";
    helperInstructions
@@ -48,16 +48,6 @@ if [[ "$runtimeParameter" == "python3Action" ]]
     cp $(pwd)/core/requirements_common.txt $(pwd)/core/python3Action/requirements_common.txt
     docker build -t "$dockerImageTag" $(pwd)/core/python3Action
     rm $(pwd)/core/python3Action/requirements_common.txt
-elif [[ "$runtimeParameter" == "python36AiAction" ]]
-  then
-    echo "Building docker for python36AiAction."
-    cp $(pwd)/core/requirements_common.txt $(pwd)/core/python36AiAction/requirements_common.txt
-    cp -r $(pwd)/core/python3Action/bin $(pwd)/core/python36AiAction/bin
-    cp -r $(pwd)/core/python3Action/lib $(pwd)/core/python36AiAction/lib
-    docker build -t "$dockerImageTag" $(pwd)/core/python36AiAction
-    rm $(pwd)/core/python36AiAction/requirements_common.txt
-    rm -r $(pwd)/core/python36AiAction/bin
-    rm -r $(pwd)/core/python36AiAction/lib
 elif [[ "$runtimeParameter" == "python39Action" ]]
   then
     echo "Building docker for python39Action."
@@ -78,4 +68,14 @@ elif [[ "$runtimeParameter" == "python310Action" ]]
     rm $(pwd)/core/python310Action/requirements_common.txt
     rm -r $(pwd)/core/python310Action/bin
     rm -r $(pwd)/core/python310Action/lib
+elif [[ "$runtimeParameter" == "python311Action" ]]
+  then
+    echo "Building docker for python311Action."
+    cp $(pwd)/core/requirements_common.txt $(pwd)/core/python311Action/requirements_common.txt
+    cp -r $(pwd)/core/python3Action/bin $(pwd)/core/python311Action/bin
+    cp -r $(pwd)/core/python3Action/lib $(pwd)/core/python311Action/lib
+    docker build -t "$dockerImageTag" $(pwd)/core/python311Action
+    rm $(pwd)/core/python311Action/requirements_common.txt
+    rm -r $(pwd)/core/python311Action/bin
+    rm -r $(pwd)/core/python311Action/lib
 fi

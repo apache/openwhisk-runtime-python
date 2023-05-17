@@ -150,9 +150,6 @@ others.
 ./gradlew :tests:test --tests Python*Tests
 ```
 
-## Python 3 AI Runtime
-This action runtime enables developers to create AI Services with OpenWhisk. It comes with preinstalled libraries useful for running Machine Learning and Deep Learning inferences. [Read more about this runtime here](./core/python36AiAction).
-
 ## Using additional python libraries
 
 If you need more libraries for your Python action,  you can include a virtualenv in the zip file of the action.
