@@ -18,8 +18,14 @@
 -->
 
 # Python 3 OpenWhisk Runtime Container
-## Next Release
-  - Golang Action loop updatetd to golang 1.20
+## 1.18.0
+  - Add Python 3.10 runtime. (#128)
+  - Add Python 3.11 Runtime (#140)
+  - Remove Python 3.6 based runtime (#143)
+  - Support array result include sequence action (#129)
+  - Install zip in docker images (#122)
+  - Build proxy from 1.22.0 release of openwhisk-runtime-go using GoLang 1.20
+  - Added script to build docker images locally (#135)
 
 ## 1.17.0
  - Build actionloop from 1.16@1.18.0 (#113)
