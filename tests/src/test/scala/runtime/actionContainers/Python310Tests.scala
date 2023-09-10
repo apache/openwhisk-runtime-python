@@ -21,7 +21,7 @@ import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 
 @RunWith(classOf[JUnitRunner])
-class Python310Tests extends Python37Tests {
+class Python310Tests extends Python3Tests {
 
   override lazy val imageName = "action-python-v3.10"
 

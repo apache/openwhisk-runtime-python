@@ -20,8 +20,8 @@ helperInstructions()
 {
    echo ""
    echo "Usage: $0 -r runtimeParameter -t dockerImageTag"
-   echo -e "\t-r Specific runtime image folder name to be built, it can be one of python3Action, python39Action, python310Action, or python311Action"
-   echo -e "\t-t The name for docker image and tag used for building the docker image. Example: action-python-v3.7:1.0-SNAPSHOT"
+   echo -e "\t-r Specific runtime image folder name to be built, it can be one of python39Action, python310Action, or python311Action"
+   echo -e "\t-t The name for docker image and tag used for building the docker image. Example: action-python-v3.11:1.0-SNAPSHOT"
    exit 1 #Exit script
 }
 
@@ -35,20 +35,14 @@ do
 done
 
 # Print helperInstructions in case parameters are empty
-if [ -z "$runtimeParameter" ] || [ -z "$dockerImageTag" ] || ( [[ "$runtimeParameter" != "python3Action" ]] && [[ "$runtimeParameter" != "python39Action" ]] && [[ "$runtimeParameter" != "python310Action" ]] && [[ "$runtimeParameter" != "python311Action" ]] )
+if [ -z "$runtimeParameter" ] || [ -z "$dockerImageTag" ] || ( [[ "$runtimeParameter" != "python39Action" ]] && [[ "$runtimeParameter" != "python310Action" ]] && [[ "$runtimeParameter" != "python311Action" ]] )
  then
    echo "Runtime parameter is empty or not supported";
    helperInstructions
 fi
 
 # For every runtime 1. copy the required dependent folders 2. build the docker image 3. delete the copied folder
-if [[ "$runtimeParameter" == "python3Action" ]]
- then
-    echo "Building docker for python3Action."
-    cp $(pwd)/core/requirements_common.txt $(pwd)/core/python3Action/requirements_common.txt
-    docker build -t "$dockerImageTag" $(pwd)/core/python3Action
-    rm $(pwd)/core/python3Action/requirements_common.txt
-elif [[ "$runtimeParameter" == "python39Action" ]]
+if [[ "$runtimeParameter" == "python39Action" ]]
   then
     echo "Building docker for python39Action."
     cp $(pwd)/core/requirements_common.txt $(pwd)/core/python39Action/requirements_common.txt

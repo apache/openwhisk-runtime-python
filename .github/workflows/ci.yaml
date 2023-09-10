@@ -88,8 +88,6 @@ jobs:
         working-directory: runtime
         run: |
           SHORT_COMMIT=$(git rev-parse --short "$GITHUB_SHA")
-          ./gradlew :core:python3Action:distDocker -PdockerRegistry=docker.io -PdockerImagePrefix=openwhisk -PdockerImageTag=nightly
-          ./gradlew :core:python3Action:distDocker -PdockerRegistry=docker.io -PdockerImagePrefix=openwhisk -PdockerImageTag=$SHORT_COMMIT
           ./gradlew :core:python39Action:distDocker -PdockerRegistry=docker.io -PdockerImagePrefix=openwhisk -PdockerImageTag=nightly
           ./gradlew :core:python39Action:distDocker -PdockerRegistry=docker.io -PdockerImagePrefix=openwhisk -PdockerImageTag=$SHORT_COMMIT
           ./gradlew :core:python310Action:distDocker -PdockerRegistry=docker.io -PdockerImagePrefix=openwhisk -PdockerImageTag=nightly
@@ -102,9 +100,7 @@ jobs:
         run: |
           RUNTIME_VERSION=${GITHUB_REF_NAME%@*}
           IMAGE_TAG=${GITHUB_REF_NAME##*@}
-          if [ ${RUNTIME_VERSION} == "3" ]; then
-            RUNTIME="python3Action"
-          elif [ ${RUNTIME_VERSION} == "39" ]; then
+          if [ ${RUNTIME_VERSION} == "39" ]; then
             RUNTIME="python39Action"
           elif [ ${RUNTIME_VERSION} == "310" ]; then
             RUNTIME="python310Action"
