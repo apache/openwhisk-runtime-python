@@ -32,45 +32,45 @@ cd openwhisk-runtime-python
 
 ## Build the docker image
 
-Build docker image using Python 3.7 (recommended). This tutorial assumes you're building with python 3.7.
+Build docker image using Python 3.11 (recommended). This tutorial assumes you're building with python 3.11.
 Run `local_build.sh` to build docker. This script takes two parameters as input
-- `-r` Specific runtime image folder name to be built, it can be one of `python3Action`, `python39Action`, `python310Action`, or `python311Action`
-- `-t` The name for docker image and tag used for building the docker image. Example: `action-python-v3.7:1.0-SNAPSHOT`
+- `-r` Specific runtime image folder name to be built, it can be one of `python39Action`, `python310Action`, or `python311Action`
+- `-t` The name for docker image and tag used for building the docker image. Example: `action-python-v3.11:1.0-SNAPSHOT`
 
 ```
 cd tutorials
 chmod 755 local_build.sh
 cd ..
-./tutorials/local_build.sh -r python3Action -t action-python-v3.7:1.0-SNAPSHOT
+./tutorials/local_build.sh -r python311Action -t action-python-v3.11:1.0-SNAPSHOT
 ```
 
 ### Verify docker image
 
-Check docker `IMAGE ID` (3rd column) for repository `action-python-v3.7`
+Check docker `IMAGE ID` (3rd column) for repository `action-python-v3.11`
 ```
 docker images
 ```
 If the `local_build.sh` script is sucessful, you should see an image that looks something like:
 ```
-action-python-v3.7         1.0-SNAPSHOT ...
+action-python-v3.11         1.0-SNAPSHOT ...
 ```
 
 ### (Optional) Tag docker image
 
 This is required if you’re pushing your docker image to a registry e.g. dockerHub
 ```
-docker tag <docker_image_ID> <dockerHub_username>/action-python-v3.7:1.0-SNAPSHOT
+docker tag <docker_image_ID> <dockerHub_username>/action-python-v3.11:1.0-SNAPSHOT
 ```
 
 ## Run docker image
 
 Run docker on localhost with either the following commands:
 ```
-docker run -p 127.0.0.1:80:8080/tcp --name=bloom_whisker --rm -it action-python-v3.7:1.0-SNAPSHOT
+docker run -p 127.0.0.1:80:8080/tcp --name=bloom_whisker --rm -it action-python-v3.11:1.0-SNAPSHOT
 ```
 Or run the container in the background (Add -d (detached) to the command above)
 ```
-docker run -d -p 127.0.0.1:80:8080/tcp --name=bloom_whisker --rm -it action-python-v3.7:1.0-SNAPSHOT
+docker run -d -p 127.0.0.1:80:8080/tcp --name=bloom_whisker --rm -it action-python-v3.11:1.0-SNAPSHOT
 ```
 **Note:** If you run your docker container in the background you'll want to stop it with:
 ```

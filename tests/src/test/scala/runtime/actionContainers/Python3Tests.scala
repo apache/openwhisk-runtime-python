@@ -26,16 +26,9 @@ import org.scalatest.junit.JUnitRunner
 import spray.json._
 
 @RunWith(classOf[JUnitRunner])
-class Python37Tests extends PythonBasicTests with PythonAdvancedTests with WskActorSystem {
+abstract class Python3Tests extends PythonBasicTests with PythonAdvancedTests with WskActorSystem {
 
-  override lazy val imageName = "action-python-v3.7"
-
-  lazy val zipPrefix = "python-v3.7"
-
-  override val testNoSource = TestConfig("", hasCodeStub = false)
-
-  /** actionloop based image does not log init errors - return the error in the body */
-  override lazy val errorCodeOnRun = false
+  lazy val zipPrefix = "???"
 
   def testArtifact(name: String): File = {
     new File(this.getClass.getClassLoader.getResource(name).toURI)
