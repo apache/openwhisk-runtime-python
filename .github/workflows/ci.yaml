@@ -27,6 +27,8 @@ on:
     types: [ opened, synchronize, reopened ]
   schedule:
     - cron: '30 1 * * 1,3,5'
+  workflow_dispatch:
+
 
 permissions: read-all
 
