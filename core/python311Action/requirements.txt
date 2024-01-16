@@ -9,7 +9,7 @@ requests==2.31.0
 scrapy==2.8.0
 simplejson==3.18.3
 virtualenv==20.19.0
-twisted==22.10.0
+twisted==23.10.0
 netifaces==0.11.0
 # fix issue: SetuptoolsDeprecationWarning: setup.py install is deprecated. Use build and pip and other standards-based tools
 setuptools == 67.4.0
