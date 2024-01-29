@@ -21,7 +21,7 @@ if [ -f ".built" ]; then
   exit 0
 fi
 
-for i in v3.9 v3.10 v3.11
+for i in v3.9 v3.10 v3.11 v3.12
 do echo "*** $i ***"
    zip -r -j - python_virtualenv | docker run -i action-python-$i -compile main >python-${i}_virtualenv.zip
    cp python-${i}_virtualenv.zip python-${i}_virtualenv_invalid_main.zip
