@@ -1,4 +1,4 @@
-# default packages available for action-python-v3.11
+# default packages available for action-python-v3.12
 #-r requirements_common.txt
 beautifulsoup4==4.12.3
 httplib2==0.22.0
