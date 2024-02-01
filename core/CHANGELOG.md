@@ -19,8 +19,11 @@
 
 # Python 3 OpenWhisk Runtime Container
 
-## Next version
-  - Update the python:3.11 and the python:3.10 action runtimes to bookworm as buster is in the final support phase and therefore the vulnerability updates for buster are more and more delayed. (#146)
+## 1.19.0
+  - Add Python 3.12 Runtime (#152)
+  - Update python:3.11 and python:3.10 runtimes to Debian bookworm (#146)
+  - Update go proxy to 1.21@1.23.0 (#148)
+  - Drop support for Python 3.7 (EOL June 2023) (#147)
 
 ## 1.18.0
   - Add Python 3.10 runtime. (#128)
