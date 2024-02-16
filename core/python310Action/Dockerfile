@@ -16,7 +16,7 @@
 #
 
 # build go proxy from source
-FROM golang:1.21 AS builder_source
+FROM golang:1.22 AS builder_source
 ARG GO_PROXY_GITHUB_USER=apache
 ARG GO_PROXY_GITHUB_BRANCH=master
 RUN git clone --branch ${GO_PROXY_GITHUB_BRANCH} \
@@ -25,8 +25,8 @@ RUN git clone --branch ${GO_PROXY_GITHUB_BRANCH} \
    mv proxy /bin/proxy
 
 # or build it from a release
-FROM golang:1.21 AS builder_release
-ARG GO_PROXY_RELEASE_VERSION=1.21@1.23.0
+FROM golang:1.22 AS builder_release
+ARG GO_PROXY_RELEASE_VERSION=1.22@1.24.0
 RUN curl -sL \
   https://github.com/apache/openwhisk-runtime-go/archive/{$GO_PROXY_RELEASE_VERSION}.tar.gz\
   | tar xzf -\
