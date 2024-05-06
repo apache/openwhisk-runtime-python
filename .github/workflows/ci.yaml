@@ -70,6 +70,12 @@ jobs:
         run: |
           ./gradlew distDocker
 
+      - name: check
+        if: always()
+        run: | 
+          docker image list
+          df -H
+
       # Test this repository
       - name: Test Runtime
         working-directory: runtime
