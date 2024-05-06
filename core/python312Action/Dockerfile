@@ -39,7 +39,7 @@ FROM python:3.12-bookworm
 ARG GO_PROXY_BUILD_FROM=release
 
 # install zip
-RUN apt-get update && apt-get install -y zip gcc python3-lxml \
+RUN apt-get update && apt-get install -y zip gcc \
     && rm -rf /var/lib/apt/lists/*
 
 # Install common modules for python
