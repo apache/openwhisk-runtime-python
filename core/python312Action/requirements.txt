@@ -3,7 +3,7 @@
 beautifulsoup4==4.12.3
 httplib2==0.22.0
 kafka_python==2.0.2
-lxml==5.1.0
+lxml==5.2.1
 python-dateutil==2.8.2
 requests==2.31.0
 scrapy==2.11.0
@@ -12,4 +12,4 @@ virtualenv==20.25.0
 twisted==22.8.0
 netifaces==0.11.0
 # fix issue: SetuptoolsDeprecationWarning: setup.py install is deprecated. Use build and pip and other standards-based tools
-setuptools == 69.0.3
+setuptools == 69.5.1
