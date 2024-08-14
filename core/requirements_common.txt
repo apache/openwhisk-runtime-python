@@ -7,6 +7,6 @@ python-dateutil==2.8.2
 requests==2.26.0
 scrapy==2.5.0
 simplejson==3.17.5
-virtualenv==20.8.0
+virtualenv==20.26.3
 twisted==21.7.0
 netifaces==0.11.0
