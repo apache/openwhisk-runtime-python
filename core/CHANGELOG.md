@@ -19,6 +19,13 @@
 
 # Python 3 OpenWhisk Runtime Container
 
+## 1.20.0
+ - Dependabot Fixes (#159)
+ - Update virtualenv for python:3.9 to fix tests. (#161)
+ - Update scalafmt plugin version to fix build break (#162)
+ - Update go proxy to 1.23@1.25.0 (#163)
+ -  Upgrade gradle to 6.9.3 (#164)
+
 ## 1.19.0
   - Add Python 3.12 Runtime (#152)
   - Update python:3.11 and python:3.10 runtimes to Debian bookworm (#146)
