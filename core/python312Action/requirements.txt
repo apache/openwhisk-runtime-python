@@ -12,4 +12,4 @@ virtualenv==20.25.0
 twisted==24.7.0
 netifaces==0.11.0
 # fix issue: SetuptoolsDeprecationWarning: setup.py install is deprecated. Use build and pip and other standards-based tools
-setuptools == 69.0.3
+setuptools == 70.0.0
