@@ -223,11 +223,11 @@ To initialize the function make sure the python runtime container is running. If
 Issue a `POST` request against the `init` API with the following command:
 - Using curl
 
-   curl -d "@python-data-init-params.json" -H "Content-Type: application/json" http://localhost/init
+      curl -d "@python-data-init-params.json" -H "Content-Type: application/json" http://localhost/init
 
 - Using wget
 
-   wget --post-file=python-data-init-params.json --header="Content-Type: application/json" http://localhost/init
+      wget --post-file=python-data-init-params.json --header="Content-Type: application/json" http://localhost/init
 
 - Using postman
 
@@ -326,11 +326,11 @@ Initialize our fibonacci function by issuing a `POST` request against the `init`
 
 - Using curl
 
-   curl -d "@python-fib-init.json" -H "Content-Type: application/json" http://localhost/init
+      curl -d "@python-fib-init.json" -H "Content-Type: application/json" http://localhost/init
 
 - Using wget
 
-   wget --post-file=python-fib-init.json --header="Content-Type: application/json" http://localhost/init
+      wget --post-file=python-fib-init.json --header="Content-Type: application/json" http://localhost/init
 
 - Using postman
 
