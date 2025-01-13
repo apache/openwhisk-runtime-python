@@ -8,7 +8,7 @@ python-dateutil==2.8.2
 requests==2.32.2
 scrapy==2.11.2
 simplejson==3.18.3
-virtualenv==20.19.0
+virtualenv==20.26.6
 twisted==24.7.0
 netifaces==0.11.0
 # fix issue: SetuptoolsDeprecationWarning: setup.py install is deprecated. Use build and pip and other standards-based tools
