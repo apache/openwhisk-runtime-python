@@ -15,33 +15,19 @@
  * limitations under the License.
  */
 
-include 'tests'
+package runtime.actionContainers
 
-include 'core:python39Action'
-include 'core:python310Action'
-include 'core:python311Action'
-include 'core:python312Action'
-include 'core:python313Action'
+import org.junit.runner.RunWith
+import org.scalatest.junit.JUnitRunner
 
-rootProject.name = 'runtime-python'
+@RunWith(classOf[JUnitRunner])
+class Python313Tests extends Python3Tests {
 
-gradle.ext.openwhisk = [
-        version: '1.0.1-SNAPSHOT'
-]
+  override lazy val imageName = "action-python-v3.13"
 
-gradle.ext.scala = [
-    version: '2.12.10',
-    depVersion  : '2.12',
-    compileFlags: ['-feature', '-unchecked', '-deprecation', '-Xfatal-warnings', '-Ywarn-unused-import']
-]
+  override lazy val zipPrefix = "python-v3.13"
 
-gradle.ext.akka = [version : '2.6.12']
-gradle.ext.akka_http = [version : '10.2.4']
+  override lazy val errorCodeOnRun = false
 
-gradle.ext.scalafmt = [
-    version: '1.5.1',
-    config: new File(rootProject.projectDir, '.scalafmt.conf')
-]
-
-gradle.ext.akka = [version: '2.6.12']
-gradle.ext.akka_http = [version: '10.2.4']
+  override val testNoSource = TestConfig("", hasCodeStub = false)
+}

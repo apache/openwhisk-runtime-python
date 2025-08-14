@@ -29,6 +29,7 @@ The following Python runtime versions (with kind & image labels) are generated b
 - Python 3.10 (python:3.10 & openwhisk/action-python-v3.10)
 - Python 3.11 (python:3.11 & openwhisk/action-python-v3.11)
 - Python 3.12 (python:3.12 & openwhisk/action-python-v3.12)
+- Python 3.13 (python:3.13 & openwhisk/action-python-v3.13)
 
 This README documents the build, customization and testing of these runtime images.
 

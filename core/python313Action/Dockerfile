@@ -16,7 +16,7 @@
 #
 
 # build go proxy from source
-FROM golang:1.23 AS builder_source
+FROM golang:1.24 AS builder_source
 ARG GO_PROXY_GITHUB_USER=apache
 ARG GO_PROXY_GITHUB_BRANCH=master
 RUN git clone --branch ${GO_PROXY_GITHUB_BRANCH} \
@@ -25,7 +25,7 @@ RUN git clone --branch ${GO_PROXY_GITHUB_BRANCH} \
    mv proxy /bin/proxy
 
 # or build it from a release
-FROM golang:1.23 AS builder_release
+FROM golang:1.24 AS builder_release
 ARG GO_PROXY_RELEASE_VERSION=1.23@1.25.0
 ARG GO_PROXY_GITHUB_USER=apache
 RUN curl -sL \
@@ -34,13 +34,13 @@ RUN curl -sL \
   && cd openwhisk-runtime-go-*/main\
   && GO111MODULE=on CGO_ENABLED=0 go build -o /bin/proxy
 
-FROM python:3.9-bookworm
+FROM python:3.13-bookworm
 
 # select the builder to use
 ARG GO_PROXY_BUILD_FROM=release
 
 # install zip
-RUN apt-get update && apt-get install -y zip \
+RUN apt-get update && apt-get install -y zip gcc \
     && rm -rf /var/lib/apt/lists/*
 
 # Install common modules for python
@@ -64,7 +64,7 @@ ENV OW_LOG_INIT_ERROR=1
 # the launcher must wait for an ack
 ENV OW_WAIT_FOR_ACK=1
 # using the runtime name to identify the execution environment
-ENV OW_EXECUTION_ENV=openwhisk/action-python-v3.9
+ENV OW_EXECUTION_ENV=openwhisk/action-python-v3.12
 # compiler script
 ENV OW_COMPILER=/bin/compile
 

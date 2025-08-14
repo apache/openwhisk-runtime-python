@@ -1,0 +1,15 @@
+# default packages available for action-python-v3.12
+#-r requirements_common.txt
+beautifulsoup4==4.12.3
+httplib2==0.22.0
+kafka_python==2.0.2
+lxml==5.1.0
+python-dateutil==2.8.2
+requests==2.31.0
+scrapy==2.11.2
+simplejson==3.19.2
+virtualenv==20.25.0
+twisted==24.7.0
+netifaces==0.11.0
+# fix issue: SetuptoolsDeprecationWarning: setup.py install is deprecated. Use build and pip and other standards-based tools
+setuptools == 70.0.0

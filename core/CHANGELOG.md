@@ -19,6 +19,10 @@
 
 # Python 3 OpenWhisk Runtime Container
 
+## Next
+ - add Python 3.13
+ - update Python 3.9 base image to bookworm
+
 ## 1.20.0
  - Dependabot Fixes (#159)
  - Update virtualenv for python:3.9 to fix tests. (#161)

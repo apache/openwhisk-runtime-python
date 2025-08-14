@@ -15,33 +15,31 @@
  * limitations under the License.
  */
 
-include 'tests'
+ext.dockerImageName = 'action-python-v3.13'
+apply from: '../../gradle/docker.gradle'
 
-include 'core:python39Action'
-include 'core:python310Action'
-include 'core:python311Action'
-include 'core:python312Action'
-include 'core:python313Action'
+distDocker.dependsOn 'copyLib'
+distDocker.dependsOn 'copyBin'
+distDocker.dependsOn 'copyReqrCommon'
+distDocker.finalizedBy('cleanup')
 
-rootProject.name = 'runtime-python'
+task copyLib(type: Copy) {
+    from '../python3Action/lib'
+    into './lib'
+}
 
-gradle.ext.openwhisk = [
-        version: '1.0.1-SNAPSHOT'
-]
+task copyBin(type: Copy) {
+    from '../python3Action/bin'
+    into './bin'
+}
 
-gradle.ext.scala = [
-    version: '2.12.10',
-    depVersion  : '2.12',
-    compileFlags: ['-feature', '-unchecked', '-deprecation', '-Xfatal-warnings', '-Ywarn-unused-import']
-]
+task copyReqrCommon(type: Copy) {
+    from '../requirements_common.txt'
+    into './'
+}
 
-gradle.ext.akka = [version : '2.6.12']
-gradle.ext.akka_http = [version : '10.2.4']
-
-gradle.ext.scalafmt = [
-    version: '1.5.1',
-    config: new File(rootProject.projectDir, '.scalafmt.conf')
-]
-
-gradle.ext.akka = [version: '2.6.12']
-gradle.ext.akka_http = [version: '10.2.4']
+task cleanup(type: Delete) {
+    delete 'bin'
+    delete 'lib'
+    delete 'requirements_common.txt'
+}
